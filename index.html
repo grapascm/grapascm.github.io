@@ -15,7 +15,94 @@
 }
 
 * {
+  margin: 0;<!DOCTYPE html>
+<html lang="es">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>GRAPA</title>
+
+<style>
+@font-face {
+  font-family: 'GRAPA';
+  src: url('/fonts/GRAPA.woff2') format('woff2');
+  font-weight: normal;
+  font-style: normal;
+  font-display: swap;
+}
+
+* {
   margin: 0;
+  padding: 0;
+  box-sizing: border-box;
+}
+
+body {
+  height: 100vh;
+  font-family: 'GRAPA', sans-serif;
+  background-color: #0A1A2A;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  text-align: center;
+  color: #BFC6CF;
+}
+
+.container {
+  padding: 40px;
+  text-transform: uppercase;
+}
+
+h1 {
+  font-size: clamp(80px, 15vw, 200px);
+  letter-spacing: 0.04em;
+  color: #E4E8ED;
+}
+
+.subtitle {
+  margin-top: 10px;
+  font-size: clamp(14px, 2vw, 20px);
+  letter-spacing: 0.35em;
+}
+
+.email {
+  margin-top: 60px;
+  font-size: clamp(18px, 3vw, 26px);
+  letter-spacing: 0.12em;
+}
+
+.cta {
+  margin-top: 25px;
+  font-size: clamp(16px, 2vw, 20px);
+  letter-spacing: 0.4em;
+  cursor: pointer;
+  transition: opacity 0.3s ease;
+}
+
+.cta:hover {
+  opacity: 0.6;
+}
+
+a {
+  text-decoration: none;
+  color: inherit;
+}
+</style>
+</head>
+
+<body>
+
+<div class="container">
+  <h1>GRAPA</h1>
+  <div class="subtitle">5ociedad Cooperativa Madrileña</div>
+  <div class="email">grapa@grapa.e5</div>
+  <div class="cta">
+    <a href="mailto:grapa@grapa.es">Contactar Ya</a>
+  </div>
+</div>
+
+</body>
+</html>
   padding: 0;
   box-sizing: border-box;
 }
