@@ -3,146 +3,59 @@
 <head>
 <meta charset="UTF-8">
 <meta name="viewport" content="width=device-width, initial-scale=1.0">
-<title>GRAPA Sociedad Cooperativa Madrileña</title>
+<title>GRAPA</title>
 
 <style>
+@font-face {
+  font-family: 'GRAPA';
+  src: url('fonts/GRAPA.woff2') format('woff2');
+}
+
+* {
+  margin: 0;
+  padding: 0;
+  box-sizing: border-box;
+}
+
 body {
-  margin: 0;
-  font-family: 'Segoe UI', Arial, sans-serif;
-  background-color: #f1f3f6;
-  color: #1f2937;
+  height: 100vh;
+  font-family: 'GRAPA', sans-serif;
+  background: url('imagen.jpg') no-repeat center center/cover;
+  display: flex;
+  align-items: center;
+  justify-content: center;
 }
 
-header {
-  background: #0b1f3a; /* Azul navy */
-  color: white;
-  padding: 80px 20px;
-  text-align: center;
+.overlay {
+  background: rgba(0,0,0,0.4);
+  padding: 40px 60px;
+  border-radius: 6px;
 }
 
-header h1 {
-  margin: 0;
-  font-size: 42px;
-  letter-spacing: 2px;
-}
-
-header p {
-  margin-top: 15px;
-  font-size: 18px;
-  color: #cbd5e1;
-}
-
-section {
-  padding: 70px 20px;
-  max-width: 1100px;
-  margin: auto;
-}
-
-h2 {
-  text-align: center;
-  margin-bottom: 40px;
-  color: #0b1f3a;
-}
-
-.services {
-  display: grid;
-  grid-template-columns: repeat(auto-fit, minmax(280px, 1fr));
-  gap: 25px;
-}
-
-.card {
+button {
+  font-family: 'GRAPA', sans-serif;
+  font-size: 20px;
+  letter-spacing: 3px;
+  padding: 15px 40px;
+  border: none;
   background: white;
-  padding: 35px;
-  border-radius: 8px;
-  border-top: 4px solid #94a3b8; /* Gris plata */
-  box-shadow: 0 8px 20px rgba(0,0,0,0.05);
-  transition: transform 0.2s ease;
+  cursor: pointer;
+  transition: 0.3s ease;
 }
 
-.card:hover {
-  transform: translateY(-5px);
-}
-
-.card h3 {
-  margin-top: 0;
-  color: #0b1f3a;
-}
-
-.cta {
-  text-align: center;
-  padding: 80px 20px;
-  background: #0b1f3a;
-  color: white;
-}
-
-.cta a {
-  display: inline-block;
-  padding: 15px 35px;
-  background: #9ca3af; /* Gris metálico */
-  color: #0b1f3a;
-  text-decoration: none;
-  font-weight: bold;
-  border-radius: 5px;
-  margin-top: 25px;
-  transition: background 0.3s ease;
-}
-
-.cta a:hover {
-  background: #d1d5db;
-}
-
-footer {
-  text-align: center;
-  padding: 25px;
-  background: #e5e7eb;
-  font-size: 14px;
+button:hover {
+  background: #ddd;
 }
 </style>
-
 </head>
+
 <body>
 
-<header>
-  <h1>GRAPA</h1>
-  <p>Sociedad Cooperativa Madrileña</p>
-  <p>Museografía · Escenografía · Producción de Arte</p>
-</header>
-
-<section>
-  <h2>Quiénes Somos</h2>
-  <p style="text-align:center; max-width:800px; margin:auto;">
-    GRAPA es una cooperativa especializada en el diseño, desarrollo y producción de proyectos museográficos,
-    escenográficos y artísticos. Transformamos ideas en espacios que comunican, emocionan y permanecen.
-  </p>
-</section>
-
-<section>
-  <h2>Servicios</h2>
-  <div class="services">
-    <div class="card">
-      <h3>Museografía</h3>
-      <p>Diseño y ejecución de espacios expositivos, interpretación del patrimonio y desarrollo técnico integral.</p>
-    </div>
-    <div class="card">
-      <h3>Escenografía</h3>
-      <p>Creación de espacios escénicos para eventos culturales, institucionales y producciones artísticas.</p>
-    </div>
-    <div class="card">
-      <h3>Producción de Arte</h3>
-      <p>Fabricación, coordinación técnica y materialización de proyectos artísticos y culturales.</p>
-    </div>
-  </div>
-</section>
-
-<section class="cta">
-  <h2>Contacto</h2>
-  <p>Trabajemos juntos en tu próximo proyecto</p>
-  <a href="mailto:grapa@grapa.es">Contactar</a>
-</section>
-
-<footer>
-  © 2026 GRAPA Sociedad Cooperativa Madrileña · Todos los derechos reservados
-</footer>
+<div class="overlay">
+  <a href="mailto:grapa@grapa.es">
+    <button>CONTACTAR</button>
+  </a>
+</div>
 
 </body>
 </html>
