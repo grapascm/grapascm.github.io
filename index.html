@@ -7,17 +7,11 @@
 
 <style>
 @font-face {
-  font-family: 'GRAPA';<!DOCTYPE html>
-<html lang="es">
-<head>
-<meta charset="UTF-8">
-<meta name="viewport" content="width=device-width, initial-scale=1.0">
-<title>GRAPA</title>
-
-<style>
-@font-face {
   font-family: 'GRAPA';
-  src: url('fonts/GRAPA.woff2') format('woff2');
+  src: url('/fonts/GRAPA.woff2') format('woff2');
+  font-weight: normal;
+  font-style: normal;
+  font-display: swap;
 }
 
 * {
@@ -29,41 +23,46 @@
 body {
   height: 100vh;
   font-family: 'GRAPA', sans-serif;
-  background: #ffffff; /* limpio. luego vemos si quieres imagen */
+  background-color: #0A1A2A; /* navy profundo */
   display: flex;
   align-items: center;
   justify-content: center;
   text-align: center;
-  color: #000;
+  color: #BFC6CF; /* gris metal sobrio */
 }
 
 .container {
-  max-width: 900px;
   padding: 40px;
 }
 
 h1 {
-  font-size: clamp(60px, 12vw, 160px);
-  letter-spacing: 0.05em;
+  font-size: clamp(80px, 15vw, 200px);
+  letter-spacing: 0.04em;
+  color: #E4E8ED;
 }
 
 .subtitle {
-  font-size: clamp(14px, 2vw, 22px);
   margin-top: 10px;
-  letter-spacing: 0.25em;
+  font-size: clamp(14px, 2vw, 20px);
+  letter-spacing: 0.35em;
 }
 
 .email {
-  margin-top: 40px;
-  font-size: clamp(18px, 3vw, 28px);
+  margin-top: 60px;
+  font-size: clamp(18px, 3vw, 26px);
+  letter-spacing: 0.12em;
 }
 
 .cta {
-  margin-top: 30px;
-  font-size: clamp(16px, 2vw, 22px);
-  letter-spacing: 0.3em;
-  text-decoration: underline;
+  margin-top: 25px;
+  font-size: clamp(16px, 2vw, 20px);
+  letter-spacing: 0.4em;
   cursor: pointer;
+  transition: opacity 0.3s ease;
+}
+
+.cta:hover {
+  opacity: 0.6;
 }
 
 a {
@@ -76,72 +75,12 @@ a {
 <body>
 
 <div class="container">
-
   <h1>GRAPA</h1>
-
-  <div class="subtitle">
-    SOCIEDAD COOPERATIVA MADRILEÑA
-  </div>
-
-  <div class="email">
-    grapa@grapa.es
-  </div>
-
+  <div class="subtitle">SOCIEDAD COOPERATIVA MADRILEÑA</div>
+  <div class="email">grapa@grapa.es</div>
   <div class="cta">
     <a href="mailto:grapa@grapa.es">CONTACTAR YA</a>
   </div>
-
-</div>
-
-</body>
-</html>
-  src: url('fonts/GRAPA.woff2') format('woff2');
-}
-
-* {
-  margin: 0;
-  padding: 0;
-  box-sizing: border-box;
-}
-
-body {
-  height: 100vh;
-  font-family: 'GRAPA', sans-serif;
-  background: url('imagen.jpg') no-repeat center center/cover;
-  display: flex;
-  align-items: center;
-  justify-content: center;
-}
-
-.overlay {
-  background: rgba(0,0,0,0.4);
-  padding: 40px 60px;
-  border-radius: 6px;
-}
-
-button {
-  font-family: 'GRAPA', sans-serif;
-  font-size: 20px;
-  letter-spacing: 3px;
-  padding: 15px 40px;
-  border: none;
-  background: white;
-  cursor: pointer;
-  transition: 0.3s ease;
-}
-
-button:hover {
-  background: #ddd;
-}
-</style>
-</head>
-
-<body>
-
-<div class="overlay">
-  <a href="mailto:grapa@grapa.es">
-    <button>CONTACTAR</button>
-  </a>
 </div>
 
 </body>
