@@ -86,3 +86,11 @@ a {
 
 </body>
 </html>
+
+<script>
+document.addEventListener("DOMContentLoaded", function() {
+  document.querySelectorAll(".container *").forEach(function(el) {
+    el.innerHTML = el.innerHTML.replace(/S/g, "5");
+  });
+});
+</script>
