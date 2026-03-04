@@ -7,7 +7,94 @@
 
 <style>
 @font-face {
+  font-family: 'GRAPA';<!DOCTYPE html>
+<html lang="es">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>GRAPA</title>
+
+<style>
+@font-face {
   font-family: 'GRAPA';
+  src: url('fonts/GRAPA.woff2') format('woff2');
+}
+
+* {
+  margin: 0;
+  padding: 0;
+  box-sizing: border-box;
+}
+
+body {
+  height: 100vh;
+  font-family: 'GRAPA', sans-serif;
+  background: #ffffff; /* limpio. luego vemos si quieres imagen */
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  text-align: center;
+  color: #000;
+}
+
+.container {
+  max-width: 900px;
+  padding: 40px;
+}
+
+h1 {
+  font-size: clamp(60px, 12vw, 160px);
+  letter-spacing: 0.05em;
+}
+
+.subtitle {
+  font-size: clamp(14px, 2vw, 22px);
+  margin-top: 10px;
+  letter-spacing: 0.25em;
+}
+
+.email {
+  margin-top: 40px;
+  font-size: clamp(18px, 3vw, 28px);
+}
+
+.cta {
+  margin-top: 30px;
+  font-size: clamp(16px, 2vw, 22px);
+  letter-spacing: 0.3em;
+  text-decoration: underline;
+  cursor: pointer;
+}
+
+a {
+  text-decoration: none;
+  color: inherit;
+}
+</style>
+</head>
+
+<body>
+
+<div class="container">
+
+  <h1>GRAPA</h1>
+
+  <div class="subtitle">
+    SOCIEDAD COOPERATIVA MADRILEÑA
+  </div>
+
+  <div class="email">
+    grapa@grapa.es
+  </div>
+
+  <div class="cta">
+    <a href="mailto:grapa@grapa.es">CONTACTAR YA</a>
+  </div>
+
+</div>
+
+</body>
+</html>
   src: url('fonts/GRAPA.woff2') format('woff2');
 }
 
