@@ -20,6 +20,14 @@
   box-sizing: border-box;
 }
 
+  <script>
+document.addEventListener("DOMContentLoaded", function() {
+  document.querySelectorAll(".container *").forEach(function(el) {
+    el.innerHTML = el.innerHTML.replace(/S/g, "5");
+  });
+});
+</script>
+
 body {
   height: 100vh;
   font-family: 'GRAPA', sans-serif;
@@ -86,11 +94,3 @@ a {
 
 </body>
 </html>
-
-<script>
-document.addEventListener("DOMContentLoaded", function() {
-  document.querySelectorAll(".container *").forEach(function(el) {
-    el.innerHTML = el.innerHTML.replace(/S/g, "5");
-  });
-});
-</script>
