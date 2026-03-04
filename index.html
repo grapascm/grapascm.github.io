@@ -40,35 +40,32 @@ h1 {
   font-size: clamp(80px, 15vw, 200px);
   letter-spacing: 0.04em;
   color: #E4E8ED;
+  line-height: 1; /* Asegura que el espacio sea controlado */
 }
 
 .subtitle {
-  margin-top: 10px;
+  margin-top: 40px; /* Espacio aumentado entre GRAPA y Sociedad */
   font-size: clamp(14px, 2vw, 20px);
   letter-spacing: 0.35em;
+  opacity: 0.8;
 }
 
-.email {
-  margin-top: 60px;
-  font-size: clamp(18px, 3vw, 26px);
-  letter-spacing: 0.12em;
-}
-
-.cta {
-  margin-top: 25px;
-  font-size: clamp(16px, 2vw, 20px);
-  letter-spacing: 0.4em;
-  cursor: pointer;
-  transition: opacity 0.3s ease;
-}
-
-.cta:hover {
-  opacity: 0.6;
-}
-
-a {
+.email-button {
+  display: inline-block;
+  margin-top: 80px;
+  font-size: clamp(14px, 1.5vw, 18px); /* Tamaño más pequeño y elegante */
+  letter-spacing: 0.2em;
   text-decoration: none;
-  color: inherit;
+  color: #E4E8ED;
+  border: 1px solid rgba(228, 232, 237, 0.3);
+  padding: 15px 30px;
+  transition: all 0.3s ease;
+}
+
+.email-button:hover {
+  background-color: #E4E8ED;
+  color: #0A1A2A;
+  opacity: 1;
 }
 </style>
 </head>
@@ -78,10 +75,10 @@ a {
 <div class="container">
   <h1>GRAPA</h1>
   <div class="subtitle">5ociedad Cooperativa Madrileña</div>
-  <div class="email">grapa@grapa.e5</div>
-  <div class="cta">
-    <a href="mailto:grapa@grapa.es">Contactar Ya</a>
-  </div>
+  
+  <a href="mailto:grapa@grapa.es" class="email-button">
+    grapa@grapa.es
+  </a>
 </div>
 
 </body>
