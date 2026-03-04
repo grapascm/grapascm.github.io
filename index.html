@@ -21,7 +21,7 @@
 }
 
 body {
-  min-height: 100vh; /* Cambiamos height por min-height para móvil */
+  height: 100vh;
   font-family: 'GRAPA', sans-serif;
   background-color: #0A1A2A;
   display: flex;
@@ -29,59 +29,17 @@ body {
   justify-content: center;
   text-align: center;
   color: #BFC6CF;
-  padding: 20px; /* Añadimos padding para que no quede pegado */
 }
 
 .container {
   padding: 40px;
   text-transform: uppercase;
-  width: 100%; /* Aseguramos que ocupe el ancho */
-  max-width: 1200px; /* Pero sin pasarse */
-  margin: 0 auto;
 }
 
 h1 {
   font-size: clamp(80px, 15vw, 200px);
   letter-spacing: 0.04em;
   color: #E4E8ED;
-  line-height: 1; /* Evita cortes */
-}
-
-/* SOLO ESTO AÑADIMOS - un límite en móvil */
-@media (max-width: 600px) {
-  h1 {
-    font-size: min(20vw, 120px); /* Más pequeño en móvil */
-  }
-  
-  .container {
-    padding: 20px; /* Menos padding en móvil */
-  }
-  
-  .subtitle {
-    letter-spacing: 0.2em; /* Menos espaciado en móvil */
-  }
-  
-  .email {
-    letter-spacing: 0.08em; /* Menos espaciado en móvil */
-    font-size: clamp(16px, 5vw, 26px);
-  }
-  
-  .cta {
-    letter-spacing: 0.2em; /* Menos espaciado en móvil */
-  }
-}
-
-/* Ajuste para móviles muy pequeños */
-@media (max-width: 400px) {
-  h1 {
-    font-size: 18vw;
-  }
-  
-  .email {
-    font-size: 5vw;
-    white-space: normal; /* Solo si es extremo, permite salto */
-    word-break: break-all;
-  }
 }
 
 .subtitle {
@@ -112,56 +70,6 @@ a {
   text-decoration: none;
   color: inherit;
 }
-
-/* ESTILOS PARA LA @ DE GRAPAS - Versión que respeta el diseño */
-.grapa-at {
-  display: inline-block;
-  position: relative;
-  font-family: 'GRAPA', sans-serif;
-  color: #BFC6CF;
-}
-
-/* Las grapas como pequeños puntos cuadrados */
-.grapa-at::before,
-.grapa-at::after {
-  content: '';
-  position: absolute;
-  width: 0.15em;
-  height: 0.15em;
-  background-color: #BFC6CF;
-  left: 50%;
-  transform: translateX(-50%);
-  pointer-events: none;
-}
-
-/* Grapas arriba */
-.grapa-at::before {
-  top: -0.15em;
-  box-shadow: 0.25em 0 0 0 #BFC6CF, -0.25em 0 0 0 #BFC6CF;
-}
-
-/* Grapas abajo */
-.grapa-at::after {
-  bottom: -0.15em;
-  box-shadow: 0.25em 0 0 0 #BFC6CF, -0.25em 0 0 0 #BFC6CF;
-}
-
-/* Ajuste de grapas para móvil */
-@media (max-width: 600px) {
-  .grapa-at::before,
-  .grapa-at::after {
-    width: 0.2em;
-    height: 0.2em;
-  }
-  
-  .grapa-at::before {
-    box-shadow: 0.2em 0 0 0 #BFC6CF, -0.2em 0 0 0 #BFC6CF;
-  }
-  
-  .grapa-at::after {
-    box-shadow: 0.2em 0 0 0 #BFC6CF, -0.2em 0 0 0 #BFC6CF;
-  }
-}
 </style>
 </head>
 
@@ -170,7 +78,7 @@ a {
 <div class="container">
   <h1>GRAPA</h1>
   <div class="subtitle">5ociedad Cooperativa Madrileña</div>
-  <div class="email"><span class="grapa-at">@</span>grapa.es</div>
+  <div class="email">grapa@grapa.e5</div>
   <div class="cta">
     <a href="mailto:grapa@grapa.es">Contactar Ya</a>
   </div>
