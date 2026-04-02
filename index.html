@@ -6,31 +6,33 @@
 <title>GRAPA</title>
 
 <style>
+/* Fuente personalizada */
 @font-face {
   font-family: 'GRAPA';
-  src: url('/fonts/GRAPA.woff2') format('woff2');
+  src: url('./fonts/GRAPA.woff2') format('woff2');
   font-display: swap;
 }
 
+/* Reset y base */
 * {
   margin: 0;
   padding: 0;
   box-sizing: border-box;
 }
 
-/* BASE */
 body {
   font-family: 'GRAPA', sans-serif;
   background-color: #0A1A2A;
   color: #BFC6CF;
-  height: 200vh; /* necesario para scroll */
+  height: 200vh; /* para scroll */
   overflow-x: hidden;
 }
 
-/* HERO (pantalla inicial EXACTA) */
+/* HERO (pantalla inicial) */
 .hero {
   position: relative;
   height: 100vh;
+  height: 100svh; /* fix iPhone */
   display: flex;
   align-items: center;
   justify-content: center;
@@ -83,30 +85,16 @@ h1 {
   left: 0;
   width: 100%;
   height: 100vh;
-
-  background-image: url('images/BACKGROUND%20GRAPA%20AB%20V2.jpg');
+  height: 100svh;
+  background-image: url('images/GRAPAS.jpg'); /* 🔹Ruta correcta */
   background-size: cover;
   background-position: center;
   background-repeat: no-repeat;
-
   z-index: 1;
   will-change: transform;
 }
 
-/* FOOTER */
-footer {
-  position: absolute;
-  bottom: 0;
-  width: 100%;
-  padding: 30px;
-  font-size: clamp(10px, 1.1vw, 12px);
-  letter-spacing: 0.25em;
-  text-transform: uppercase;
-  opacity: 0.5;
-  color: #BFC6CF;
-}
-
-/* 📱 RESPONSIVE FINO */
+/* RESPONSIVE */
 @media (max-width: 768px) {
   .subtitle {
     margin-top: 60px;
@@ -152,10 +140,16 @@ const image = document.querySelector('.image-reveal');
 let target = 0;
 let current = 0;
 
-window.addEventListener('scroll', () => {
-  target = window.scrollY / window.innerHeight;
-  target = Math.min(target, 1);
-});
+function updateScroll() {
+  const scrollY = window.scrollY;
+  const vh = window.innerHeight;
+
+  target = scrollY / vh;
+  target = Math.max(0, Math.min(target, 1));
+}
+
+window.addEventListener('scroll', updateScroll);
+window.addEventListener('touchmove', updateScroll);
 
 function animate() {
   current += (target - current) * 0.08;
