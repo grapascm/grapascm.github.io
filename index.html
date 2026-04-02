@@ -6,12 +6,9 @@
 <title>GRAPA</title>
 
 <style>
-/* Asumiendo que la fuente GRAPA.woff2 existe, si no, se usará sans-serif */
 @font-face {
   font-family: 'GRAPA';
   src: url('/fonts/GRAPA.woff2') format('woff2');
-  font-weight: normal;
-  font-style: normal;
   font-display: swap;
 }
 
@@ -21,15 +18,24 @@
   box-sizing: border-box;
 }
 
+/* BASE */
 body {
-  height: 100vh;
   font-family: 'GRAPA', sans-serif;
   background-color: #0A1A2A;
+  color: #BFC6CF;
+  height: 200vh; /* necesario para scroll */
+  overflow-x: hidden;
+}
+
+/* HERO (pantalla inicial EXACTA) */
+.hero {
+  position: relative;
+  height: 100vh;
   display: flex;
   align-items: center;
   justify-content: center;
   text-align: center;
-  color: #BFC6CF;
+  z-index: 2;
 }
 
 .container {
@@ -41,12 +47,11 @@ h1 {
   font-size: clamp(80px, 15vw, 200px);
   letter-spacing: 0.04em;
   color: #E4E8ED;
-  line-height: 0.9; /* Ayuda a controlar el espacio vertical de la fuente */
+  line-height: 0.9;
 }
 
 .subtitle {
-  /* DOBLE DE ESPACIO DESDE GRAPA HASTA AQUÍ (anterior 80px) */
-  margin-top: 80px; 
+  margin-top: 80px;
   font-size: clamp(14px, 2vw, 20px);
   letter-spacing: 0.35em;
   opacity: 0.8;
@@ -54,17 +59,15 @@ h1 {
 
 .email-button {
   display: inline-block;
-  /* ESPACIO PARA EL EMAIL (ajustado para equilibrio visual) */
-  margin-top: 160px; 
-  /* EMAIL MÁS PEQUEÑO */
-  font-size: clamp(10px, 1.2vw, 14px); 
-  letter-spacing: 0.3em; /* Un poco más de tracking para legibilidad */
+  margin-top: 160px;
+  font-size: clamp(10px, 1.2vw, 14px);
+  letter-spacing: 0.3em;
   text-decoration: none;
   color: #E4E8ED;
   border: 1px solid rgba(228, 232, 237, 0.2);
-  padding: 10px 20px; /* Padding ligeramente reducido */
+  padding: 10px 20px;
   transition: all 0.3s ease;
-  opacity: 0.7; /* Ligeramente más sutil por defecto */
+  opacity: 0.7;
 }
 
 .email-button:hover {
@@ -72,31 +75,96 @@ h1 {
   color: #0A1A2A;
   opacity: 1;
 }
-/* ESTILOS PARA LA LÍNEA DE ABAJO DEL TODO */
+
+/* IMAGEN REVEAL */
+.image-reveal {
+  position: fixed;
+  top: 100%;
+  left: 0;
+  width: 100%;
+  height: 100vh;
+
+  background-image: url('/images/tu-imagen.jpg'); /* 👈 CAMBIA ESTO */
+  background-size: cover;
+  background-position: center;
+  background-repeat: no-repeat;
+
+  z-index: 1;
+  will-change: transform;
+}
+
+/* FOOTER */
 footer {
   position: absolute;
   bottom: 0;
   width: 100%;
-  padding: 30px; /* Espacio desde el borde inferior */
-  font-size: clamp(10px, 1.1vw, 12px); /* Muy pequeño y sutil */
+  padding: 30px;
+  font-size: clamp(10px, 1.1vw, 12px);
   letter-spacing: 0.25em;
   text-transform: uppercase;
-  opacity: 0.5; /* Más tenue que el resto */
+  opacity: 0.5;
   color: #BFC6CF;
+}
+
+/* 📱 RESPONSIVE FINO */
+@media (max-width: 768px) {
+  .subtitle {
+    margin-top: 60px;
+  }
+
+  .email-button {
+    margin-top: 120px;
+  }
+}
+
+@media (max-width: 480px) {
+  .subtitle {
+    margin-top: 40px;
+    letter-spacing: 0.25em;
+  }
+
+  .email-button {
+    margin-top: 100px;
+    padding: 8px 16px;
+  }
 }
 </style>
 </head>
 
 <body>
 
-<div class="container">
-  <h1>GRAPA</h1>
-  <div class="subtitle">5ociedad Cooperativa Madrileña</div>
-  
-  <a href="mailto:grapa@grapa.es" class="email-button">
-    grapa@grapa.e5
-  </a>
+<div class="hero">
+  <div class="container">
+    <h1>GRAPA</h1>
+    <div class="subtitle">5ociedad Cooperativa Madrileña</div>
+    
+    <a href="mailto:grapa@grapa.es" class="email-button">
+      grapa@grapa.e5
+    </a>
+  </div>
 </div>
+
+<div class="image-reveal"></div>
+
+<script>
+const image = document.querySelector('.image-reveal');
+
+let target = 0;
+let current = 0;
+
+window.addEventListener('scroll', () => {
+  target = window.scrollY / window.innerHeight;
+  target = Math.min(target, 1);
+});
+
+function animate() {
+  current += (target - current) * 0.08;
+  image.style.transform = `translateY(-${current * 100}vh)`;
+  requestAnimationFrame(animate);
+}
+
+animate();
+</script>
 
 </body>
 </html>
