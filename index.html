@@ -28,17 +28,19 @@ body {
   position: relative;
 }
 
-/* Pantalla inicial */
+/* HERO (pantalla inicial) con más aire arriba */
 .hero {
   position: relative;
   height: 100svh;
   display: flex;
   flex-direction: column;
+  justify-content: flex-start; /* permite aire arriba */
   align-items: center;
-  justify-content: center;
   z-index: 2;
   text-align: center;
-  padding: 0 20px;
+  padding-top: 15vh; /* más espacio arriba adaptativo */
+  padding-left: 5vw;
+  padding-right: 5vw;
 }
 
 h1 {
@@ -49,7 +51,7 @@ h1 {
 }
 
 .subtitle {
-  margin-top: 80px;
+  margin-top: 5vh;
   font-size: clamp(14px, 2vw, 20px);
   letter-spacing: 0.35em;
   opacity: 0.8;
@@ -57,13 +59,13 @@ h1 {
 
 .email-button {
   display: inline-block;
-  margin-top: 160px;
+  margin-top: 8vh;
   font-size: clamp(10px, 1.2vw, 14px);
   letter-spacing: 0.3em;
   text-decoration: none;
   color: #E4E8ED;
   border: 1px solid rgba(228, 232, 237, 0.2);
-  padding: 10px 20px;
+  padding: 1vh 2vw;
   transition: all 0.3s ease;
   opacity: 0.7;
 }
@@ -74,9 +76,12 @@ h1 {
   opacity: 1;
 }
 
-/* Línea de copyright */
+/* Footer siempre al pie */
 footer {
-  margin-top: 160px; 
+  position: fixed;
+  bottom: 60px; /* espacio reducido desde el borde inferior */
+  width: 100%;
+  text-align: center;
   font-size: clamp(10px, 1.1vw, 12px);
   letter-spacing: 0.25em;
   text-transform: uppercase;
@@ -84,34 +89,39 @@ footer {
   color: #BFC6CF;
 }
 
-/* Imagen de fondo cover */
+/* Imagen de fondo */
 .background-image {
   position: fixed;
   top: 0;
   left: 0;
   width: 100%;
   height: 100svh;
-  background-image: url('images/grapas.jpg');
-  background-size: cover;        /* ⚡ ocupa toda la pantalla */
-  background-repeat: no-repeat;
-  background-position: center center;
   z-index: 1;
+  overflow: hidden;
   transform: translateY(100%);
   transition: transform 0.8s ease-out;
 }
 
+.background-image img {
+  width: 100%;
+  height: 100%;
+  object-fit: cover; /* ocupa toda la pantalla */
+  object-position: center;
+}
+
 /* RESPONSIVE */
 @media (max-width: 768px) {
-  .subtitle { margin-top: 60px; }
-  .email-button { margin-top: 120px; }
-  footer { margin-top: 240px; }
+  h1 { font-size: clamp(50px, 12vw, 150px); }
+  .subtitle { margin-top: 4vh; }
+  .email-button { margin-top: 6vh; padding: 1vh 3vw; }
+  footer { bottom: 50px; }
 }
 
 @media (max-width: 480px) {
   h1 { font-size: clamp(40px, 10vw, 100px); }
-  .subtitle { margin-top: 40px; letter-spacing: 0.25em; }
-  .email-button { margin-top: 100px; padding: 8px 16px; }
-  footer { margin-top: 200px; }
+  .subtitle { margin-top: 3vh; letter-spacing: 0.2em; }
+  .email-button { margin-top: 5vh; padding: 1vh 4vw; }
+  footer { bottom: 40px; }
 }
 </style>
 </head>
@@ -121,10 +131,13 @@ footer {
   <h1>GRAPA</h1>
   <div class="subtitle">5ociedad Cooperativa Madrileña</div>
   <a href="mailto:grapa@grapa.es" class="email-button">grapa@grapa.es</a>
-  <footer>&copy; 2025 GRAPA</footer>
 </div>
 
-<div class="background-image"></div>
+<footer>&copy; 2025 GRAPA</footer>
+
+<div class="background-image">
+  <img src="images/grapas.jpg" alt="GRAPA">
+</div>
 
 <script>
 const bg = document.querySelector('.background-image');
