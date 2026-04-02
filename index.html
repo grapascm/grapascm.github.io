@@ -24,11 +24,11 @@ body {
   background-color: #0A1A2A;
   color: #BFC6CF;
   overflow-x: hidden;
-  min-height: 200vh;
+  min-height: 200vh; /* suficiente espacio para scroll */
   position: relative;
 }
 
-/* HERO (pantalla inicial) */
+/* HERO */
 .hero {
   position: relative;
   height: 100svh;
@@ -38,7 +38,7 @@ body {
   align-items: center;
   z-index: 2;
   text-align: center;
-  padding-top: 20vh; /* más espacio arriba */
+  padding-top: 20vh; /* más aire arriba */
   padding-left: 5vw;
   padding-right: 5vw;
 }
@@ -51,7 +51,7 @@ h1 {
 }
 
 .subtitle {
-  margin-top: 8vh; /* más espacio entre GRAPA y subtítulo */
+  margin-top: 8vh; /* espacio proporcional */
   font-size: clamp(14px, 2vw, 20px);
   letter-spacing: 0.35em;
   opacity: 0.8;
@@ -59,7 +59,7 @@ h1 {
 
 .email-button {
   display: inline-block;
-  margin-top: 18vh; /* más del doble que subtítulo-email */
+  margin-top: 18vh; /* doble del espacio previo */
   font-size: clamp(10px, 1.2vw, 14px);
   letter-spacing: 0.3em;
   text-decoration: none;
@@ -79,7 +79,7 @@ h1 {
 /* Footer fijo al pie */
 footer {
   position: fixed;
-  bottom: 60px; /* espacio reducido desde el borde */
+  bottom: 60px;
   width: 100%;
   text-align: center;
   font-size: clamp(10px, 1.1vw, 12px);
@@ -89,24 +89,20 @@ footer {
   color: #BFC6CF;
 }
 
-/* Imagen de fondo completa */
+/* Imagen scroll vertical */
 .background-image {
-  position: fixed;
-  top: 0;
+  position: absolute;
+  top: 100svh; /* empieza justo debajo de la pantalla inicial */
   left: 0;
   width: 100%;
-  height: 100svh;
   z-index: 1;
-  overflow: hidden;
-  transform: translateY(100%);
-  transition: transform 0.8s ease-out;
 }
 
 .background-image img {
   width: 100%;
-  height: 100%;
-  object-fit: contain; /* ⚡ toda la imagen visible sin recorte */
-  object-position: center;
+  height: auto; /* mantiene proporción vertical */
+  display: block;
+  max-width: 100%;
 }
 
 /* RESPONSIVE */
@@ -141,15 +137,16 @@ footer {
 
 <script>
 const bg = document.querySelector('.background-image');
+const heroHeight = document.querySelector('.hero').offsetHeight;
 
 window.addEventListener('scroll', () => {
   const scrollY = window.scrollY;
-  const vh = window.innerHeight;
 
-  if (scrollY > vh * 0.1) {
-    bg.style.transform = 'translateY(0)'; // imagen entra
+  // desplazamiento vertical de la imagen proporcional al scroll
+  if (scrollY > heroHeight) {
+    bg.style.top = `${scrollY}px`;
   } else {
-    bg.style.transform = 'translateY(100%)'; // imagen sale
+    bg.style.top = `${heroHeight}px`;
   }
 });
 </script>
