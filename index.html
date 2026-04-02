@@ -27,6 +27,153 @@ body {
   height: 200vh; /* espacio para scroll */
   overflow-x: hidden;
   text-align: center;
+  text-transform: uppercase; /* mantiene todo en mayúsculas */
+}
+
+/* HERO (pantalla inicial) */
+.hero {
+  position: relative;
+  height: 100vh;
+  height: 100svh; /* fix iPhone */
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  justify-content: center;
+  z-index: 2;
+  padding: 0 20px; /* margen en móviles estrechos */
+}
+
+h1 {
+  font-size: clamp(80px, 15vw, 200px);
+  letter-spacing: 0.04em;
+  color: #E4E8ED;
+  line-height: 0.9;
+}
+
+.subtitle {
+  margin-top: 80px; /* mantiene tu separación original */
+  font-size: clamp(14px, 2vw, 20px);
+  letter-spacing: 0.35em;
+  opacity: 0.8;
+}
+
+.email-button {
+  display: inline-block;
+  margin-top: 160px; /* mantiene tu separación original */
+  font-size: clamp(10px, 1.2vw, 14px);
+  letter-spacing: 0.3em;
+  text-decoration: none;
+  color: #E4E8ED;
+  border: 1px solid rgba(228, 232, 237, 0.2);
+  padding: 10px 20px;
+  transition: all 0.3s ease;
+  opacity: 0.7;
+}
+
+.email-button:hover {
+  background-color: #E4E8ED;
+  color: #0A1A2A;
+  opacity: 1;
+}
+
+/* IMAGEN REVEAL usando <img> para escalar correctamente */
+.image-reveal {
+  position: fixed;
+  top: 100%;
+  left: 0;
+  width: 100%;
+  height: 100svh;
+  z-index: 1;
+  overflow: hidden;
+}
+
+.image-reveal img {
+  width: 100%;
+  height: 100%;
+  object-fit: cover;   /* ⚡ escala perfecta y ocupa toda la pantalla */
+  object-position: center;
+}
+
+/* RESPONSIVE */
+@media (max-width: 768px) {
+  .subtitle { margin-top: 60px; }
+  .email-button { margin-top: 120px; }
+}
+
+@media (max-width: 480px) {
+  h1 { font-size: clamp(40px, 10vw, 100px); }
+  .subtitle { margin-top: 40px; letter-spacing: 0.25em; }
+  .email-button { margin-top: 100px; padding: 8px 16px; }
+}
+</style>
+</head>
+
+<body>
+
+<div class="hero">
+  <h1>GRAPA</h1>
+  <div class="subtitle">5ociedad Cooperativa Madrileña</div>
+  <a href="mailto:grapa@grapa.es" class="email-button">grapa@grapa.es</a>
+</div>
+
+<div class="image-reveal">
+  <img src="images/grapas.jpg" alt="GRAPA">
+</div>
+
+<script>
+const image = document.querySelector('.image-reveal');
+let target = 0;
+let current = 0;
+
+function updateScroll() {
+  const scrollY = window.scrollY;
+  const vh = window.innerHeight;
+  target = scrollY / vh;
+  target = Math.max(0, Math.min(target, 1));
+}
+
+window.addEventListener('scroll', updateScroll);
+window.addEventListener('touchmove', updateScroll);
+
+function animate() {
+  current += (target - current) * 0.08;
+  image.style.transform = `translateY(-${current * 100}vh)`;
+  requestAnimationFrame(animate);
+}
+
+animate();
+</script>
+
+</body>
+</html><!DOCTYPE html>
+<html lang="es">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>GRAPA</title>
+
+<style>
+/* Fuente personalizada */
+@font-face {
+  font-family: 'GRAPA';
+  src: url('./fonts/GRAPA.woff2') format('woff2');
+  font-display: swap;
+}
+
+/* Reset y base */
+* {
+  margin: 0;
+  padding: 0;
+  box-sizing: border-box;
+}
+
+body {
+  font-family: 'GRAPA', sans-serif;
+  background-color: #0A1A2A;
+  color: #BFC6CF;
+  height: 200vh; /* espacio para scroll */
+  overflow-x: hidden;
+  text-align: center;
 }
 
 /* HERO (pantalla inicial) */
