@@ -24,8 +24,9 @@ body {
   font-family: 'GRAPA', sans-serif;
   background-color: #0A1A2A;
   color: #BFC6CF;
-  height: 200vh; /* para scroll */
+  height: 200vh; /* necesario para scroll */
   overflow-x: hidden;
+  text-align: center;
 }
 
 /* HERO (pantalla inicial) */
@@ -36,13 +37,9 @@ body {
   display: flex;
   align-items: center;
   justify-content: center;
-  text-align: center;
+  flex-direction: column;
   z-index: 2;
-}
-
-.container {
-  padding: 40px;
-  text-transform: uppercase;
+  padding: 0 20px; /* evita que se salga en pantallas estrechas */
 }
 
 h1 {
@@ -53,7 +50,7 @@ h1 {
 }
 
 .subtitle {
-  margin-top: 80px;
+  margin-top: 40px;
   font-size: clamp(14px, 2vw, 20px);
   letter-spacing: 0.35em;
   opacity: 0.8;
@@ -61,7 +58,7 @@ h1 {
 
 .email-button {
   display: inline-block;
-  margin-top: 160px;
+  margin-top: 80px;
   font-size: clamp(10px, 1.2vw, 14px);
   letter-spacing: 0.3em;
   text-decoration: none;
@@ -86,7 +83,7 @@ h1 {
   width: 100%;
   height: 100vh;
   height: 100svh;
-  background-image: url('images/grapas.jpg'); /* 🔹Ruta correcta */
+  background-image: url('images/grapas.jpg'); /* tu imagen definitiva */
   background-size: cover;
   background-position: center;
   background-repeat: no-repeat;
@@ -96,25 +93,15 @@ h1 {
 
 /* RESPONSIVE */
 @media (max-width: 768px) {
-  .subtitle {
-    margin-top: 60px;
-  }
-
-  .email-button {
-    margin-top: 120px;
-  }
+  h1 { font-size: clamp(60px, 12vw, 150px); }
+  .subtitle { margin-top: 30px; }
+  .email-button { margin-top: 60px; }
 }
 
 @media (max-width: 480px) {
-  .subtitle {
-    margin-top: 40px;
-    letter-spacing: 0.25em;
-  }
-
-  .email-button {
-    margin-top: 100px;
-    padding: 8px 16px;
-  }
+  h1 { font-size: clamp(40px, 10vw, 100px); }
+  .subtitle { margin-top: 20px; letter-spacing: 0.2em; }
+  .email-button { margin-top: 40px; padding: 8px 16px; }
 }
 </style>
 </head>
@@ -122,28 +109,21 @@ h1 {
 <body>
 
 <div class="hero">
-  <div class="container">
-    <h1>GRAPA</h1>
-    <div class="subtitle">5ociedad Cooperativa Madrileña</div>
-    
-    <a href="mailto:grapa@grapa.es" class="email-button">
-      grapa@grapa.e5
-    </a>
-  </div>
+  <h1>GRAPA</h1>
+  <div class="subtitle">Sociedad Cooperativa Madrileña</div>
+  <a href="mailto:grapa@grapa.es" class="email-button">grapa@grapa.es</a>
 </div>
 
 <div class="image-reveal"></div>
 
 <script>
 const image = document.querySelector('.image-reveal');
-
 let target = 0;
 let current = 0;
 
 function updateScroll() {
   const scrollY = window.scrollY;
   const vh = window.innerHeight;
-
   target = scrollY / vh;
   target = Math.max(0, Math.min(target, 1));
 }
