@@ -24,7 +24,7 @@ body {
   background-color: #0A1A2A;
   color: #BFC6CF;
   overflow-x: hidden;
-  min-height: 200vh; /* suficiente espacio para scroll */
+  min-height: 300vh; /* suficiente scroll para revelar toda la imagen */
   position: relative;
 }
 
@@ -38,7 +38,7 @@ body {
   align-items: center;
   z-index: 2;
   text-align: center;
-  padding-top: 20vh; /* más aire arriba */
+  padding-top: 20vh; /* más aire por arriba */
   padding-left: 5vw;
   padding-right: 5vw;
 }
@@ -51,7 +51,7 @@ h1 {
 }
 
 .subtitle {
-  margin-top: 8vh; /* espacio proporcional */
+  margin-top: 8vh; /* espacio entre GRAPA y subtítulo */
   font-size: clamp(14px, 2vw, 20px);
   letter-spacing: 0.35em;
   opacity: 0.8;
@@ -87,22 +87,25 @@ footer {
   text-transform: uppercase;
   opacity: 0.5;
   color: #BFC6CF;
+  z-index: 2;
 }
 
-/* Imagen scroll vertical */
+/* Imagen parallax */
 .background-image {
-  position: absolute;
-  top: 100svh; /* empieza justo debajo de la pantalla inicial */
+  position: fixed;
+  top: 0;
   left: 0;
   width: 100%;
   z-index: 1;
+  overflow: hidden;
 }
 
 .background-image img {
   width: 100%;
-  height: auto; /* mantiene proporción vertical */
+  height: auto;
   display: block;
   max-width: 100%;
+  transform: translateY(0); /* será controlado por JS */
 }
 
 /* RESPONSIVE */
@@ -136,18 +139,13 @@ footer {
 </div>
 
 <script>
-const bg = document.querySelector('.background-image');
-const heroHeight = document.querySelector('.hero').offsetHeight;
+const bgImg = document.querySelector('.background-image img');
+const speed = 0.3; // velocidad del parallax (0.3 = lento)
 
 window.addEventListener('scroll', () => {
   const scrollY = window.scrollY;
-
-  // desplazamiento vertical de la imagen proporcional al scroll
-  if (scrollY > heroHeight) {
-    bg.style.top = `${scrollY}px`;
-  } else {
-    bg.style.top = `${heroHeight}px`;
-  }
+  // la imagen se desplaza más lento que el scroll
+  bgImg.style.transform = `translateY(${scrollY * speed}px)`;
 });
 </script>
 
