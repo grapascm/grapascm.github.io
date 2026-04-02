@@ -28,17 +28,17 @@ body {
   position: relative;
 }
 
-/* HERO (pantalla inicial) con más aire arriba */
+/* HERO (pantalla inicial) */
 .hero {
   position: relative;
   height: 100svh;
   display: flex;
   flex-direction: column;
-  justify-content: flex-start; /* permite aire arriba */
+  justify-content: flex-start;
   align-items: center;
   z-index: 2;
   text-align: center;
-  padding-top: 15vh; /* más espacio arriba adaptativo */
+  padding-top: 20vh; /* más espacio arriba */
   padding-left: 5vw;
   padding-right: 5vw;
 }
@@ -51,7 +51,7 @@ h1 {
 }
 
 .subtitle {
-  margin-top: 5vh;
+  margin-top: 8vh; /* más espacio entre GRAPA y subtítulo */
   font-size: clamp(14px, 2vw, 20px);
   letter-spacing: 0.35em;
   opacity: 0.8;
@@ -59,7 +59,7 @@ h1 {
 
 .email-button {
   display: inline-block;
-  margin-top: 8vh;
+  margin-top: 18vh; /* más del doble que subtítulo-email */
   font-size: clamp(10px, 1.2vw, 14px);
   letter-spacing: 0.3em;
   text-decoration: none;
@@ -76,10 +76,10 @@ h1 {
   opacity: 1;
 }
 
-/* Footer siempre al pie */
+/* Footer fijo al pie */
 footer {
   position: fixed;
-  bottom: 60px; /* espacio reducido desde el borde inferior */
+  bottom: 60px; /* espacio reducido desde el borde */
   width: 100%;
   text-align: center;
   font-size: clamp(10px, 1.1vw, 12px);
@@ -89,7 +89,7 @@ footer {
   color: #BFC6CF;
 }
 
-/* Imagen de fondo */
+/* Imagen de fondo completa */
 .background-image {
   position: fixed;
   top: 0;
@@ -105,22 +105,22 @@ footer {
 .background-image img {
   width: 100%;
   height: 100%;
-  object-fit: cover; /* ocupa toda la pantalla */
+  object-fit: contain; /* ⚡ toda la imagen visible sin recorte */
   object-position: center;
 }
 
 /* RESPONSIVE */
 @media (max-width: 768px) {
   h1 { font-size: clamp(50px, 12vw, 150px); }
-  .subtitle { margin-top: 4vh; }
-  .email-button { margin-top: 6vh; padding: 1vh 3vw; }
+  .subtitle { margin-top: 6vh; }
+  .email-button { margin-top: 14vh; padding: 1vh 3vw; }
   footer { bottom: 50px; }
 }
 
 @media (max-width: 480px) {
   h1 { font-size: clamp(40px, 10vw, 100px); }
-  .subtitle { margin-top: 3vh; letter-spacing: 0.2em; }
-  .email-button { margin-top: 5vh; padding: 1vh 4vw; }
+  .subtitle { margin-top: 4vh; letter-spacing: 0.2em; }
+  .email-button { margin-top: 10vh; padding: 1vh 4vw; }
   footer { bottom: 40px; }
 }
 </style>
