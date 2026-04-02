@@ -6,14 +6,12 @@
 <title>GRAPA</title>
 
 <style>
-/* Fuente personalizada */
 @font-face {
   font-family: 'GRAPA';
   src: url('./fonts/GRAPA.woff2') format('woff2');
   font-display: swap;
 }
 
-/* Reset y base */
 * {
   margin: 0;
   padding: 0;
@@ -22,25 +20,25 @@
 
 body {
   font-family: 'GRAPA', sans-serif;
+  text-transform: uppercase;  /* mantiene mayúsculas */
   background-color: #0A1A2A;
   color: #BFC6CF;
-  height: 200vh; /* espacio para scroll */
   overflow-x: hidden;
-  text-align: center;
-  text-transform: uppercase; /* mantiene todo en mayúsculas */
+  min-height: 200vh; /* espacio para scroll */
+  position: relative;
 }
 
-/* HERO (pantalla inicial) */
+/* Pantalla inicial */
 .hero {
   position: relative;
-  height: 100vh;
-  height: 100svh; /* fix iPhone */
+  height: 100svh;
   display: flex;
   flex-direction: column;
   align-items: center;
   justify-content: center;
   z-index: 2;
-  padding: 0 20px; /* margen en móviles estrechos */
+  text-align: center;
+  padding: 0 20px;
 }
 
 h1 {
@@ -51,7 +49,7 @@ h1 {
 }
 
 .subtitle {
-  margin-top: 80px; /* mantiene tu separación original */
+  margin-top: 80px;
   font-size: clamp(14px, 2vw, 20px);
   letter-spacing: 0.35em;
   opacity: 0.8;
@@ -59,7 +57,7 @@ h1 {
 
 .email-button {
   display: inline-block;
-  margin-top: 160px; /* mantiene tu separación original */
+  margin-top: 160px;
   font-size: clamp(10px, 1.2vw, 14px);
   letter-spacing: 0.3em;
   text-decoration: none;
@@ -76,22 +74,20 @@ h1 {
   opacity: 1;
 }
 
-/* IMAGEN REVEAL usando <img> para escalar correctamente */
-.image-reveal {
+/* Imagen que aparece al hacer scroll */
+.background-image {
   position: fixed;
-  top: 100%;
+  top: 0;
   left: 0;
   width: 100%;
   height: 100svh;
+  background-image: url('images/grapas.jpg'); /* tu imagen */
+  background-size: contain;       /* se ve toda la imagen */
+  background-repeat: no-repeat;
+  background-position: center center;
   z-index: 1;
-  overflow: hidden;
-}
-
-.image-reveal img {
-  width: 100%;
-  height: 100%;
-  object-fit: cover;   /* ⚡ escala perfecta y ocupa toda la pantalla */
-  object-position: center;
+  transform: translateY(100%);    /* empieza fuera de la pantalla */
+  transition: transform 0.8s ease-out;
 }
 
 /* RESPONSIVE */
@@ -107,7 +103,6 @@ h1 {
 }
 </style>
 </head>
-
 <body>
 
 <div class="hero">
@@ -116,180 +111,21 @@ h1 {
   <a href="mailto:grapa@grapa.es" class="email-button">grapa@grapa.es</a>
 </div>
 
-<div class="image-reveal">
-  <img src="images/grapas.jpg" alt="GRAPA">
-</div>
+<div class="background-image"></div>
 
 <script>
-const image = document.querySelector('.image-reveal');
-let target = 0;
-let current = 0;
+const bg = document.querySelector('.background-image');
 
-function updateScroll() {
+window.addEventListener('scroll', () => {
   const scrollY = window.scrollY;
   const vh = window.innerHeight;
-  target = scrollY / vh;
-  target = Math.max(0, Math.min(target, 1));
-}
 
-window.addEventListener('scroll', updateScroll);
-window.addEventListener('touchmove', updateScroll);
-
-function animate() {
-  current += (target - current) * 0.08;
-  image.style.transform = `translateY(-${current * 100}vh)`;
-  requestAnimationFrame(animate);
-}
-
-animate();
-</script>
-
-</body>
-</html><!DOCTYPE html>
-<html lang="es">
-<head>
-<meta charset="UTF-8">
-<meta name="viewport" content="width=device-width, initial-scale=1.0">
-<title>GRAPA</title>
-
-<style>
-/* Fuente personalizada */
-@font-face {
-  font-family: 'GRAPA';
-  src: url('./fonts/GRAPA.woff2') format('woff2');
-  font-display: swap;
-}
-
-/* Reset y base */
-* {
-  margin: 0;
-  padding: 0;
-  box-sizing: border-box;
-}
-
-body {
-  font-family: 'GRAPA', sans-serif;
-  background-color: #0A1A2A;
-  color: #BFC6CF;
-  height: 200vh; /* espacio para scroll */
-  overflow-x: hidden;
-  text-align: center;
-}
-
-/* HERO (pantalla inicial) */
-.hero {
-  position: relative;
-  height: 100vh;
-  height: 100svh; /* fix iPhone */
-  display: flex;
-  flex-direction: column;
-  align-items: center;
-  justify-content: center;
-  z-index: 2;
-  padding: 0 20px; /* margen en móviles estrechos */
-}
-
-h1 {
-  font-size: clamp(80px, 15vw, 200px);
-  letter-spacing: 0.04em;
-  color: #E4E8ED;
-  line-height: 0.9;
-}
-
-.subtitle {
-  margin-top: 40px;
-  font-size: clamp(14px, 2vw, 20px);
-  letter-spacing: 0.35em;
-  opacity: 0.8;
-}
-
-.email-button {
-  display: inline-block;
-  margin-top: 80px;
-  font-size: clamp(10px, 1.2vw, 14px);
-  letter-spacing: 0.3em;
-  text-decoration: none;
-  color: #E4E8ED;
-  border: 1px solid rgba(228, 232, 237, 0.2);
-  padding: 10px 20px;
-  transition: all 0.3s ease;
-  opacity: 0.7;
-}
-
-.email-button:hover {
-  background-color: #E4E8ED;
-  color: #0A1A2A;
-  opacity: 1;
-}
-
-/* IMAGEN REVEAL usando <img> para que se escale siempre */
-.image-reveal {
-  position: fixed;
-  top: 100%;
-  left: 0;
-  width: 100%;
-  height: 100svh;
-  z-index: 1;
-  overflow: hidden;
-}
-
-.image-reveal img {
-  width: 100%;
-  height: 100%;
-  object-fit: cover;  /* ⚡ mantiene proporción y ocupa toda la pantalla */
-  object-position: center;
-}
-
-/* RESPONSIVE */
-@media (max-width: 768px) {
-  h1 { font-size: clamp(60px, 12vw, 150px); }
-  .subtitle { margin-top: 30px; }
-  .email-button { margin-top: 60px; }
-}
-
-@media (max-width: 480px) {
-  h1 { font-size: clamp(40px, 10vw, 100px); }
-  .subtitle { margin-top: 20px; letter-spacing: 0.2em; }
-  .email-button { margin-top: 40px; padding: 8px 16px; }
-}
-</style>
-</head>
-
-<body>
-
-<div class="hero">
-  <h1>GRAPA</h1>
-  <div class="subtitle">Sociedad Cooperativa Madrileña</div>
-  <a href="mailto:grapa@grapa.es" class="email-button">grapa@grapa.es</a>
-</div>
-
-<div class="image-reveal">
-  <img src="images/grapas.jpg" alt="GRAPA">
-</div>
-
-<script>
-const image = document.querySelector('.image-reveal');
-
-let target = 0;
-let current = 0;
-
-function updateScroll() {
-  const scrollY = window.scrollY;
-  const vh = window.innerHeight;
-  target = scrollY / vh;
-  target = Math.max(0, Math.min(target, 1));
-}
-
-window.addEventListener('scroll', updateScroll);
-window.addEventListener('touchmove', updateScroll);
-
-function animate() {
-  current += (target - current) * 0.08;
-  image.style.transform = `translateY(-${current * 100}vh)`;
-  requestAnimationFrame(animate);
-}
-
-animate();
+  if (scrollY > vh * 0.1) {
+    bg.style.transform = 'translateY(0)'; // imagen entra
+  } else {
+    bg.style.transform = 'translateY(100%)'; // imagen sale
+  }
+});
 </script>
 
 </body>
