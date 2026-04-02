@@ -24,7 +24,7 @@ body {
   font-family: 'GRAPA', sans-serif;
   background-color: #0A1A2A;
   color: #BFC6CF;
-  height: 200vh; /* necesario para scroll */
+  height: 200vh; /* espacio para scroll */
   overflow-x: hidden;
   text-align: center;
 }
@@ -35,11 +35,11 @@ body {
   height: 100vh;
   height: 100svh; /* fix iPhone */
   display: flex;
+  flex-direction: column;
   align-items: center;
   justify-content: center;
-  flex-direction: column;
   z-index: 2;
-  padding: 0 20px; /* evita que se salga en pantallas estrechas */
+  padding: 0 20px; /* margen en móviles estrechos */
 }
 
 h1 {
@@ -75,20 +75,22 @@ h1 {
   opacity: 1;
 }
 
-/* IMAGEN REVEAL */
+/* IMAGEN REVEAL usando <img> para que se escale siempre */
 .image-reveal {
   position: fixed;
   top: 100%;
   left: 0;
   width: 100%;
-  height: 100vh;
   height: 100svh;
-  background-image: url('images/grapas.jpg'); /* tu imagen definitiva */
-  background-size: cover;
-  background-position: center;
-  background-repeat: no-repeat;
   z-index: 1;
-  will-change: transform;
+  overflow: hidden;
+}
+
+.image-reveal img {
+  width: 100%;
+  height: 100%;
+  object-fit: cover;  /* ⚡ mantiene proporción y ocupa toda la pantalla */
+  object-position: center;
 }
 
 /* RESPONSIVE */
@@ -114,10 +116,13 @@ h1 {
   <a href="mailto:grapa@grapa.es" class="email-button">grapa@grapa.es</a>
 </div>
 
-<div class="image-reveal"></div>
+<div class="image-reveal">
+  <img src="images/grapas.jpg" alt="GRAPA">
+</div>
 
 <script>
 const image = document.querySelector('.image-reveal');
+
 let target = 0;
 let current = 0;
 
