@@ -20,11 +20,11 @@
 
 body {
   font-family: 'GRAPA', sans-serif;
-  text-transform: uppercase;  /* mantiene mayúsculas */
+  text-transform: uppercase;
   background-color: #0A1A2A;
   color: #BFC6CF;
   overflow-x: hidden;
-  min-height: 200vh; /* espacio para scroll */
+  min-height: 200vh;
   position: relative;
 }
 
@@ -74,19 +74,29 @@ h1 {
   opacity: 1;
 }
 
-/* Imagen que aparece al hacer scroll */
+/* Línea de copyright */
+footer {
+  margin-top: 320px; /* doble espacio después del email */
+  font-size: clamp(10px, 1.1vw, 12px);
+  letter-spacing: 0.25em;
+  text-transform: uppercase;
+  opacity: 0.5;
+  color: #BFC6CF;
+}
+
+/* Imagen de fondo cover */
 .background-image {
   position: fixed;
   top: 0;
   left: 0;
   width: 100%;
   height: 100svh;
-  background-image: url('images/grapas.jpg'); /* tu imagen */
-  background-size: contain;       /* se ve toda la imagen */
+  background-image: url('images/grapas.jpg');
+  background-size: cover;        /* ⚡ ocupa toda la pantalla */
   background-repeat: no-repeat;
   background-position: center center;
   z-index: 1;
-  transform: translateY(100%);    /* empieza fuera de la pantalla */
+  transform: translateY(100%);
   transition: transform 0.8s ease-out;
 }
 
@@ -94,12 +104,14 @@ h1 {
 @media (max-width: 768px) {
   .subtitle { margin-top: 60px; }
   .email-button { margin-top: 120px; }
+  footer { margin-top: 240px; }
 }
 
 @media (max-width: 480px) {
   h1 { font-size: clamp(40px, 10vw, 100px); }
   .subtitle { margin-top: 40px; letter-spacing: 0.25em; }
   .email-button { margin-top: 100px; padding: 8px 16px; }
+  footer { margin-top: 200px; }
 }
 </style>
 </head>
@@ -109,6 +121,7 @@ h1 {
   <h1>GRAPA</h1>
   <div class="subtitle">5ociedad Cooperativa Madrileña</div>
   <a href="mailto:grapa@grapa.es" class="email-button">grapa@grapa.es</a>
+  <footer>&copy; 2025 GRAPA</footer>
 </div>
 
 <div class="background-image"></div>
