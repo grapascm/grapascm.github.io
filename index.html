@@ -12,11 +12,7 @@
   font-display: swap;
 }
 
-* {
-  margin: 0;
-  padding: 0;
-  box-sizing: border-box;
-}
+* { margin: 0; padding: 0; box-sizing: border-box; }
 
 body {
   font-family: 'GRAPA', sans-serif;
@@ -25,6 +21,7 @@ body {
   color: #BFC6CF;
   overflow-x: hidden;
   position: relative;
+  min-height: 300vh; /* suficiente para scroll */
 }
 
 /* HERO */
@@ -36,13 +33,13 @@ body {
   justify-content: flex-start;
   align-items: center;
   text-align: center;
-  padding-top: 20vh; /* aire por arriba */
+  padding-top: 20vh;
   padding-left: 5vw;
   padding-right: 5vw;
   z-index: 2;
 }
 
-h1 {
+h1.hero-text {
   font-size: clamp(80px, 15vw, 200px);
   letter-spacing: 0.04em;
   color: #E4E8ED;
@@ -50,7 +47,7 @@ h1 {
 }
 
 .subtitle {
-  margin-top: 8vh; /* espacio proporcional GRAPA → subtítulo */
+  margin-top: 8vh;
   font-size: clamp(14px, 2vw, 20px);
   letter-spacing: 0.35em;
   opacity: 0.8;
@@ -58,7 +55,7 @@ h1 {
 
 .email-button {
   display: inline-block;
-  margin-top: 18vh; /* más del doble entre subtítulo y email */
+  margin-top: 18vh;
   font-size: clamp(10px, 1.2vw, 14px);
   letter-spacing: 0.3em;
   text-decoration: none;
@@ -75,7 +72,7 @@ h1 {
   opacity: 1;
 }
 
-/* Footer fijo al pie */
+/* Footer */
 footer {
   position: fixed;
   bottom: 60px;
@@ -91,31 +88,46 @@ footer {
 
 /* Imagen scrollable */
 .background-image-container {
+  position: relative;
   width: 100%;
   display: block;
-  text-align: center;
-  overflow: hidden;
 }
 
 .background-image-container img {
   width: 100%;
-  height: auto; /* mantiene proporción */
+  height: auto;
   display: block;
   max-width: 100%;
 }
 
-/* RESPONSIVE */
+/* Texto sobre la imagen */
+.overlay-text {
+  position: absolute;
+  left: 50%;
+  transform: translateX(-50%);
+  font-size: clamp(60px, 10vw, 150px);
+  color: #E4E8ED;
+  line-height: 0.9;
+  opacity: 0;
+  transition: opacity 0.5s ease, top 0.5s ease;
+  pointer-events: none;
+  white-space: nowrap;
+}
+
+/* Responsive */
 @media (max-width: 768px) {
-  h1 { font-size: clamp(50px, 12vw, 150px); }
+  h1.hero-text { font-size: clamp(50px, 12vw, 150px); }
   .subtitle { margin-top: 6vh; }
   .email-button { margin-top: 14vh; padding: 1vh 3vw; }
+  .overlay-text { font-size: clamp(40px, 12vw, 120px); }
   footer { bottom: 50px; }
 }
 
 @media (max-width: 480px) {
-  h1 { font-size: clamp(40px, 10vw, 100px); }
+  h1.hero-text { font-size: clamp(40px, 10vw, 100px); }
   .subtitle { margin-top: 4vh; letter-spacing: 0.2em; }
   .email-button { margin-top: 10vh; padding: 1vh 4vw; }
+  .overlay-text { font-size: clamp(30px, 12vw, 90px); }
   footer { bottom: 40px; }
 }
 </style>
@@ -123,16 +135,54 @@ footer {
 <body>
 
 <div class="hero">
-  <h1>GRAPA</h1>
+  <h1 class="hero-text">GRAPA</h1>
   <div class="subtitle">5ociedad Cooperativa Madrileña</div>
   <a href="mailto:grapa@grapa.es" class="email-button">grapa@grapa.es</a>
 </div>
 
 <div class="background-image-container">
   <img src="images/grapas.jpg" alt="GRAPA">
+  <div class="overlay-text" id="overlay-top">GRAPA</div>
+  <div class="overlay-text" id="overlay-bottom">GRAPA</div>
 </div>
 
 <footer>&copy; 2025 GRAPA</footer>
+
+<script>
+const overlayTop = document.getElementById('overlay-top');
+const overlayBottom = document.getElementById('overlay-bottom');
+const bgContainer = document.querySelector('.background-image-container');
+const heroHeight = document.querySelector('.hero').offsetHeight;
+
+window.addEventListener('scroll', () => {
+  const scrollY = window.scrollY;
+  const bgTop = bgContainer.offsetTop;
+  const bgHeight = bgContainer.offsetHeight;
+  const viewportHeight = window.innerHeight;
+
+  // Aparición en mitad superior de la imagen
+  const topTriggerStart = bgTop - viewportHeight / 2;
+  const topTriggerEnd = bgTop + bgHeight / 2 - viewportHeight;
+
+  if(scrollY >= topTriggerStart && scrollY < topTriggerEnd) {
+    overlayTop.style.top = '25%';
+    overlayTop.style.opacity = 1;
+  } else {
+    overlayTop.style.opacity = 0;
+  }
+
+  // Aparición en mitad inferior de la imagen
+  const bottomTriggerStart = bgTop + bgHeight / 2 - viewportHeight / 2;
+  const bottomTriggerEnd = bgTop + bgHeight - viewportHeight / 4;
+
+  if(scrollY >= bottomTriggerStart && scrollY < bottomTriggerEnd) {
+    overlayBottom.style.top = '75%';
+    overlayBottom.style.opacity = 1;
+  } else {
+    overlayBottom.style.opacity = 0;
+  }
+});
+</script>
 
 </body>
 </html>
