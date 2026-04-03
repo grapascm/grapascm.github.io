@@ -81,39 +81,39 @@ footer {
   position:absolute;
   color:#E4E8ED;
   opacity:0;
-  transition:0.5s;
+  transition:0.5s, left 0.5s;
   white-space:nowrap;
 }
 
+/* GRAPA */
 .center {
   text-align:center;
   font-size:clamp(100px,15vw,200px);
+  left:50%;
+  transform:translateX(-50%);
 }
 
+/* alineados con G */
 .left-align {
   text-align:left;
-  padding-left:0.09em; /* desplazamiento después de la G */
-  font-size:clamp(55px,9.5vw,110px);
+  padding-left:0.09em;
+  transition:left 0.5s;
 }
 
-#fia-superior, #fia-inferior {
-  font-size:clamp(70px,12vw,150px);
-}
+/* tamaños */
+#museo { font-size:clamp(55px,9.5vw,110px); }
+#esceno { font-size:clamp(50px,9vw,100px); }
+#fia-superior, #fia-inferior { font-size:clamp(70px,12vw,150px); }
 
-/* posiciones */
-#overlay-top { top:25%; left:50%; transform:translateX(-50%); }
-#overlay-bottom { top:75%; left:50%; transform:translateX(-50%); }
+/* posiciones iniciales */
+#overlay-top { top:25%; }
+#overlay-bottom { top:75%; }
 
-#museo { top:21.5%; }
-#fia-superior { top:31.5%; }
-#esceno { top:71.5%; }
-#fia-inferior { top:81.5%; }
+#museo { top:21.5%; left:calc(50% - 150px); } /* ligeramente a la izquierda de GRA */
+#fia-superior { top:31.5%; left:calc(50% - 150px); }
 
-/* centrado final del conjunto */
-.recenter {
-  left:50% !important;
-  transform:translateX(-50%) !important;
-}
+#esceno { top:71.5%; left:calc(50% - 150px); }
+#fia-inferior { top:81.5%; left:calc(50% - 150px); }
 
 </style>
 </head>
@@ -145,15 +145,13 @@ footer {
 <footer>&copy; 2025 GRAPA</footer>
 
 <script>
-const elsTop = {
-  grapa: document.getElementById('overlay-top'),
+const els = {
+  overlayTop: document.getElementById('overlay-top'),
+  overlayBottom: document.getElementById('overlay-bottom'),
   museo: document.getElementById('museo'),
-  fia: document.getElementById('fia-superior')
-};
-const elsBottom = {
-  grapa: document.getElementById('overlay-bottom'),
+  fiaSup: document.getElementById('fia-superior'),
   esceno: document.getElementById('esceno'),
-  fia: document.getElementById('fia-inferior')
+  fiaInf: document.getElementById('fia-inferior')
 };
 
 const bg = document.querySelector('.background-image-container');
@@ -164,50 +162,62 @@ window.addEventListener('scroll',()=>{
   const top = bg.offsetTop;
   const h = bg.offsetHeight;
 
-  // === MITAD SUPERIOR ===
-  const showTop = (y >= top - vh/2 && y < top + h/2 - vh/2);
-  elsTop.grapa.style.opacity = showTop ? 1 : 0;
+  // GRAPA superior
+  const showTop = (y >= top - vh/2 && y < top + h/2 - vh);
+  // GRAPA inferior
+  const showBottom = (y >= top + h/2 - vh/2);
 
+  // GRAPA
+  els.overlayTop.style.opacity = showTop ? 1 : 0;
+  els.overlayBottom.style.opacity = showBottom ? 1 : 0;
+
+  // MUSEO/FIA superior solo después de GRAPA
   if(showTop){
-    setTimeout(()=>{ elsTop.museo.style.opacity = 1; elsTop.fia.style.opacity = 1; }, 200);
-    setTimeout(()=>{ elsTop.grapa.classList.add('move-right'); }, 600);
-    setTimeout(()=>{ elsTop.grapa.style.opacity = 0; elsTop.museo.classList.add('recenter'); elsTop.fia.classList.add('recenter'); elsTop.grapa.classList.remove('move-right'); }, 1000);
+    setTimeout(()=>{ els.museo.style.opacity = 1; els.fiaSup.style.opacity=1; }, 300);
+    // PA se separa
+    setTimeout(()=>{ els.overlayTop.style.left = '60%'; els.overlayTop.style.opacity=0; }, 800);
+    // luego centrar el conjunto
+    setTimeout(()=>{ 
+      els.museo.style.left='50%';
+      els.museo.style.transform='translateX(-50%)';
+      els.fiaSup.style.left='50%';
+      els.fiaSup.style.transform='translateX(-50%)';
+    }, 1300);
   } else {
-    // reversible
-    elsTop.grapa.style.opacity = 0;
-    elsTop.museo.style.opacity = 0; elsTop.fia.style.opacity = 0;
-    elsTop.grapa.classList.remove('move-right');
-    elsTop.museo.classList.remove('recenter');
-    elsTop.fia.classList.remove('recenter');
+    els.museo.style.opacity=0;
+    els.fiaSup.style.opacity=0;
+    els.overlayTop.style.opacity=0;
+    els.overlayTop.style.left='50%';
+    els.overlayTop.style.transform='translateX(-50%)';
+    els.museo.style.left='calc(50% - 150px)';
+    els.museo.style.transform='';
+    els.fiaSup.style.left='calc(50% - 150px)';
+    els.fiaSup.style.transform='';
   }
 
-  // === MITAD INFERIOR ===
-  const showBottom = (y >= top + h/2 - vh/2);
-  elsBottom.grapa.style.opacity = showBottom ? 1 : 0;
-
+  // ESCENO/FIA inferior
   if(showBottom){
-    setTimeout(()=>{ elsBottom.esceno.style.opacity = 1; elsBottom.fia.style.opacity = 1; }, 200);
-    setTimeout(()=>{ elsBottom.grapa.classList.add('move-right'); }, 600);
-    setTimeout(()=>{ elsBottom.grapa.style.opacity = 0; elsBottom.esceno.classList.add('recenter'); elsBottom.fia.classList.add('recenter'); elsBottom.grapa.classList.remove('move-right'); }, 1000);
+    setTimeout(()=>{ els.esceno.style.opacity=1; els.fiaInf.style.opacity=1; }, 300);
+    setTimeout(()=>{ els.overlayBottom.style.left='60%'; els.overlayBottom.style.opacity=0; }, 800);
+    setTimeout(()=>{ 
+      els.esceno.style.left='50%';
+      els.esceno.style.transform='translateX(-50%)';
+      els.fiaInf.style.left='50%';
+      els.fiaInf.style.transform='translateX(-50%)';
+    }, 1300);
   } else {
-    // reversible
-    elsBottom.grapa.style.opacity = 0;
-    elsBottom.esceno.style.opacity = 0; elsBottom.fia.style.opacity = 0;
-    elsBottom.grapa.classList.remove('move-right');
-    elsBottom.esceno.classList.remove('recenter');
-    elsBottom.fia.classList.remove('recenter');
+    els.esceno.style.opacity=0;
+    els.fiaInf.style.opacity=0;
+    els.overlayBottom.style.opacity=0;
+    els.overlayBottom.style.left='50%';
+    els.overlayBottom.style.transform='translateX(-50%)';
+    els.esceno.style.left='calc(50% - 150px)';
+    els.esceno.style.transform='';
+    els.fiaInf.style.left='calc(50% - 150px)';
+    els.fiaInf.style.transform='';
   }
 });
 </script>
-
-<style>
-/* movimiento de PA */
-.move-right {
-  display:inline-block;
-  transform:translateX(50px);
-  transition: transform 0.5s ease;
-}
-</style>
 
 </body>
 </html>
