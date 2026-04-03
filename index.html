@@ -79,46 +79,42 @@ footer {
 /* BASE TEXTO */
 .overlay-line {
   position:absolute;
-  left:50%;
-  transform:translateX(-50%);
-  width:clamp(300px,70vw,1200px);
   color:#E4E8ED;
   opacity:0;
   transition:0.5s;
   white-space:nowrap;
 }
 
-/* GRAPA */
 .center {
   text-align:center;
   font-size:clamp(100px,15vw,200px);
 }
 
-/* alineados con G */
 .left-align {
   text-align:left;
   padding-left:0.09em; /* desplazamiento después de la G */
+  font-size:clamp(55px,9.5vw,110px);
 }
 
-/* tamaños */
-#museo { font-size:clamp(55px,9.5vw,110px); }
-#esceno { font-size:clamp(50px,9vw,100px); }
-#fia-superior, #fia-inferior { font-size:clamp(70px,12vw,150px); }
+#fia-superior, #fia-inferior {
+  font-size:clamp(70px,12vw,150px);
+}
 
 /* posiciones */
-#overlay-top { top:25%; }
-#overlay-bottom { top:75%; }
+#overlay-top { top:25%; left:50%; transform:translateX(-50%); }
+#overlay-bottom { top:75%; left:50%; transform:translateX(-50%); }
+
 #museo { top:21.5%; }
 #fia-superior { top:31.5%; }
 #esceno { top:71.5%; }
 #fia-inferior { top:81.5%; }
 
-/* CLASE CENTRADO FINAL */
+/* centrado final del conjunto */
 .recenter {
   left:50% !important;
   transform:translateX(-50%) !important;
-  transition: left 0.5s ease, transform 0.5s ease;
 }
+
 </style>
 </head>
 
@@ -149,62 +145,69 @@ footer {
 <footer>&copy; 2025 GRAPA</footer>
 
 <script>
-const ids = ['overlay-top','overlay-bottom','museo','fia-superior','esceno','fia-inferior']
-const els = ids.map(id=>document.getElementById(id))
-const bg = document.querySelector('.background-image-container')
-const vh = window.innerHeight
+const elsTop = {
+  grapa: document.getElementById('overlay-top'),
+  museo: document.getElementById('museo'),
+  fia: document.getElementById('fia-superior')
+};
+const elsBottom = {
+  grapa: document.getElementById('overlay-bottom'),
+  esceno: document.getElementById('esceno'),
+  fia: document.getElementById('fia-inferior')
+};
 
-// Variables para controlar cuándo centrar el conjunto
-let topCentered = false
-let bottomCentered = false
+const bg = document.querySelector('.background-image-container');
+const vh = window.innerHeight;
 
 window.addEventListener('scroll',()=>{
-  const y = window.scrollY
-  const top = bg.offsetTop
-  const h = bg.offsetHeight
+  const y = window.scrollY;
+  const top = bg.offsetTop;
+  const h = bg.offsetHeight;
 
-  // Aparición GRAPA y subsecuentes
-  const showTop = (y >= top - vh/2 && y < top + h/2 - vh)
-  const showBottom = (y >= top + h/2 - vh/2)
+  // === MITAD SUPERIOR ===
+  const showTop = (y >= top - vh/2 && y < top + h/2 - vh/2);
+  elsTop.grapa.style.opacity = showTop ? 1 : 0;
 
-  els[0].style.opacity = showTop ? 1:0
-  els[2].style.opacity = showTop ? 1:0
-  els[3].style.opacity = showTop ? 1:0
-
-  els[1].style.opacity = showBottom ? 1:0
-  els[4].style.opacity = showBottom ? 1:0
-  els[5].style.opacity = showBottom ? 1:0
-
-  // CENTRADO DEL CONJUNTO DESPUES DE QUE PA DESAPARECE
-  // Superior
-  if(!showTop && !topCentered){
-    els[0].classList.add('recenter') // GRAPA
-    els[2].classList.add('recenter') // MU5EO
-    els[3].classList.add('recenter') // FIA
-    topCentered = true
-  }
-  if(showTop && topCentered){
-    els[0].classList.remove('recenter')
-    els[2].classList.remove('recenter')
-    els[3].classList.remove('recenter')
-    topCentered = false
+  if(showTop){
+    setTimeout(()=>{ elsTop.museo.style.opacity = 1; elsTop.fia.style.opacity = 1; }, 200);
+    setTimeout(()=>{ elsTop.grapa.classList.add('move-right'); }, 600);
+    setTimeout(()=>{ elsTop.grapa.style.opacity = 0; elsTop.museo.classList.add('recenter'); elsTop.fia.classList.add('recenter'); elsTop.grapa.classList.remove('move-right'); }, 1000);
+  } else {
+    // reversible
+    elsTop.grapa.style.opacity = 0;
+    elsTop.museo.style.opacity = 0; elsTop.fia.style.opacity = 0;
+    elsTop.grapa.classList.remove('move-right');
+    elsTop.museo.classList.remove('recenter');
+    elsTop.fia.classList.remove('recenter');
   }
 
-  // Inferior
-  if(!showBottom && !bottomCentered){
-    els[1].classList.add('recenter') // GRAPA
-    els[4].classList.add('recenter') // ESCENO
-    els[5].classList.add('recenter') // FIA
-    bottomCentered = true
+  // === MITAD INFERIOR ===
+  const showBottom = (y >= top + h/2 - vh/2);
+  elsBottom.grapa.style.opacity = showBottom ? 1 : 0;
+
+  if(showBottom){
+    setTimeout(()=>{ elsBottom.esceno.style.opacity = 1; elsBottom.fia.style.opacity = 1; }, 200);
+    setTimeout(()=>{ elsBottom.grapa.classList.add('move-right'); }, 600);
+    setTimeout(()=>{ elsBottom.grapa.style.opacity = 0; elsBottom.esceno.classList.add('recenter'); elsBottom.fia.classList.add('recenter'); elsBottom.grapa.classList.remove('move-right'); }, 1000);
+  } else {
+    // reversible
+    elsBottom.grapa.style.opacity = 0;
+    elsBottom.esceno.style.opacity = 0; elsBottom.fia.style.opacity = 0;
+    elsBottom.grapa.classList.remove('move-right');
+    elsBottom.esceno.classList.remove('recenter');
+    elsBottom.fia.classList.remove('recenter');
   }
-  if(showBottom && bottomCentered){
-    els[1].classList.remove('recenter')
-    els[4].classList.remove('recenter')
-    els[5].classList.remove('recenter')
-    bottomCentered = false
-  }
-})
+});
 </script>
+
+<style>
+/* movimiento de PA */
+.move-right {
+  display:inline-block;
+  transform:translateX(50px);
+  transition: transform 0.5s ease;
+}
+</style>
 
 </body>
 </html>
