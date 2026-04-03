@@ -229,6 +229,11 @@ window.addEventListener('scroll',()=>{
   } else {
     overlayTop.style.opacity = 0;
   }
+  
+ // Museografía sobre GRAPA superior
+  if(scrollY >= bgTop - viewportHeight/2 && scrollY < bgTop + bgHeight/2){
+    museoText.style.opacity=1;
+  }else museoText.style.opacity=0;
 
   // GRAPA mitad inferior de la imagen
   const bottomTriggerStart = bgTop + bgHeight / 2 - viewportHeight / 2;
@@ -240,11 +245,6 @@ window.addEventListener('scroll',()=>{
   } else {
     overlayBottom.style.opacity = 0;
   }
-
-  // Museografía sobre GRAPA superior
-  if(scrollY >= bgTop - viewportHeight/2 && scrollY < bgTop + bgHeight/2){
-    museoText.style.opacity=1;
-  }else museoText.style.opacity=0;
 
   // Escenografía sobre GRAPA inferior
   if(scrollY >= bgTop + bgHeight/2 - viewportHeight/2 && scrollY < bgTop + bgHeight){
