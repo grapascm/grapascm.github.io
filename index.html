@@ -84,7 +84,7 @@ footer {
   width:clamp(300px,70vw,1200px);
   color:#E4E8ED;
   opacity:0;
-  transition:0.5s ease;
+  transition:opacity 0.6s ease;
   white-space:nowrap;
 }
 
@@ -101,18 +101,10 @@ footer {
 }
 
 /* tamaños */
-#museo {
-  font-size:clamp(55px,9.5vw,110px);
-}
-
-#esceno {
-  font-size:clamp(50px,9vw,100px);
-}
-
+#museo { font-size:clamp(55px,9.5vw,110px); }
+#esceno { font-size:clamp(50px,9vw,100px); }
 #fia-superior,
-#fia-inferior {
-  font-size:clamp(70px,12vw,150px);
-}
+#fia-inferior { font-size:clamp(70px,12vw,150px); }
 
 /* posiciones */
 #overlay-top { top:25%; }
@@ -156,65 +148,49 @@ footer {
 <script>
 const overlayTop = document.getElementById('overlay-top')
 const overlayBottom = document.getElementById('overlay-bottom')
-
 const museo = document.getElementById('museo')
 const fiaSup = document.getElementById('fia-superior')
-
 const esceno = document.getElementById('esceno')
 const fiaInf = document.getElementById('fia-inferior')
 
 const bg = document.querySelector('.background-image-container')
 const vh = window.innerHeight
 
-let topActive = false
-let bottomActive = false
-
 window.addEventListener('scroll',()=>{
   const y = window.scrollY
   const top = bg.offsetTop
   const h = bg.offsetHeight
 
-  const showTop = (y >= top - vh/2 && y < top + h/2 - vh/4)
+  const showTop = (y >= top - vh/2 && y < top + h/2 - vh)
   const showBottom = (y >= top + h/2 - vh/2 && y < top + h)
 
-  /* RESET ARRIBA */
-  if(!showTop){
-    overlayTop.style.opacity = 0
-    museo.style.opacity = 0
-    fiaSup.style.opacity = 0
-    topActive = false
-  }
+  /* RESET */
+  overlayTop.style.opacity = 0
+  museo.style.opacity = 0
+  fiaSup.style.opacity = 0
 
-  /* RESET ABAJO */
-  if(!showBottom){
-    overlayBottom.style.opacity = 0
-    esceno.style.opacity = 0
-    fiaInf.style.opacity = 0
-    bottomActive = false
-  }
+  overlayBottom.style.opacity = 0
+  esceno.style.opacity = 0
+  fiaInf.style.opacity = 0
 
-  /* SECUENCIA ARRIBA */
-  if(showTop && !topActive){
-    topActive = true
-
+  /* ARRIBA */
+  if(showTop){
     overlayTop.style.opacity = 1
 
     setTimeout(()=>{
       museo.style.opacity = 1
       fiaSup.style.opacity = 1
-    }, 400)
+    }, 300)
   }
 
-  /* SECUENCIA ABAJO */
-  if(showBottom && !bottomActive){
-    bottomActive = true
-
+  /* ABAJO */
+  if(showBottom){
     overlayBottom.style.opacity = 1
 
     setTimeout(()=>{
       esceno.style.opacity = 1
       fiaInf.style.opacity = 1
-    }, 400)
+    }, 300)
   }
 })
 </script>
