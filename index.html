@@ -18,8 +18,9 @@ body {
   font-family: 'GRAPA', sans-serif;
   text-transform: uppercase;
   background-color: #0A1A2A;
-  color:#BFC6CF;
-  min-height:300vh;
+  color: #BFC6CF;
+  min-height: 300vh;
+  overflow-x: hidden;
 }
 
 /* HERO */
@@ -76,76 +77,92 @@ footer {
   display:block;
 }
 
-/* Contenedor de cada bloque */
-.block {
+/* BLOQUE COMPLETO */
+.section-group {
   position:absolute;
   left:50%;
   transform:translateX(-50%);
-  transition: transform 0.6s ease;
+  width:clamp(300px,70vw,1200px);
+  display:flex;
+  flex-direction:column;
+  align-items:flex-start;
+  padding-left:0.09em;
+  opacity:0;
+  transition: opacity 0.6s ease, padding-left 0.6s ease;
+  pointer-events:none;
 }
 
-/* Cuando se centra todo */
-.block.recenter {
-  left:50%;
-  transform:translateX(-50%);
+/* cuando el bloque se recentra */
+.section-group.centered {
+  align-items:center;
+  padding-left:0;
 }
 
-/* BASE TEXTO */
-.overlay-line {
+/* línea base */
+.line {
   color:#E4E8ED;
   white-space:nowrap;
-  opacity:0;
-  transition:opacity 0.6s ease, transform 0.6s ease;
+  transition: opacity 0.6s ease, transform 0.6s ease, margin-left 0.6s ease;
 }
 
-/* GRAPA */
-.center {
+/* línea principal GRA/PA */
+.gra-line {
+  width:100%;
   text-align:center;
   font-size:clamp(100px,15vw,200px);
+  line-height:0.9;
+  opacity:1;
+  transform:translateY(0);
 }
 
-.center span {
-  display:inline-block;
-  transition: transform 0.6s ease, opacity 0.4s ease;
+/* sublíneas */
+.sub-line {
+  font-size:clamp(55px,9.5vw,110px);
+  line-height:0.9;
+  opacity:0;
+  transform:translateY(16px);
+  text-align:left;
+  margin-left:0.09em;
 }
 
-/* PA movimiento */
-.shift .pa {
-  transform: translateX(0.35em);
-  transition-delay:0.5s;
+.fia-line {
+  font-size:clamp(55px,9.5vw,110px);
+  line-height:0.9;
+  opacity:0;
+  transform:translateY(16px);
+  text-align:left;
+  margin-left:0.09em;
+}
+
+/* aparecen las sublíneas */
+.section-group.show-sub .sub-line,
+.section-group.show-sub .fia-line {
+  opacity:1;
+  transform:translateY(0);
+}
+
+/* PA se desplaza */
+.section-group.open .pa {
+  transform:translateX(0.35em);
+  transition-delay:0.4s;
 }
 
 /* PA desaparece */
-.fade-pa .pa {
+.section-group.fade-pa .pa {
   opacity:0;
 }
 
-/* alineación izquierda */
-.left-align {
-  text-align:left;
-  padding-left:0.09em;
+/* al recentrar, el conjunto entero se centra */
+.section-group.centered .sub-line,
+.section-group.centered .fia-line {
+  text-align:center;
+  margin-left:0;
 }
-
-/* tamaños */
-#museo { font-size:clamp(55px,9.5vw,110px); }
-#esceno { font-size:clamp(50px,9vw,100px); }
-#fia-superior, #fia-inferior { font-size:clamp(70px,12vw,150px); }
 
 /* posiciones */
-#block-top { top:25%; }
-#block-bottom { top:75%; }
+#top-group { top:25%; }
+#bottom-group { top:75%; }
 
-#museo { margin-top:-3%; }
-#fia-superior { margin-top:2%; }
-
-#esceno { margin-top:-3%; }
-#fia-inferior { margin-top:2%; }
-
-/* visible */
-.visible {
-  opacity:1;
-  transform:translateX(0) translateY(0);
-}
 </style>
 </head>
 
@@ -158,76 +175,86 @@ footer {
 </div>
 
 <div class="background-image-container">
-  <img src="images/grapas.jpg">
+  <img src="images/grapas.jpg" alt="GRAPA">
 
   <!-- BLOQUE SUPERIOR -->
-  <div class="block" id="block-top">
-    <div class="overlay-line center" id="overlay-top">
+  <div class="section-group" id="top-group">
+    <div class="line gra-line">
       <span class="gra">GRA</span><span class="pa">PA</span>
     </div>
-    <div class="overlay-line left-align" id="museo">MU5EO</div>
-    <div class="overlay-line left-align" id="fia-superior">FIA</div>
+    <div class="line sub-line" id="museo">MU5EO</div>
+    <div class="line fia-line" id="fia-superior">FIA</div>
   </div>
 
   <!-- BLOQUE INFERIOR -->
-  <div class="block" id="block-bottom">
-    <div class="overlay-line center" id="overlay-bottom">
+  <div class="section-group" id="bottom-group">
+    <div class="line gra-line">
       <span class="gra">GRA</span><span class="pa">PA</span>
     </div>
-    <div class="overlay-line left-align" id="esceno">E5CENO</div>
-    <div class="overlay-line left-align" id="fia-inferior">FIA</div>
+    <div class="line sub-line" id="esceno">E5CENO</div>
+    <div class="line fia-line" id="fia-inferior">FIA</div>
   </div>
-
 </div>
 
 <footer>&copy; 2025 GRAPA</footer>
 
 <script>
-const topBlock = document.getElementById('block-top');
-const bottomBlock = document.getElementById('block-bottom');
+const groups = [
+  {
+    wrapper: document.getElementById('top-group'),
+  },
+  {
+    wrapper: document.getElementById('bottom-group'),
+  }
+];
 
-// Observers para cada bloque
-const observerTop = new IntersectionObserver(entries=>{
-  entries.forEach(entry=>{
-    if(entry.isIntersecting){
-      topBlock.querySelectorAll('.overlay-line').forEach(el=>el.classList.add('visible'));
-      // Animación PA y recenter
-      const pa = topBlock.querySelector('.pa');
-      pa.classList.add('shift');
-      setTimeout(()=>{
-        pa.classList.add('fade-pa');
-        topBlock.classList.add('recenter');
-      },400);
-    } else {
-      topBlock.querySelectorAll('.overlay-line').forEach(el=>el.classList.remove('visible'));
-      const pa = topBlock.querySelector('.pa');
-      pa.classList.remove('shift','fade-pa');
-      topBlock.classList.remove('recenter');
-    }
+const timersMap = new Map();
+
+function clearGroupTimers(wrapper) {
+  const timers = timersMap.get(wrapper) || [];
+  timers.forEach(t => clearTimeout(t));
+  timersMap.delete(wrapper);
+}
+
+function resetGroup(wrapper) {
+  wrapper.classList.remove('show-sub', 'open', 'fade-pa', 'centered');
+  clearGroupTimers(wrapper);
+}
+
+function runGroupSequence(wrapper) {
+  clearGroupTimers(wrapper);
+
+  const t1 = setTimeout(() => {
+    wrapper.classList.add('show-sub');
+  }, 350);
+
+  const t2 = setTimeout(() => {
+    wrapper.classList.add('open');
+  }, 750);
+
+  const t3 = setTimeout(() => {
+    wrapper.classList.add('fade-pa', 'centered');
+  }, 1150);
+
+  timersMap.set(wrapper, [t1, t2, t3]);
+}
+
+groups.forEach(({ wrapper }) => {
+  const observer = new IntersectionObserver((entries) => {
+    entries.forEach(entry => {
+      if (entry.isIntersecting) {
+        wrapper.classList.add('visible');
+        runGroupSequence(wrapper);
+      } else {
+        resetGroup(wrapper);
+      }
+    });
+  }, {
+    threshold: 0.3
   });
-},{threshold:0.3});
 
-const observerBottom = new IntersectionObserver(entries=>{
-  entries.forEach(entry=>{
-    if(entry.isIntersecting){
-      bottomBlock.querySelectorAll('.overlay-line').forEach(el=>el.classList.add('visible'));
-      const pa = bottomBlock.querySelector('.pa');
-      pa.classList.add('shift');
-      setTimeout(()=>{
-        pa.classList.add('fade-pa');
-        bottomBlock.classList.add('recenter');
-      },400);
-    } else {
-      bottomBlock.querySelectorAll('.overlay-line').forEach(el=>el.classList.remove('visible'));
-      const pa = bottomBlock.querySelector('.pa');
-      pa.classList.remove('shift','fade-pa');
-      bottomBlock.classList.remove('recenter');
-    }
-  });
-},{threshold:0.3});
-
-observerTop.observe(document.getElementById('overlay-top'));
-observerBottom.observe(document.getElementById('overlay-bottom'));
+  observer.observe(wrapper);
+});
 </script>
 
 </body>
