@@ -73,6 +73,7 @@ footer {
 .background-image-container img {
   width:100%;
   height:auto;
+  display:block;
 }
 
 /* BASE TEXTO */
@@ -93,6 +94,17 @@ footer {
   font-size:clamp(100px,15vw,200px);
 }
 
+/* separar letras */
+.center span {
+  display:inline-block;
+  transition: transform 0.6s ease;
+}
+
+/* movimiento PA */
+.shift .pa {
+  transform: translateX(0.25em); /* AJUSTABLE */
+}
+
 /* alineados con G */
 .left-align {
   text-align:left;
@@ -100,30 +112,31 @@ footer {
 }
 
 /* tamaños */
-#museo { font-size:clamp(60px,10vw,120px); }
+#museo { font-size:clamp(55px,9.5vw,110px); }
 #esceno { font-size:clamp(50px,9vw,100px); }
-#fia-superior, #fia-inferior { font-size:clamp(80px,31vw,160px); }
+#fia-superior, #fia-inferior { font-size:clamp(70px,12vw,150px); }
 
 /* posiciones */
 #overlay-top { top:25%; }
 #overlay-bottom { top:75%; }
 
-#museo { top:21%; }
+#museo { top:21.5%; }
 #fia-superior { top:31.5%; }
 
 #esceno { top:71.5%; }
 #fia-inferior { top:81.5%; }
 
-/* Clase visible para fade-in */
+/* visible */
 .visible {
   opacity:1;
   transform:translateX(-50%) translateY(0);
 }
 
-/* Delay para cascada */
+/* cascada */
 .delay-1 { transition-delay:0.1s; }
 .delay-2 { transition-delay:0.4s; }
 .delay-3 { transition-delay:0.7s; }
+
 </style>
 </head>
 
@@ -139,12 +152,18 @@ footer {
   <img src="images/grapas.jpg">
 
   <!-- GRAPA superior -->
-  <div class="overlay-line center delay-1" id="overlay-top">GRAPA</div>
+  <div class="overlay-line center delay-1" id="overlay-top">
+    <span class="gra">GRA</span><span class="pa">PA</span>
+  </div>
+
   <div class="overlay-line left-align delay-2" id="museo">MU5EO</div>
   <div class="overlay-line left-align delay-3" id="fia-superior">FIA</div>
 
   <!-- GRAPA inferior -->
-  <div class="overlay-line center delay-1" id="overlay-bottom">GRAPA</div>
+  <div class="overlay-line center delay-1" id="overlay-bottom">
+    <span class="gra">GRA</span><span class="pa">PA</span>
+  </div>
+
   <div class="overlay-line left-align delay-2" id="esceno">E5CENO</div>
   <div class="overlay-line left-align delay-3" id="fia-inferior">FIA</div>
 </div>
@@ -152,7 +171,6 @@ footer {
 <footer>&copy; 2025 GRAPA</footer>
 
 <script>
-// Animación reversible al entrar/salir de la sección
 const sections = [
   ['overlay-top','museo','fia-superior'],
   ['overlay-bottom','esceno','fia-inferior']
@@ -163,16 +181,35 @@ sections.forEach(group => {
     entries.forEach(entry=>{
       group.forEach(id=>{
         const el = document.getElementById(id);
+
         if(entry.isIntersecting){
           el.classList.add('visible');
+
+          // activar desplazamiento
+          if(id === 'museo'){
+            document.getElementById('overlay-top').classList.add('shift');
+          }
+          if(id === 'esceno'){
+            document.getElementById('overlay-bottom').classList.add('shift');
+          }
+
         } else {
           el.classList.remove('visible');
+
+          // revertir desplazamiento
+          if(id === 'museo'){
+            document.getElementById('overlay-top').classList.remove('shift');
+          }
+          if(id === 'esceno'){
+            document.getElementById('overlay-bottom').classList.remove('shift');
+          }
         }
       });
     });
   },{
     threshold:0.3
   });
+
   const firstEl = document.getElementById(group[0]);
   observer.observe(firstEl);
 });
