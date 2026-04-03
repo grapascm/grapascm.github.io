@@ -100,65 +100,42 @@ footer {
   max-width:100%;
 }
 
-/* GRAPA overlay */
-.overlay-text {
+/* Cada línea como caja individual */
+.overlay-line {
   position:absolute;
   left:50%;
   transform:translateX(-50%);
-  font-size:clamp(100px,15vw,200px);
   color:#E4E8ED;
-  line-height:0.9;
+  text-align:center;
+  font-family:'GRAPA', sans-serif;
+  text-transform:uppercase;
   opacity:0;
   transition:opacity 0.5s ease;
-  pointer-events:none;
   white-space:nowrap;
 }
 
-/* Secciones de texto (Museografía y Escenografía) */
-.section-text {
-  position:absolute;
-  left:50%;
-  transform:translateX(-50%);
-  text-align:center;
-  opacity:0;
-  transition:opacity 0.5s ease;
-  pointer-events:none;
-}
+/* Tamaños */
+#overlay-top { font-size:clamp(100px,15vw,200px); top:25%; }
+#overlay-bottom { font-size:clamp(100px,15vw,200px); top:75%; }
 
-/* Línea individual */
-.section-text .line {
-  font-family:'GRAPA', sans-serif;
-  text-transform:uppercase;
-  color:#E4E8ED;
-  display:block;
-  line-height:0.9;
-}
+/* Museografía */
+#museo { font-size:clamp(70px,12vw,140px); top:23%; }
+#fia-superior { font-size:clamp(70px,12vw,140px); top:27%; }
 
-/* Museografía y Escenografía */
-.section-museografia .line:first-child { font-size:clamp(70px,12vw,140px); margin-bottom:0.3em; } /* MUSEO encima de GRA */
-.section-museografia .line:last-child { font-size:clamp(70px,12vw,140px); margin-top:0.3em; } /* FIA debajo */
-
-.section-escenografia .line:first-child { font-size:clamp(70px,12vw,140px); margin-bottom:0.3em; } /* ESCENO encima de GRA */
-.section-escenografia .line:last-child { font-size:clamp(70px,12vw,140px); margin-top:0.3em; } /* FIA debajo */
+/* Escenografía */
+#esceno { font-size:clamp(70px,12vw,140px); top:73%; }
+#fia-inferior { font-size:clamp(70px,12vw,140px); top:77%; }
 
 /* Responsive */
 @media(max-width:768px){
-  h1.hero-text { font-size:clamp(50px,12vw,150px); }
-  .subtitle { margin-top:6vh; }
-  .email-button { margin-top:14vh; padding:1vh 3vw; }
-  .overlay-text { font-size:clamp(80px,12vw,150px); }
-  .section-museografia .line:first-child, .section-museografia .line:last-child,
-  .section-escenografia .line:first-child, .section-escenografia .line:last-child{ font-size:clamp(50px,10vw,110px); }
+  #overlay-top, #overlay-bottom { font-size:clamp(80px,12vw,150px); }
+  #museo, #esceno, #fia-superior, #fia-inferior { font-size:clamp(50px,10vw,110px); }
   footer { bottom:50px; }
 }
 
 @media(max-width:480px){
-  h1.hero-text { font-size:clamp(40px,10vw,100px); }
-  .subtitle { margin-top:4vh; letter-spacing:0.2em; }
-  .email-button { margin-top:10vh; padding:1vh 4vw; }
-  .overlay-text { font-size:clamp(60px,12vw,120px); }
-  .section-museografia .line:first-child, .section-museografia .line:last-child,
-  .section-escenografia .line:first-child, .section-escenografia .line:last-child{ font-size:clamp(40px,10vw,90px); }
+  #overlay-top, #overlay-bottom { font-size:clamp(60px,12vw,120px); }
+  #museo, #esceno, #fia-superior, #fia-inferior { font-size:clamp(40px,10vw,90px); }
   footer { bottom:40px; }
 }
 </style>
@@ -177,29 +154,22 @@ footer {
   <img src="images/grapas.jpg" alt="GRAPA">
 
   <!-- GRAPA mitad superior e inferior -->
-  <div class="overlay-text" id="overlay-top" style="top:25%;">GRAPA</div>
-  <div class="overlay-text" id="overlay-bottom" style="top:75%;">GRAPA</div>
+  <div class="overlay-line" id="overlay-top">GRAPA</div>
+  <div class="overlay-line" id="overlay-bottom">GRAPA</div>
 
-  <!-- Museografía sobre GRAPA superior -->
-  <div class="section-text section-museografia" id="museografia-text" style="top:25%;">
-    <div class="line">MUSEO</div>
-    <div class="line">FIA</div>
-  </div>
+  <!-- Museografía -->
+  <div class="overlay-line" id="museo">MUSEO</div>
+  <div class="overlay-line" id="fia-superior">FIA</div>
 
-  <!-- Escenografía sobre GRAPA inferior -->
-  <div class="section-text section-escenografia" id="escenografia-text" style="top:75%;">
-    <div class="line">ESCENO</div>
-    <div class="line">FIA</div>
-  </div>
+  <!-- Escenografía -->
+  <div class="overlay-line" id="esceno">ESCENO</div>
+  <div class="overlay-line" id="fia-inferior">FIA</div>
 </div>
 
 <footer>&copy; 2025 GRAPA</footer>
 
 <script>
-const overlayTop = document.getElementById('overlay-top');
-const overlayBottom = document.getElementById('overlay-bottom');
-const museoText = document.getElementById('museografia-text');
-const escenaText = document.getElementById('escenografia-text');
+const fadeElements = ['overlay-top','overlay-bottom','museo','fia-superior','esceno','fia-inferior'].map(id => document.getElementById(id));
 const bgContainer = document.querySelector('.background-image-container');
 const viewportHeight = window.innerHeight;
 
@@ -209,16 +179,15 @@ window.addEventListener('scroll',()=>{
   const bgHeight = bgContainer.offsetHeight;
 
   // GRAPA mitad superior
-  overlayTop.style.opacity = (scrollY >= bgTop - viewportHeight/2 && scrollY < bgTop + bgHeight/2 - viewportHeight) ? 1 : 0;
-
+  fadeElements[0].style.opacity = (scrollY >= bgTop - viewportHeight/2 && scrollY < bgTop + bgHeight/2 - viewportHeight) ? 1 : 0;
   // GRAPA mitad inferior
-  overlayBottom.style.opacity = (scrollY >= bgTop + bgHeight/2 - viewportHeight/2 && scrollY < bgTop + bgHeight - viewportHeight/4) ? 1 : 0;
-
-  // Museografía sobre GRAPA superior
-  museoText.style.opacity = (scrollY >= bgTop - viewportHeight/2 && scrollY < bgTop + bgHeight/2) ? 1 : 0;
-
-  // Escenografía sobre GRAPA inferior
-  escenaText.style.opacity = (scrollY >= bgTop + bgHeight/2 - viewportHeight/2 && scrollY < bgTop + bgHeight) ? 1 : 0;
+  fadeElements[1].style.opacity = (scrollY >= bgTop + bgHeight/2 - viewportHeight/2 && scrollY < bgTop + bgHeight - viewportHeight/4) ? 1 : 0;
+  // Museo y FIA superior
+  fadeElements[2].style.opacity = fadeElements[0].style.opacity;
+  fadeElements[3].style.opacity = fadeElements[0].style.opacity;
+  // Esceno y FIA inferior
+  fadeElements[4].style.opacity = fadeElements[1].style.opacity;
+  fadeElements[5].style.opacity = fadeElements[1].style.opacity;
 });
 </script>
 
