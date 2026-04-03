@@ -114,6 +114,207 @@ footer {
   white-space:nowrap;
 }
 
+/* Tamaños y posiciones */
+#overlay-top { font-size:clamp(100px,15vw,200px); top:25%; }
+#overlay-bottom { font-size:clamp(100px,15vw,200px); top:75%; }
+
+/* Museografía superior */
+#museo { font-size:clamp(70px,12vw,140px); top:23%; }
+#fia-superior { font-size:clamp(70px,12vw,140px); top:27%; }
+
+/* Escenografía inferior */
+#esceno { font-size:clamp(70px,12vw,140px); top:73%; }
+#fia-inferior { font-size:clamp(70px,12vw,140px); top:77%; }
+
+/* Responsive */
+@media(max-width:768px){
+  #overlay-top, #overlay-bottom { font-size:clamp(80px,12vw,150px); }
+  #museo, #esceno, #fia-superior, #fia-inferior { font-size:clamp(50px,10vw,110px); }
+  footer { bottom:50px; }
+}
+
+@media(max-width:480px){
+  #overlay-top, #overlay-bottom { font-size:clamp(60px,12vw,120px); }
+  #museo, #esceno, #fia-superior, #fia-inferior { font-size:clamp(40px,10vw,90px); }
+  footer { bottom:40px; }
+}
+</style>
+</head>
+<body>
+
+<!-- Hero -->
+<div class="hero">
+  <h1 class="hero-text">GRAPA</h1>
+  <div class="subtitle">5ociedad Cooperativa Madrileña</div>
+  <a href="mailto:grapa@grapa.e5" class="email-button">grapa@grapa.e5</a>
+</div>
+
+<!-- Imagen y overlays -->
+<div class="background-image-container">
+  <img src="images/grapas.jpg" alt="GRAPA">
+
+  <!-- GRAPA mitad superior e inferior -->
+  <div class="overlay-line" id="overlay-top">GRAPA</div>
+  <div class="overlay-line" id="overlay-bottom">GRAPA</div>
+
+  <!-- Museografía sobre GRAPA superior -->
+  <div class="overlay-line" id="museo">MUSEO</div>
+  <div class="overlay-line" id="fia-superior">FIA</div>
+
+  <!-- Escenografía sobre GRAPA inferior -->
+  <div class="overlay-line" id="esceno">ESCENO</div>
+  <div class="overlay-line" id="fia-inferior">FIA</div>
+</div>
+
+<footer>&copy; 2025 GRAPA</footer>
+
+<script>
+const fadeElements = [
+  'overlay-top','overlay-bottom',
+  'museo','fia-superior',
+  'esceno','fia-inferior'
+].map(id => document.getElementById(id));
+
+const bgContainer = document.querySelector('.background-image-container');
+const viewportHeight = window.innerHeight;
+
+window.addEventListener('scroll',()=>{
+  const scrollY = window.scrollY;
+  const bgTop = bgContainer.offsetTop;
+  const bgHeight = bgContainer.offsetHeight;
+
+  // GRAPA mitad superior
+  fadeElements[0].style.opacity = (scrollY >= bgTop - viewportHeight/2 && scrollY < bgTop + bgHeight/2 - viewportHeight) ? 1 : 0;
+  // GRAPA mitad inferior
+  fadeElements[1].style.opacity = (scrollY >= bgTop + bgHeight/2 - viewportHeight/2 && scrollY < bgTop + bgHeight - viewportHeight/4) ? 1 : 0;
+
+  // Museografía y FIA superior siguen GRAPA superior
+  fadeElements[2].style.opacity = fadeElements[0].style.opacity;
+  fadeElements[3].style.opacity = fadeElements[0].style.opacity;
+
+  // Escenografía y FIA inferior siguen GRAPA inferior
+  fadeElements[4].style.opacity = fadeElements[1].style.opacity;
+  fadeElements[5].style.opacity = fadeElements[1].style.opacity;
+});
+</script>
+
+</body>
+</html><!DOCTYPE html>
+<html lang="es">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>GRAPA</title>
+
+<style>
+@font-face {
+  font-family: 'GRAPA';
+  src: url('./fonts/GRAPA.woff2') format('woff2');
+  font-display: swap;
+}
+
+* { margin:0; padding:0; box-sizing:border-box; }
+
+body {
+  font-family: 'GRAPA', sans-serif;
+  text-transform: uppercase;
+  background-color: #0A1A2A;
+  color: #BFC6CF;
+  overflow-x: hidden;
+  position: relative;
+  min-height: 300vh;
+}
+
+/* HERO */
+.hero {
+  position: relative;
+  min-height: 100svh;
+  display: flex;
+  flex-direction: column;
+  justify-content: flex-start;
+  align-items: center;
+  text-align: center;
+  padding-top: 20vh;
+  padding-left: 5vw;
+  padding-right: 5vw;
+  z-index:2;
+}
+
+h1.hero-text {
+  font-size: clamp(80px, 15vw, 200px);
+  letter-spacing:0.04em;
+  color:#E4E8ED;
+  line-height:0.9;
+}
+
+.subtitle {
+  margin-top:8vh;
+  font-size:clamp(14px,2vw,20px);
+  letter-spacing:0.35em;
+  opacity:0.8;
+}
+
+.email-button {
+  display:inline-block;
+  margin-top:18vh;
+  font-size:clamp(10px,1.2vw,14px);
+  letter-spacing:0.3em;
+  text-decoration:none;
+  color:#E4E8ED;
+  border:1px solid rgba(228,232,237,0.2);
+  padding:1vh 2vw;
+  transition:all 0.3s ease;
+  opacity:0.7;
+}
+
+.email-button:hover {
+  background-color:#E4E8ED;
+  color:#0A1A2A;
+  opacity:1;
+}
+
+/* Footer */
+footer {
+  position:fixed;
+  bottom:60px;
+  width:100%;
+  text-align:center;
+  font-size:clamp(10px,1.1vw,12px);
+  letter-spacing:0.25em;
+  text-transform:uppercase;
+  opacity:0.5;
+  color:#BFC6CF;
+  z-index:2;
+}
+
+/* Imagen scrollable */
+.background-image-container {
+  position:relative;
+  width:100%;
+  display:block;
+}
+
+.background-image-container img {
+  width:100%;
+  height:auto;
+  display:block;
+  max-width:100%;
+}
+
+/* Cada línea como caja individual */
+.overlay-line {
+  position:absolute;
+  left:50%;
+  transform:translateX(-50%);
+  color:#E4E8ED;
+  text-align:center;
+  font-family:'GRAPA', sans-serif;
+  text-transform:uppercase;
+  opacity:0;
+  transition:opacity 0.5s ease;
+  white-space:nowrap;
+}
+
 /* Tamaños */
 #overlay-top { font-size:clamp(100px,15vw,200px); top:25%; }
 #overlay-bottom { font-size:clamp(100px,15vw,200px); top:75%; }
