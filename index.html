@@ -18,14 +18,14 @@ body {
   font-family: 'GRAPA', sans-serif;
   text-transform: uppercase;
   background-color: #0A1A2A;
-  color: #BFC6CF;
-  min-height: 300vh;
-  overflow-x: hidden;
+  color:#BFC6CF;
+  min-height:300vh;
+  overflow-x:hidden;
 }
 
 /* HERO */
 .hero {
-  min-height: 100svh;
+  min-height:100svh;
   display:flex;
   flex-direction:column;
   align-items:center;
@@ -88,14 +88,14 @@ footer {
   align-items:flex-start;
   padding-left:0.09em;
   opacity:0;
-  transition: opacity 0.6s ease, padding-left 0.6s ease;
   pointer-events:none;
+  transition: opacity 0.6s ease;
 }
 
-/* cuando el bloque se recentra */
-.section-group.centered {
-  align-items:center;
-  padding-left:0;
+/* mostrar bloque */
+.section-group.visible {
+  opacity:1;
+  pointer-events:auto;
 }
 
 /* línea base */
@@ -111,8 +111,6 @@ footer {
   text-align:center;
   font-size:clamp(100px,15vw,200px);
   line-height:0.9;
-  opacity:1;
-  transform:translateY(0);
 }
 
 /* sublíneas */
@@ -123,6 +121,7 @@ footer {
   transform:translateY(16px);
   text-align:left;
   margin-left:0.09em;
+  transition:opacity 0.6s ease, transform 0.6s ease;
 }
 
 .fia-line {
@@ -132,6 +131,7 @@ footer {
   transform:translateY(16px);
   text-align:left;
   margin-left:0.09em;
+  transition:opacity 0.6s ease, transform 0.6s ease;
 }
 
 /* aparecen las sublíneas */
@@ -162,7 +162,6 @@ footer {
 /* posiciones */
 #top-group { top:25%; }
 #bottom-group { top:75%; }
-
 </style>
 </head>
 
@@ -200,60 +199,38 @@ footer {
 
 <script>
 const groups = [
-  {
-    wrapper: document.getElementById('top-group'),
-  },
-  {
-    wrapper: document.getElementById('bottom-group'),
-  }
+  document.getElementById('top-group'),
+  document.getElementById('bottom-group')
 ];
 
-const timersMap = new Map();
+const vh = window.innerHeight;
 
-function clearGroupTimers(wrapper) {
-  const timers = timersMap.get(wrapper) || [];
-  timers.forEach(t => clearTimeout(t));
-  timersMap.delete(wrapper);
+function resetGroup(wrapper){
+  wrapper.classList.remove('show-sub','open','fade-pa','centered','visible');
 }
 
-function resetGroup(wrapper) {
-  wrapper.classList.remove('show-sub', 'open', 'fade-pa', 'centered');
-  clearGroupTimers(wrapper);
+function runGroupSequence(wrapper){
+  wrapper.classList.add('visible');
+
+  setTimeout(()=> wrapper.classList.add('show-sub'), 350);
+  setTimeout(()=> wrapper.classList.add('open'), 750);
+  setTimeout(()=> wrapper.classList.add('fade-pa','centered'), 1150);
 }
 
-function runGroupSequence(wrapper) {
-  clearGroupTimers(wrapper);
+window.addEventListener('scroll', ()=>{
+  const y = window.scrollY;
+  groups.forEach(wrapper=>{
+    const top = wrapper.offsetTop;
+    const h = wrapper.offsetHeight;
 
-  const t1 = setTimeout(() => {
-    wrapper.classList.add('show-sub');
-  }, 350);
-
-  const t2 = setTimeout(() => {
-    wrapper.classList.add('open');
-  }, 750);
-
-  const t3 = setTimeout(() => {
-    wrapper.classList.add('fade-pa', 'centered');
-  }, 1150);
-
-  timersMap.set(wrapper, [t1, t2, t3]);
-}
-
-groups.forEach(({ wrapper }) => {
-  const observer = new IntersectionObserver((entries) => {
-    entries.forEach(entry => {
-      if (entry.isIntersecting) {
-        wrapper.classList.add('visible');
+    if(y + vh*0.6 >= top && y + vh*0.4 <= top + h){
+      if(!wrapper.classList.contains('visible')){
         runGroupSequence(wrapper);
-      } else {
-        resetGroup(wrapper);
       }
-    });
-  }, {
-    threshold: 0.3
+    } else {
+      resetGroup(wrapper);
+    }
   });
-
-  observer.observe(wrapper);
 });
 </script>
 
