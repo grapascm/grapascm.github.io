@@ -120,7 +120,6 @@ footer {
   left:50%;
   transform:translateX(-50%);
   text-align:center;
-  line-height:0.9;
   opacity:0;
   transition:opacity 0.5s ease;
   pointer-events:none;
@@ -131,17 +130,16 @@ footer {
   text-transform:uppercase;
   color:#E4E8ED;
   display:block;
+  line-height:1.0;
 }
 
 /* Museografía (mitad superior) */
-.section-museografia .line:nth-child(1) { font-size:clamp(60px,10vw,150px); margin-bottom:-0.1em; } /* MUSEO */
-.section-museografia .line:nth-child(2) { font-size:clamp(100px,15vw,200px); } /* GRA */
-.section-museografia .line:nth-child(3) { font-size:clamp(60px,10vw,150px); margin-top:-0.1em; } /* FIA */
+.section-museografia .line:first-child { font-size:clamp(60px,10vw,150px); margin-bottom:0.5em; } /* MUSEO */
+.section-museografia .line:last-child { font-size:clamp(60px,10vw,150px); margin-top:0.5em; } /* FIA */
 
 /* Escenografía (mitad inferior) */
-.section-escenografia .line:nth-child(1) { font-size:clamp(60px,10vw,150px); margin-bottom:-0.1em; } /* ESCENO */
-.section-escenografia .line:nth-child(2) { font-size:clamp(100px,15vw,200px); } /* GRA */
-.section-escenografia .line:nth-child(3) { font-size:clamp(60px,10vw,150px); margin-top:-0.1em; } /* FIA */
+.section-escenografia .line:first-child { font-size:clamp(60px,10vw,150px); margin-bottom:0.5em; } /* ESCENO */
+.section-escenografia .line:last-child { font-size:clamp(60px,10vw,150px); margin-top:0.5em; } /* FIA */
 
 /* Responsive */
 @media(max-width:768px){
@@ -149,10 +147,8 @@ footer {
   .subtitle { margin-top:6vh; }
   .email-button { margin-top:14vh; padding:1vh 3vw; }
   .overlay-text { font-size:clamp(80px,12vw,150px); }
-  .section-museografia .line:nth-child(1), .section-museografia .line:nth-child(3),
-  .section-escenografia .line:nth-child(1), .section-escenografia .line:nth-child(3){ font-size:clamp(40px,10vw,120px); }
-  .section-museografia .line:nth-child(2),
-  .section-escenografia .line:nth-child(2){ font-size:clamp(80px,12vw,150px); }
+  .section-museografia .line:first-child, .section-museografia .line:last-child,
+  .section-escenografia .line:first-child, .section-escenografia .line:last-child{ font-size:clamp(40px,10vw,120px); }
   footer { bottom:50px; }
 }
 
@@ -161,10 +157,8 @@ footer {
   .subtitle { margin-top:4vh; letter-spacing:0.2em; }
   .email-button { margin-top:10vh; padding:1vh 4vw; }
   .overlay-text { font-size:clamp(60px,12vw,120px); }
-  .section-museografia .line:nth-child(1), .section-museografia .line:nth-child(3),
-  .section-escenografia .line:nth-child(1), .section-escenografia .line:nth-child(3){ font-size:clamp(30px,10vw,90px); }
-  .section-museografia .line:nth-child(2),
-  .section-escenografia .line:nth-child(2){ font-size:clamp(60px,12vw,120px); }
+  .section-museografia .line:first-child, .section-museografia .line:last-child,
+  .section-escenografia .line:first-child, .section-escenografia .line:last-child{ font-size:clamp(30px,10vw,90px); }
   footer { bottom:40px; }
 }
 </style>
@@ -175,7 +169,7 @@ footer {
 <div class="hero">
   <h1 class="hero-text">GRAPA</h1>
   <div class="subtitle">5ociedad Cooperativa Madrileña</div>
-  <a href="mailto:grapa@grapa.es" class="email-button">grapa@grapa.e5</a>
+  <a href="mailto:grapa@grapa.e5" class="email-button">grapa@grapa.e5</a>
 </div>
 
 <!-- Imagen y overlays -->
@@ -186,13 +180,13 @@ footer {
   <div class="overlay-text" id="overlay-top" style="top:25%;">GRAPA</div>
   <div class="overlay-text" id="overlay-bottom" style="top:75%;">GRAPA</div>
 
-  <!-- Museografía sobre GRA superior -->
+  <!-- Museografía sobre GRAPA superior -->
   <div class="section-text section-museografia" id="museografia-text" style="top:25%;">
     <div class="line">MUSEO</div>
     <div class="line">FIA</div>
   </div>
 
-  <!-- Escenografía sobre GRA inferior -->
+  <!-- Escenografía sobre GRAPA inferior -->
   <div class="section-text section-escenografia" id="escenografia-text" style="top:75%;">
     <div class="line">ESCENO</div>
     <div class="line">FIA</div>
