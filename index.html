@@ -18,13 +18,13 @@ body {
   font-family: 'GRAPA', sans-serif;
   text-transform: uppercase;
   background-color: #0A1A2A;
-  color: #BFC6CF;
-  min-height: 300vh;
+  color:#BFC6CF;
+  min-height:300vh;
 }
 
 /* HERO */
 .hero {
-  min-height: 100svh;
+  min-height:100svh;
   display:flex;
   flex-direction:column;
   align-items:center;
@@ -33,7 +33,7 @@ body {
 }
 
 h1.hero-text {
-  font-size: clamp(80px,15vw,200px);
+  font-size:clamp(80px,15vw,200px);
   letter-spacing:0.04em;
   color:#E4E8ED;
   line-height:0.9;
@@ -110,9 +110,10 @@ footer {
   opacity:0;
 }
 
-/* RECENTER GLOBAL */
-.recenter {
-  transform:translateX(-50%) translateY(0) translateX(-8%);
+/* RECENTER GLOBAL CONJUNTO */
+.recenter-group {
+  transform:translateX(0);
+  transition: transform 0.8s ease;
 }
 
 /* alineación izquierda */
@@ -162,18 +163,18 @@ footer {
   <img src="images/grapas.jpg">
 
   <!-- SUPERIOR -->
-  <div class="overlay-line center delay-1" id="overlay-top">
+  <div class="overlay-line center delay-1 recenter-group" id="overlay-top">
     <span class="gra">GRA</span><span class="pa">PA</span>
   </div>
-  <div class="overlay-line left-align delay-2" id="museo">MU5EO</div>
-  <div class="overlay-line left-align delay-3" id="fia-superior">FIA</div>
+  <div class="overlay-line left-align delay-2 recenter-group" id="museo">MU5EO</div>
+  <div class="overlay-line left-align delay-3 recenter-group" id="fia-superior">FIA</div>
 
   <!-- INFERIOR -->
-  <div class="overlay-line center delay-1" id="overlay-bottom">
+  <div class="overlay-line center delay-1 recenter-group" id="overlay-bottom">
     <span class="gra">GRA</span><span class="pa">PA</span>
   </div>
-  <div class="overlay-line left-align delay-2" id="esceno">E5CENO</div>
-  <div class="overlay-line left-align delay-3" id="fia-inferior">FIA</div>
+  <div class="overlay-line left-align delay-2 recenter-group" id="esceno">E5CENO</div>
+  <div class="overlay-line left-align delay-3 recenter-group" id="fia-inferior">FIA</div>
 </div>
 
 <footer>&copy; 2025 GRAPA</footer>
@@ -193,49 +194,32 @@ sections.forEach(group => {
         if(entry.isIntersecting){
           el.classList.add('visible');
 
-          if(id === 'museo'){
+          if(id === 'museo' || id === 'esceno'){
             setTimeout(()=>{
-              const top = document.getElementById('overlay-top');
-              top.classList.add('shift');
+              const topEl = group[0] === 'overlay-top' ? document.getElementById('overlay-top') : document.getElementById('overlay-bottom');
+              topEl.classList.add('shift');
 
               setTimeout(()=>{
-                top.classList.add('fade-pa','recenter');
-                document.getElementById('museo').classList.add('recenter');
-                document.getElementById('fia-superior').classList.add('recenter');
+                topEl.classList.add('fade-pa');
+                // Centrado del conjunto completo
+                group.forEach(innerId=>{
+                  const innerEl = document.getElementById(innerId);
+                  innerEl.style.transform = 'translateX(0) translateY(0)'; // mantiene left-align relativo
+                });
               }, 400);
-
-            }, 400);
-          }
-
-          if(id === 'esceno'){
-            setTimeout(()=>{
-              const bottom = document.getElementById('overlay-bottom');
-              bottom.classList.add('shift');
-
-              setTimeout(()=>{
-                bottom.classList.add('fade-pa','recenter');
-                document.getElementById('esceno').classList.add('recenter');
-                document.getElementById('fia-inferior').classList.add('recenter');
-              }, 400);
-
             }, 400);
           }
 
         } else {
           el.classList.remove('visible');
 
-          if(id === 'museo'){
-            const top = document.getElementById('overlay-top');
-            top.classList.remove('shift','fade-pa','recenter');
-            document.getElementById('museo').classList.remove('recenter');
-            document.getElementById('fia-superior').classList.remove('recenter');
-          }
-
-          if(id === 'esceno'){
-            const bottom = document.getElementById('overlay-bottom');
-            bottom.classList.remove('shift','fade-pa','recenter');
-            document.getElementById('esceno').classList.remove('recenter');
-            document.getElementById('fia-inferior').classList.remove('recenter');
+          if(id === 'museo' || id === 'esceno'){
+            const topEl = group[0] === 'overlay-top' ? document.getElementById('overlay-top') : document.getElementById('overlay-bottom');
+            topEl.classList.remove('shift','fade-pa');
+            group.forEach(innerId=>{
+              const innerEl = document.getElementById(innerId);
+              innerEl.style.transform = 'translateX(-50%) translateY(20px)';
+            });
           }
         }
       });
