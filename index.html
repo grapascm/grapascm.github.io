@@ -1,174 +1,59 @@
-<!DOCTYPE html>
-<html lang="es">
-<head>
-<meta charset="UTF-8">
-<meta name="viewport" content="width=device-width, initial-scale=1.0">
-<title>GRAPA</title>
-
-<style>
-@font-face {
-  font-family: 'GRAPA';
-  src: url('./fonts/GRAPA.woff2') format('woff2');
-}
-
-/* RESET */
-*{margin:0;padding:0;box-sizing:border-box;}
-
-body{
-  font-family:'GRAPA',sans-serif;
-  text-transform:uppercase;
-  background:#0A1A2A;
-  color:#E4E8ED;
-  overflow-x:hidden;
-}
-
-/* SECCIONES */
-.section{
-  height:100svh;
-  width:100%;
-  position:relative;
-  display:flex;
-  align-items:center;
-  justify-content:center;
-}
-
-/* HERO */
-.hero{
-  flex-direction:column;
-  text-align:center;
-}
-
-.hero h1{
-  font-size:clamp(80px,15vw,200px);
-  line-height:0.9;
-}
-
-.subtitle{
-  margin-top:8vh;
-  font-size:clamp(14px,2vw,20px);
-  letter-spacing:0.35em;
-}
-
-.email{
-  margin-top:18vh;
-  font-size:clamp(10px,1.2vw,14px);
-  border:1px solid rgba(255,255,255,0.2);
-  padding:1vh 2vw;
-}
-
-/* IMAGEN FULL */
-.image-section{
-  background-image:url('images/grapas.jpg');
-  background-size:cover;
-  background-position:center;
-}
-
-/* OVERLAY TEXT */
-.overlay{
-  position:absolute;
-  width:100%;
-  text-align:center;
-  opacity:0;
-  transform:translateY(40px);
-  transition:0.6s ease;
-}
-
-/* GRAPA */
-.grapa{
-  font-size:clamp(100px,15vw,200px);
-}
-
-/* MU / ESCENO */
-.sub{
-  font-size:clamp(60px,10vw,120px);
-}
-
-/* FIA */
-.fia{
-  font-size:clamp(80px,12vw,150px);
-}
-
-/* POSICIONES */
-.top{ top:25%; }
-.middle{ top:50%; transform:translateY(-50%); }
-.bottom{ top:75%; }
-
-/* VISIBLE */
-.visible{
-  opacity:1;
-  transform:translateY(0);
-}
-
-/* FOOTER */
-footer{
-  position:fixed;
-  bottom:40px;
-  width:100%;
-  text-align:center;
-  font-size:12px;
-  opacity:0.5;
-}
-
-</style>
-</head>
-
-<body>
-
-<!-- 1️⃣ HERO -->
-<section class="section hero">
-  <h1>GRAPA</h1>
-  <div class="subtitle">5ociedad Cooperativa Madrileña</div>
-  <div class="email">grapa@grapa.e5</div>
-</section>
-
-<!-- 2️⃣ MUSEOGRAFIA -->
-<section class="section image-section" id="museo-section">
-  <div class="overlay grapa top" id="g1">GRAPA</div>
-  <div class="overlay sub middle" id="m1">MU5EO</div>
-  <div class="overlay fia bottom" id="f1">FIA</div>
-</section>
-
-<!-- 3️⃣ ESCENOGRAFIA -->
-<section class="section image-section" id="esceno-section">
-  <div class="overlay grapa top" id="g2">GRAPA</div>
-  <div class="overlay sub middle" id="m2">E5CENO</div>
-  <div class="overlay fia bottom" id="f2">FIA</div>
-</section>
-
-<footer>&copy; 2025 GRAPA</footer>
-
 <script>
-const blocks = [
-  ['g1','m1','f1'],
-  ['g2','m2','f2']
-];
+const ids = ['overlay-top','overlay-bottom','museo','fia-superior','esceno','fia-inferior']
+const els = ids.map(id => document.getElementById(id))
+const bg = document.querySelector('.background-image-container')
+const vh = window.innerHeight
 
-blocks.forEach(group=>{
-  const observer = new IntersectionObserver(entries=>{
-    entries.forEach(entry=>{
-      if(entry.isIntersecting){
+let topTimer = null
+let bottomTimer = null
 
-        document.getElementById(group[0]).classList.add('visible');
+window.addEventListener('scroll',()=>{
+  const y = window.scrollY
+  const top = bg.offsetTop
+  const h = bg.offsetHeight
 
-        setTimeout(()=>{
-          document.getElementById(group[1]).classList.add('visible');
-        },300);
+  const showTop = (y >= top - vh/2 && y < top + h/2 - vh/4)
+  const showBottom = (y >= top + h/2 - vh/2 && y < top + h)
 
-        setTimeout(()=>{
-          document.getElementById(group[2]).classList.add('visible');
-        },600);
+  /* RESET siempre que salimos */
+  if(!showTop){
+    els[0].style.opacity = 0
+    els[2].style.opacity = 0
+    els[3].style.opacity = 0
+    clearTimeout(topTimer)
+  }
 
-      } else {
-        group.forEach(id=>{
-          document.getElementById(id).classList.remove('visible');
-        });
-      }
-    });
-  },{threshold:0.4});
+  if(!showBottom){
+    els[1].style.opacity = 0
+    els[4].style.opacity = 0
+    els[5].style.opacity = 0
+    clearTimeout(bottomTimer)
+  }
 
-  observer.observe(document.getElementById(group[0]).parentElement);
-});
+  /* SECUENCIA ARRIBA */
+  if(showTop && els[0].style.opacity == 0){
+    // GRAPA primero
+    els[0].style.opacity = 1
+
+    clearTimeout(topTimer)
+    topTimer = setTimeout(()=>{
+      // luego MU y FIA
+      els[2].style.opacity = 1
+      els[3].style.opacity = 1
+    }, 400)
+  }
+
+  /* SECUENCIA ABAJO */
+  if(showBottom && els[1].style.opacity == 0){
+    // GRAPA primero
+    els[1].style.opacity = 1
+
+    clearTimeout(bottomTimer)
+    bottomTimer = setTimeout(()=>{
+      // luego ESCENO y FIA
+      els[4].style.opacity = 1
+      els[5].style.opacity = 1
+    }, 400)
+  }
+})
 </script>
-
-</body>
-</html>
