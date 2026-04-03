@@ -18,7 +18,7 @@ body {
   font-family: 'GRAPA', sans-serif;
   text-transform: uppercase;
   background-color: #0A1A2A;
-  color:#BFC6CF;
+  color: #BFC6CF;
   overflow-x: hidden;
   min-height: 300vh;
 }
@@ -76,39 +76,48 @@ footer {
   height:auto;
 }
 
-/* TEXTOS */
+/* BASE TEXTO */
 .overlay-line {
   position:absolute;
   color:#E4E8ED;
   opacity:0;
-  transition:0.5s, transform 0.7s ease;
+  transition:0.5s;
   white-space:nowrap;
 }
 
 /* GRAPA */
-.center { text-align:center; font-size:clamp(100px,15vw,200px); }
-.gra { display:inline-block; }
-.pa { display:inline-block; }
+.center {
+  text-align:center;
+  font-size:clamp(100px,15vw,200px);
+  left:50%;
+  transform:translateX(-50%);
+}
 
 /* alineados con G */
-.left-align { text-align:left; padding-left:0.09em; }
+.left-align {
+  text-align:left;
+  padding-left:0.09em; /* pequeño margen desde GRA */
+  transition: transform 0.7s ease, left 0.7s ease;
+  left:auto;
+  transform:none;
+}
 
 /* tamaños */
-#museo { font-size:clamp(55px,9.5vw,110px); }
-#esceno { font-size:clamp(50px,9vw,100px); }
-#fia-superior,#fia-inferior { font-size:clamp(70px,12vw,150px); }
+#museo { font-size:clamp(55px,9.5vw,110px); top:21.5%; }
+#fia-superior { font-size:clamp(70px,12vw,150px); top:31.5%; }
 
-/* posiciones */
-#overlay-top { top:25%; left:50%; transform:translateX(-50%); }
-#overlay-bottom { top:75%; left:50%; transform:translateX(-50%); }
+#esceno { font-size:clamp(50px,9vw,100px); top:71.5%; }
+#fia-inferior { font-size:clamp(70px,12vw,150px); top:81.5%; }
 
-#museo { top:21.5%; }
-#fia-superior { top:31.5%; }
-#esceno { top:71.5%; }
-#fia-inferior { top:81.5%; }
+/* GRAPA posiciones */
+#overlay-top { top:25%; }
+#overlay-bottom { top:75%; }
 
-/* centrar conjunto */
-.recenter { left:50% !important; transform:translateX(-50%) !important; }
+/* Recenter final después de PA */
+.recenter {
+  left:50% !important;
+  transform:translateX(-50%) !important;
+}
 
 </style>
 </head>
@@ -122,11 +131,11 @@ footer {
 </div>
 
 <div class="background-image-container">
-  <img src="images/grapas.jpg">
+  <img src="images/grapas.jpg" alt="GRAPA">
 
-  <!-- GRAPA dividido en GRA + PA -->
-  <div class="overlay-line center" id="overlay-top"><span class="gra">GRA</span><span class="pa">PA</span></div>
-  <div class="overlay-line center" id="overlay-bottom"><span class="gra">GRA</span><span class="pa">PA</span></div>
+  <!-- GRAPA -->
+  <div class="overlay-line center" id="overlay-top">GRAPA</div>
+  <div class="overlay-line center" id="overlay-bottom">GRAPA</div>
 
   <!-- MUSEOGRAFIA -->
   <div class="overlay-line left-align" id="museo">MU5EO</div>
@@ -140,98 +149,68 @@ footer {
 <footer>&copy; 2025 GRAPA</footer>
 
 <script>
-const elsTop = {
-  overlay: document.getElementById('overlay-top'),
-  gra: document.querySelector('#overlay-top .gra'),
-  pa: document.querySelector('#overlay-top .pa'),
+const els = {
+  top: document.getElementById('overlay-top'),
+  bottom: document.getElementById('overlay-bottom'),
   museo: document.getElementById('museo'),
-  fia: document.getElementById('fia-superior')
-};
-const elsBottom = {
-  overlay: document.getElementById('overlay-bottom'),
-  gra: document.querySelector('#overlay-bottom .gra'),
-  pa: document.querySelector('#overlay-bottom .pa'),
+  fiaTop: document.getElementById('fia-superior'),
   esceno: document.getElementById('esceno'),
-  fia: document.getElementById('fia-inferior')
+  fiaBottom: document.getElementById('fia-inferior')
 };
 
 const bg = document.querySelector('.background-image-container');
 const vh = window.innerHeight;
 
-window.addEventListener('scroll',()=>{
+window.addEventListener('scroll', () => {
   const y = window.scrollY;
   const top = bg.offsetTop;
   const h = bg.offsetHeight;
 
-  // PROGRESO SUPERIOR
-  const topStart = top - vh/2;
-  const topEnd = top + h/2 - vh/4;
-  let progressTop = (y - topStart) / (topEnd - topStart);
-  progressTop = Math.min(Math.max(progressTop,0),1);
+  // Progresos
+  const showTop = (y >= top - vh/2 && y < top + h/2 - vh);
+  const showBottom = (y >= top + h/2 - vh/2);
 
-  // PROGRESO INFERIOR
-  const bottomStart = top + h/2 - vh/2;
-  const bottomEnd = top + h - vh/4;
-  let progressBottom = (y - bottomStart) / (bottomEnd - bottomStart);
-  progressBottom = Math.min(Math.max(progressBottom,0),1);
+  // GRAPA
+  els.top.style.opacity = showTop ? 1 : 0;
+  els.bottom.style.opacity = showBottom ? 1 : 0;
 
-  // --------------------------
-  // SUPERIOR
-  // GRAPA aparece primero
-  elsTop.overlay.style.opacity = progressTop>0 ? 1:0;
-  // MUSEO y FIA aparecen después de GRAPA
-  elsTop.museo.style.opacity = progressTop>0.1 ? 1:0;
-  elsTop.fia.style.opacity = progressTop>0.1 ? 1:0;
+  // MUSEO/FIA
+  els.museo.style.opacity = showTop ? 1 : 0;
+  els.fiaTop.style.opacity = showTop ? 1 : 0;
 
-  // PA se separa a la derecha y desaparece
-  const paShift = 30; // px
-  const paStart = 0.3;
-  const paEnd = 0.6;
-  if(progressTop>=paStart){
-    const local = Math.min((progressTop-paStart)/(paEnd-paStart),1);
-    elsTop.pa.style.transform = `translateX(${local*paShift}px)`;
-    elsTop.pa.style.opacity = 1 - local;
+  // ESCENO/FIA
+  els.esceno.style.opacity = showBottom ? 1 : 0;
+  els.fiaBottom.style.opacity = showBottom ? 1 : 0;
+
+  // PA animation: se separa a la derecha y desaparece al 50% scroll
+  const paProgressTop = Math.min(Math.max((y - (top - vh/2)) / (vh/4),0),1);
+  const paProgressBottom = Math.min(Math.max((y - (top + h/2 - vh/2)) / (vh/4),0),1);
+
+  els.top.style.transform = `translateX(${(-50 + paProgressTop*20)}%)`;
+  els.bottom.style.transform = `translateX(${(-50 + paProgressBottom*20)}%)`;
+  els.top.style.opacity = 1 - paProgressTop;
+  els.bottom.style.opacity = 1 - paProgressBottom;
+
+  // Recenter conjunto después de PA desaparece
+  if(paProgressTop >= 1){
+    els.museo.classList.add('recenter');
+    els.fiaTop.classList.add('recenter');
+    els.top.classList.add('recenter');
   } else {
-    elsTop.pa.style.transform = 'translateX(0)';
-    elsTop.pa.style.opacity = 1;
+    els.museo.classList.remove('recenter');
+    els.fiaTop.classList.remove('recenter');
+    els.top.classList.remove('recenter');
   }
 
-  // Cuando PA desaparece, centrar conjunto GRA+MUSEO+FIA
-  if(progressTop>=paEnd){
-    elsTop.overlay.classList.add('recenter');
-    elsTop.museo.classList.add('recenter');
-    elsTop.fia.classList.add('recenter');
+  if(paProgressBottom >= 1){
+    els.esceno.classList.add('recenter');
+    els.fiaBottom.classList.add('recenter');
+    els.bottom.classList.add('recenter');
   } else {
-    elsTop.overlay.classList.remove('recenter');
-    elsTop.museo.classList.remove('recenter');
-    elsTop.fia.classList.remove('recenter');
+    els.esceno.classList.remove('recenter');
+    els.fiaBottom.classList.remove('recenter');
+    els.bottom.classList.remove('recenter');
   }
-
-  // --------------------------
-  // INFERIOR
-  elsBottom.overlay.style.opacity = progressBottom>0 ? 1:0;
-  elsBottom.esceno.style.opacity = progressBottom>0.1 ? 1:0;
-  elsBottom.fia.style.opacity = progressBottom>0.1 ? 1:0;
-
-  if(progressBottom>=paStart){
-    const local = Math.min((progressBottom-paStart)/(paEnd-paStart),1);
-    elsBottom.pa.style.transform = `translateX(${local*paShift}px)`;
-    elsBottom.pa.style.opacity = 1 - local;
-  } else {
-    elsBottom.pa.style.transform = 'translateX(0)';
-    elsBottom.pa.style.opacity = 1;
-  }
-
-  if(progressBottom>=paEnd){
-    elsBottom.overlay.classList.add('recenter');
-    elsBottom.esceno.classList.add('recenter');
-    elsBottom.fia.classList.add('recenter');
-  } else {
-    elsBottom.overlay.classList.remove('recenter');
-    elsBottom.esceno.classList.remove('recenter');
-    elsBottom.fia.classList.remove('recenter');
-  }
-
 });
 </script>
 
