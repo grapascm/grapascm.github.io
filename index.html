@@ -18,8 +18,8 @@ body {
   font-family: 'GRAPA', sans-serif;
   text-transform: uppercase;
   background-color: #0A1A2A;
-  color: #BFC6CF;
-  min-height: 300vh;
+  color:#BFC6CF;
+  min-height:300vh;
 }
 
 /* HERO */
@@ -112,7 +112,8 @@ footer {
 
 /* RECENTER GLOBAL */
 .recenter {
-  transform:translateX(-50%) translateY(0) translateX(-8%);
+  transform:translateX(-50%) translateY(0);
+  left:50%;
 }
 
 /* alineación izquierda */
@@ -193,13 +194,17 @@ sections.forEach(group => {
         if(entry.isIntersecting){
           el.classList.add('visible');
 
+          // Animación de PA y recenter completo
           if(id === 'museo'){
             setTimeout(()=>{
               const top = document.getElementById('overlay-top');
               top.classList.add('shift');
 
               setTimeout(()=>{
-                top.classList.add('fade-pa','recenter');
+                top.classList.add('fade-pa');
+
+                // CENTRAR TODO EL CONJUNTO
+                document.getElementById('overlay-top').classList.add('recenter');
                 document.getElementById('museo').classList.add('recenter');
                 document.getElementById('fia-superior').classList.add('recenter');
               }, 400);
@@ -213,15 +218,19 @@ sections.forEach(group => {
               bottom.classList.add('shift');
 
               setTimeout(()=>{
-                bottom.classList.add('fade-pa','recenter');
+                bottom.classList.add('fade-pa');
+
+                // CENTRAR TODO EL CONJUNTO
+                document.getElementById('overlay-bottom').classList.add('recenter');
                 document.getElementById('esceno').classList.add('recenter');
                 document.getElementById('fia-inferior').classList.add('recenter');
-              }, 400);
+              },400);
 
-            }, 400);
+            },400);
           }
 
         } else {
+          // Reset cuando salimos del viewport
           el.classList.remove('visible');
 
           if(id === 'museo'){
