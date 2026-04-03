@@ -33,7 +33,7 @@ body {
 }
 
 h1.hero-text {
-  font-size:clamp(80px,15vw,200px);
+  font-size: clamp(80px,15vw,200px);
   letter-spacing:0.04em;
   color:#E4E8ED;
   line-height:0.9;
@@ -110,7 +110,7 @@ footer {
   opacity:0;
 }
 
-/* RECENTER GLOBAL CONJUNTO */
+/* RECENTER SUAVE HACIA LA DERECHA */
 .recenter-group {
   transition: transform 0.8s ease;
 }
@@ -191,32 +191,42 @@ sections.forEach(group => {
         const el = document.getElementById(id);
 
         if(entry.isIntersecting){
+          // Aparece
           el.classList.add('visible');
 
+          // Solo para MUSEO/ESCENO
           if(id === 'museo' || id === 'esceno'){
-            // PA se desplaza
-            const topEl = group[0] === 'overlay-top' ? document.getElementById('overlay-top') : document.getElementById('overlay-bottom');
             setTimeout(()=>{
+              // Desplaza PA
+              const topEl = group[0] === 'overlay-top' ? document.getElementById('overlay-top') : document.getElementById('overlay-bottom');
               topEl.classList.add('shift');
+
               setTimeout(()=>{
+                // Desaparece PA
                 topEl.classList.add('fade-pa');
-                // Recentrar todo el grupo en la página
+
+                // Recentrado parcial hacia la derecha
                 group.forEach(innerId=>{
                   const innerEl = document.getElementById(innerId);
-                  innerEl.style.transform = 'translateX(-50%) translateY(0)'; // centrado horizontal
+                  // Solo un pequeño desplazamiento para centrar el conjunto visual
+                  innerEl.style.transform = 'translateX(calc(-50% + 2vw)) translateY(0)';
                 });
-              },400);
-            },400);
+              }, 400);
+            }, 400);
           }
 
         } else {
+          // Reset
           el.classList.remove('visible');
-          const topEl = group[0] === 'overlay-top' ? document.getElementById('overlay-top') : document.getElementById('overlay-bottom');
-          topEl.classList.remove('shift','fade-pa');
-          group.forEach(innerId=>{
-            const innerEl = document.getElementById(innerId);
-            innerEl.style.transform = 'translateX(-50%) translateY(20px)'; // vuelta a posición inicial
-          });
+
+          if(id === 'museo' || id === 'esceno'){
+            const topEl = group[0] === 'overlay-top' ? document.getElementById('overlay-top') : document.getElementById('overlay-bottom');
+            topEl.classList.remove('shift','fade-pa');
+            group.forEach(innerId=>{
+              const innerEl = document.getElementById(innerId);
+              innerEl.style.transform = 'translateX(-50%) translateY(20px)';
+            });
+          }
         }
       });
     });
