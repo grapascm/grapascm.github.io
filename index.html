@@ -3,7 +3,7 @@
 <head>
 <meta charset="UTF-8">
 <meta name="viewport" content="width=device-width, initial-scale=1.0">
-<title>GRAPA</title>
+<title>GRAPA 1.0</title>
 
 <style>
 @font-face {
@@ -18,7 +18,7 @@ body {
   font-family: 'GRAPA', sans-serif;
   text-transform: uppercase;
   background-color: #0A1A2A;
-  color: #BFC6CF;
+  color:#BFC6CF;
   min-height: 300vh;
 }
 
@@ -33,20 +33,20 @@ body {
 }
 
 h1.hero-text {
-  font-size: clamp(80px,15vw,200px);
+  font-size:clamp(60px,10vw,200px);
   letter-spacing:0.04em;
   color:#E4E8ED;
   line-height:0.9;
 }
 
 .subtitle {
-  margin-top:8vh;
-  font-size:clamp(14px,2vw,20px);
+  margin-top:6vh;
+  font-size:clamp(12px,2vw,20px);
   letter-spacing:0.35em;
 }
 
 .email-button {
-  margin-top:18vh;
+  margin-top:15vh;
   font-size:clamp(10px,1.2vw,14px);
   letter-spacing:0.3em;
   text-decoration:none;
@@ -58,7 +58,7 @@ h1.hero-text {
 /* Footer */
 footer {
   position:fixed;
-  bottom:60px;
+  bottom:40px;
   width:100%;
   text-align:center;
   font-size:clamp(10px,1vw,12px);
@@ -81,7 +81,7 @@ footer {
   position:absolute;
   left:50%;
   transform:translateX(-50%) translateY(20px);
-  width:clamp(300px,70vw,1200px);
+  width:clamp(250px,70vw,1200px);
   color:#E4E8ED;
   opacity:0;
   transition: opacity 0.6s ease, transform 0.6s ease;
@@ -91,7 +91,7 @@ footer {
 /* GRAPA */
 .center {
   text-align:center;
-  font-size:clamp(100px,15vw,200px);
+  font-size:clamp(80px,15vw,200px);
 }
 
 .center span {
@@ -122,9 +122,9 @@ footer {
 }
 
 /* tamaños */
-#museo { font-size:clamp(55px,9.5vw,110px); }
-#esceno { font-size:clamp(50px,9vw,100px); }
-#fia-superior, #fia-inferior { font-size:clamp(70px,12vw,150px); }
+#museo { font-size:clamp(45px,8vw,110px); }
+#esceno { font-size:clamp(45px,8vw,100px); }
+#fia-superior, #fia-inferior { font-size:clamp(60px,10vw,150px); }
 
 /* posiciones */
 #overlay-top { top:25%; }
@@ -147,6 +147,26 @@ footer {
 .delay-2 { transition-delay:0.4s; }
 .delay-3 { transition-delay:0.7s; }
 
+/* RESPONSIVE MEDIA QUERIES */
+@media(max-width:1024px){ /* tablets */
+  h1.hero-text { font-size:clamp(60px,12vw,180px); }
+  #museo, #esceno { font-size:clamp(40px,7vw,90px); }
+  #fia-superior, #fia-inferior { font-size:clamp(50px,9vw,130px); }
+}
+
+@media(max-width:768px){ /* móviles grandes */
+  h1.hero-text { font-size:clamp(50px,10vw,160px); }
+  #museo, #esceno { font-size:clamp(35px,8vw,80px); }
+  #fia-superior, #fia-inferior { font-size:clamp(45px,9vw,120px); }
+  .overlay-line { width:80vw; }
+}
+
+@media(max-width:480px){ /* móviles pequeños */
+  h1.hero-text { font-size:clamp(40px,12vw,140px); }
+  #museo, #esceno { font-size:clamp(30px,10vw,70px); }
+  #fia-superior, #fia-inferior { font-size:clamp(35px,10vw,100px); }
+  .overlay-line { width:90vw; }
+}
 </style>
 </head>
 
