@@ -1,231 +1,56 @@
-<!DOCTYPE html>
-<html lang="es">
-<head>
-<meta charset="UTF-8">
-<meta name="viewport" content="width=device-width, initial-scale=1.0">
-<title>GRAPA</title>
-
-<style>
-@font-face {
-  font-family: 'GRAPA';
-  src: url('./fonts/GRAPA.woff2') format('woff2');
-  font-display: swap;
-}
-
-* { margin:0; padding:0; box-sizing:border-box; }
-
-body {
-  font-family: 'GRAPA', sans-serif;
-  text-transform: uppercase;
-  background-color: #0A1A2A;
-  color:#BFC6CF;
-  min-height:300vh;
-}
-
-/* HERO */
-.hero {
-  min-height: 100svh;
-  display:flex;
-  flex-direction:column;
-  align-items:center;
-  text-align:center;
-  padding-top:20vh;
-}
-
-h1.hero-text {
-  font-size: clamp(80px,15vw,200px);
-  letter-spacing:0.04em;
-  color:#E4E8ED;
-  line-height:0.9;
-}
-
-.subtitle {
-  margin-top:8vh;
-  font-size:clamp(14px,2vw,20px);
-  letter-spacing:0.35em;
-}
-
-.email-button {
-  margin-top:18vh;
-  font-size:clamp(10px,1.2vw,14px);
-  letter-spacing:0.3em;
-  text-decoration:none;
-  color:#E4E8ED;
-  border:1px solid rgba(228,232,237,0.2);
-  padding:1vh 2vw;
-}
-
-/* Footer */
-footer {
-  position:fixed;
-  bottom:60px;
-  width:100%;
-  text-align:center;
-  font-size:clamp(10px,1vw,12px);
-  opacity:0.5;
-}
-
-/* Imagen */
-.background-image-container {
-  position:relative;
-}
-
-.background-image-container img {
-  width:100%;
-  height:auto;
-  display:block;
-}
-
-/* Contenedores de bloques */
-.block {
-  position:absolute;
-  left:50%;
-  transform:translateX(-50%);
-  width:fit-content;
-}
-
-/* BASE TEXTO */
-.overlay-line {
-  color:#E4E8ED;
-  white-space:nowrap;
-  opacity:0;
-  transition: opacity 0.6s ease, transform 0.6s ease;
-  display:block;
-}
-
-/* GRAPA */
-.center {
-  text-align:center;
-  font-size:clamp(100px,15vw,200px);
-}
-
-.center span {
-  display:inline-block;
-  transition: transform 0.6s ease, opacity 0.4s ease;
-}
-
-/* PA movimiento */
-.shift .pa {
-  transform: translateX(0.35em);
-  transition-delay:0.5s;
-}
-
-/* PA desaparece */
-.fade-pa .pa {
-  opacity:0;
-}
-
-/* Recentrado de todo el bloque */
-.recenter-block {
-  left:50% !important;
-  transform:translateX(-50%) !important;
-}
-
-/* alineación izquierda */
-.left-align {
-  text-align:left;
-  padding-left:0.09em;
-}
-
-/* tamaños */
-#museo { font-size:clamp(55px,9.5vw,110px); }
-#esceno { font-size:clamp(50px,9vw,100px); }
-#fia-superior, #fia-inferior { font-size:clamp(70px,12vw,150px); }
-
-/* posiciones */
-#overlay-top { top:25%; }
-#overlay-bottom { top:75%; }
-
-#museo { top:21.5%; }
-#fia-superior { top:31.5%; }
-
-#esceno { top:71.5%; }
-#fia-inferior { top:81.5%; }
-
-/* visible */
-.visible {
-  opacity:1;
-  transform:translateX(0) translateY(0);
-}
-
-</style>
-</head>
-
-<body>
-
-<div class="hero">
-  <h1 class="hero-text">GRAPA</h1>
-  <div class="subtitle">5ociedad Cooperativa Madrileña</div>
-  <a href="mailto:grapa@grapa.e5" class="email-button">grapa@grapa.e5</a>
-</div>
-
-<div class="background-image-container">
-  <img src="images/grapas.jpg">
-
-  <!-- SUPERIOR -->
-  <div class="block" id="block-top">
-    <div class="overlay-line center" id="overlay-top">
-      <span class="gra">GRA</span><span class="pa">PA</span>
-    </div>
-    <div class="overlay-line left-align" id="museo">MU5EO</div>
-    <div class="overlay-line left-align" id="fia-superior">FIA</div>
-  </div>
-
-  <!-- INFERIOR -->
-  <div class="block" id="block-bottom">
-    <div class="overlay-line center" id="overlay-bottom">
-      <span class="gra">GRA</span><span class="pa">PA</span>
-    </div>
-    <div class="overlay-line left-align" id="esceno">E5CENO</div>
-    <div class="overlay-line left-align" id="fia-inferior">FIA</div>
-  </div>
-
-</div>
-
-<footer>&copy; 2025 GRAPA</footer>
-
 <script>
-const sections = [
-  { block:'block-top', pa:'overlay-top', rest:['museo','fia-superior'] },
-  { block:'block-bottom', pa:'overlay-bottom', rest:['esceno','fia-inferior'] }
+// Agrupamos cada bloque en arrays
+const topBlock = [
+  document.getElementById('overlay-top'),
+  document.getElementById('museo'),
+  document.getElementById('fia-superior')
 ];
 
-sections.forEach(s=>{
-  const observer = new IntersectionObserver((entries)=>{
-    entries.forEach(entry=>{
-      const block = document.getElementById(s.block);
-      const paEl = document.getElementById(s.pa);
-      const restEls = s.rest.map(id=>document.getElementById(id));
+const bottomBlock = [
+  document.getElementById('overlay-bottom'),
+  document.getElementById('esceno'),
+  document.getElementById('fia-inferior')
+];
 
-      if(entry.isIntersecting){
-        // Mostrar PA y resto
-        paEl.classList.add('visible');
-        restEls.forEach(e=>e.classList.add('visible'));
-
-        // Desplazar PA
-        paEl.classList.add('shift');
-
-        // Desaparece PA después
-        setTimeout(()=>{
-          paEl.classList.add('fade-pa');
-          // CENTRAR TODO EL BLOQUE
-          block.classList.add('recenter-block');
-        }, 500);
-
-      } else {
-        // Reset al salir
-        paEl.classList.remove('visible','shift','fade-pa');
-        restEls.forEach(e=>e.classList.remove('visible'));
-        block.classList.remove('recenter-block');
-      }
-    });
-  },{
-    threshold:0.3
+// Función para centrar un bloque
+function centerBlock(block) {
+  block.forEach(el => {
+    el.style.left = '50%';
+    el.style.transform = 'translateX(-50%) translateY(0)';
   });
+}
 
-  observer.observe(document.getElementById(s.pa));
-});
+// Función para resetear bloque
+function resetBlock(block) {
+  block.forEach(el => {
+    el.style.left = '';
+    el.style.transform = '';
+  });
+}
+
+// Observadores de scroll para controlar la animación
+const observerTop = new IntersectionObserver(entries => {
+  entries.forEach(entry => {
+    if (entry.isIntersecting) {
+      // Después de un delay (PA desaparece) centramos todo el bloque
+      setTimeout(() => centerBlock(topBlock), 500);
+    } else {
+      resetBlock(topBlock);
+    }
+  });
+},{threshold: 0.3});
+
+const observerBottom = new IntersectionObserver(entries => {
+  entries.forEach(entry => {
+    if (entry.isIntersecting) {
+      setTimeout(() => centerBlock(bottomBlock), 500);
+    } else {
+      resetBlock(bottomBlock);
+    }
+  });
+},{threshold: 0.3});
+
+// Observamos solo el texto MUSEO y ESCENO
+observerTop.observe(document.getElementById('museo'));
+observerBottom.observe(document.getElementById('esceno'));
 </script>
-
-</body>
-</html>
