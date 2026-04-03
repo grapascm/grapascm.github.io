@@ -21,7 +21,7 @@ body {
   color: #BFC6CF;
   overflow-x: hidden;
   position: relative;
-  min-height: 300vh;
+  min-height: 300vh; /* suficiente para scroll */
 }
 
 /* HERO */
@@ -105,7 +105,7 @@ footer {
   position:absolute;
   left:50%;
   transform:translateX(-50%);
-  font-size:clamp(60px,10vw,150px);
+  font-size:clamp(100px,15vw,200px);
   color:#E4E8ED;
   line-height:0.9;
   opacity:0;
@@ -114,8 +114,8 @@ footer {
   white-space:nowrap;
 }
 
-/* Sección Museografia */
-.section-museografia, .section-escenografia {
+/* Secciones Museografía y Escenografía */
+.section-text {
   position:absolute;
   left:50%;
   transform:translateX(-50%);
@@ -126,31 +126,27 @@ footer {
   transition:opacity 0.5s ease;
 }
 
-.section-museografia .line,
-.section-escenografia .line {
+.section-text .line {
   font-family:'GRAPA', sans-serif;
   text-transform:uppercase;
   color:#E4E8ED;
   display:block;
 }
 
-/* Museografía */
 .section-museografia .line:nth-child(1) { font-size:clamp(60px,10vw,150px); margin-bottom:-0.1em; } /* MUSEO */
 .section-museografia .line:nth-child(2) { font-size:clamp(100px,15vw,200px); } /* GRA */
-.section-museografia .line:nth-child(3) { font-size:clamp(60px,10vw,150px); margin-top:-0.1em; } /* FIA */
+.section-museografia .line:nth-child(3) { font-size:clamp(60px,10vw,150px); margin-top:-0.1em; } /* FÍA */
 
-/* Escenografía */
-.section-escenografia { top:75%; } /* mitad inferior de la imagen */
 .section-escenografia .line:nth-child(1) { font-size:clamp(60px,10vw,150px); margin-bottom:-0.1em; } /* ESCENO */
 .section-escenografia .line:nth-child(2) { font-size:clamp(100px,15vw,200px); } /* GRA */
-.section-escenografia .line:nth-child(3) { font-size:clamp(60px,10vw,150px); margin-top:-0.1em; } /* FIA */
+.section-escenografia .line:nth-child(3) { font-size:clamp(60px,10vw,150px); margin-top:-0.1em; } /* FÍA */
 
 /* Responsive */
 @media(max-width:768px){
   h1.hero-text { font-size:clamp(50px,12vw,150px); }
   .subtitle { margin-top:6vh; }
   .email-button { margin-top:14vh; padding:1vh 3vw; }
-  .overlay-text { font-size:clamp(40px,12vw,120px); }
+  .overlay-text { font-size:clamp(80px,12vw,150px); }
   .section-museografia .line:nth-child(1), .section-museografia .line:nth-child(3),
   .section-escenografia .line:nth-child(1), .section-escenografia .line:nth-child(3){ font-size:clamp(40px,10vw,120px); }
   .section-museografia .line:nth-child(2),
@@ -162,14 +158,13 @@ footer {
   h1.hero-text { font-size:clamp(40px,10vw,100px); }
   .subtitle { margin-top:4vh; letter-spacing:0.2em; }
   .email-button { margin-top:10vh; padding:1vh 4vw; }
-  .overlay-text { font-size:clamp(30px,12vw,90px); }
+  .overlay-text { font-size:clamp(60px,12vw,120px); }
   .section-museografia .line:nth-child(1), .section-museografia .line:nth-child(3),
   .section-escenografia .line:nth-child(1), .section-escenografia .line:nth-child(3){ font-size:clamp(30px,10vw,90px); }
   .section-museografia .line:nth-child(2),
   .section-escenografia .line:nth-child(2){ font-size:clamp(60px,12vw,120px); }
   footer { bottom:40px; }
 }
-
 </style>
 </head>
 <body>
@@ -178,7 +173,7 @@ footer {
 <div class="hero">
   <h1 class="hero-text">GRAPA</h1>
   <div class="subtitle">5ociedad Cooperativa Madrileña</div>
-  <a href="mailto:grapa@grapa.es" class="email-button">grapa@grapa.e5</a>
+  <a href="mailto:grapa@grapa.es" class="email-button">grapa@grapa.es</a>
 </div>
 
 <!-- Imagen y overlays -->
@@ -186,21 +181,21 @@ footer {
   <img src="images/grapas.jpg" alt="GRAPA">
 
   <!-- GRAPA mitad superior e inferior -->
-  <div class="overlay-text" id="overlay-top">GRAPA</div>
-  <div class="overlay-text" id="overlay-bottom">GRAPA</div>
+  <div class="overlay-text" id="overlay-top" style="top:25%;">GRAPA</div>
+  <div class="overlay-text" id="overlay-bottom" style="top:75%;">GRAPA</div>
 
-  <!-- Museografía -->
-  <div class="section-museografia" id="museografia-text">
+  <!-- Museografía sobre GRA superior -->
+  <div class="section-text section-museografia" id="museografia-text" style="top:25%;">
     <div class="line">MUSEO</div>
     <div class="line">GRA</div>
-    <div class="line">FIA</div>
+    <div class="line">FÍA</div>
   </div>
 
-  <!-- Escenografía -->
-  <div class="section-escenografia" id="escenografia-text">
+  <!-- Escenografía sobre GRA inferior -->
+  <div class="section-text section-escenografia" id="escenografia-text" style="top:75%;">
     <div class="line">ESCENO</div>
     <div class="line">GRA</div>
-    <div class="line">FIA</div>
+    <div class="line">FÍA</div>
   </div>
 </div>
 
@@ -219,37 +214,17 @@ window.addEventListener('scroll',()=>{
   const bgTop = bgContainer.offsetTop;
   const bgHeight = bgContainer.offsetHeight;
 
-    // GRAPA mitad superior de la imagen
-  const topTriggerStart = bgTop - viewportHeight / 2;
-  const topTriggerEnd = bgTop + bgHeight / 2 - viewportHeight;
+  // GRAPA mitad superior
+  overlayTop.style.opacity = (scrollY >= bgTop - viewportHeight/2 && scrollY < bgTop + bgHeight/2 - viewportHeight) ? 1 : 0;
 
-  if(scrollY >= topTriggerStart && scrollY < topTriggerEnd) {
-    overlayTop.style.top = '25%';
-    overlayTop.style.opacity = 1;
-  } else {
-    overlayTop.style.opacity = 0;
-  }
-  
- // Museografía sobre GRAPA superior
-  if(scrollY >= bgTop - viewportHeight/2 && scrollY < bgTop + bgHeight/2){
-    museoText.style.opacity=1;
-  }else museoText.style.opacity=0;
+  // GRAPA mitad inferior
+  overlayBottom.style.opacity = (scrollY >= bgTop + bgHeight/2 - viewportHeight/2 && scrollY < bgTop + bgHeight - viewportHeight/4) ? 1 : 0;
 
-  // GRAPA mitad inferior de la imagen
-  const bottomTriggerStart = bgTop + bgHeight / 2 - viewportHeight / 2;
-  const bottomTriggerEnd = bgTop + bgHeight - viewportHeight / 4;
-
-  if(scrollY >= bottomTriggerStart && scrollY < bottomTriggerEnd) {
-    overlayBottom.style.top = '75%';
-    overlayBottom.style.opacity = 1;
-  } else {
-    overlayBottom.style.opacity = 0;
-  }
+  // Museografía sobre GRAPA superior
+  museoText.style.opacity = (scrollY >= bgTop - viewportHeight/2 && scrollY < bgTop + bgHeight/2) ? 1 : 0;
 
   // Escenografía sobre GRAPA inferior
-  if(scrollY >= bgTop + bgHeight/2 - viewportHeight/2 && scrollY < bgTop + bgHeight){
-    escenaText.style.opacity=1;
-  }else escenaText.style.opacity=0;
+  escenaText.style.opacity = (scrollY >= bgTop + bgHeight/2 - viewportHeight/2 && scrollY < bgTop + bgHeight) ? 1 : 0;
 });
 </script>
 
