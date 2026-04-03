@@ -82,6 +82,7 @@ footer {
   left:50%;
   transform:translateX(-50%);
   width:clamp(300px,70vw,1200px);
+  transition: transform 0.5s;
 }
 
 /* TEXTOS */
@@ -112,11 +113,6 @@ footer {
 /* textos inferiores */
 #esceno { margin-top:-10px; }
 #fia-inferior { margin-top:5px; }
-
-/* recenter */
-.group.recenter {
-  transform: translateX(-50%);
-}
 
 /* responsive */
 @media(max-width:768px){
@@ -181,19 +177,36 @@ window.addEventListener('scroll',()=>{
   const topOffset = bg.offsetTop
   const h = bg.offsetHeight
 
-  // TOP
+  // SUPERIOR
   if(y >= topOffset - vh/2 && y < topOffset + h/2 - vh/4){
     topLines.forEach(el=>el.style.opacity = 1)
-    // PA se desplaza a la derecha
+
+    // PA se mueve a la derecha
     topPA.style.transform = 'translateX(25%)'
-    setTimeout(()=>{ topPA.style.opacity = 0; topGroup.classList.add('recenter') }, 500)
+    // Tras desplazamiento PA, desaparecer y centrar el grupo
+    setTimeout(()=>{
+      topPA.style.opacity = 0
+      topGroup.querySelectorAll('.left-align, .gra').forEach(el=>{
+        el.style.textAlign = 'center'
+        el.style.marginLeft = '0'
+      })
+      topGroup.style.transform = 'translateX(-50%)'
+    }, 500)
   }
 
-  // BOTTOM
+  // INFERIOR
   if(y >= topOffset + h/2 - vh/2){
     bottomLines.forEach(el=>el.style.opacity = 1)
+
     bottomPA.style.transform = 'translateX(25%)'
-    setTimeout(()=>{ bottomPA.style.opacity = 0; bottomGroup.classList.add('recenter') }, 500)
+    setTimeout(()=>{
+      bottomPA.style.opacity = 0
+      bottomGroup.querySelectorAll('.left-align, .gra').forEach(el=>{
+        el.style.textAlign = 'center'
+        el.style.marginLeft = '0'
+      })
+      bottomGroup.style.transform = 'translateX(-50%)'
+    },500)
   }
 })
 </script>
