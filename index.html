@@ -31,7 +31,6 @@ body {
   align-items:center;
   text-align:center;
   padding-top:20vh;
-  z-index:2;
 }
 
 h1.hero-text {
@@ -87,9 +86,10 @@ footer {
   color:#E4E8ED;
   opacity:0;
   transition:0.5s;
+  white-space:nowrap;
 }
 
-/* GRAPA centrado */
+/* GRAPA */
 .center {
   text-align:center;
   font-size:clamp(100px,15vw,200px);
@@ -98,7 +98,7 @@ footer {
 /* alineados con G */
 .left-align {
   text-align:left;
-  font-size:clamp(60px,11vw,120px);
+  transform-origin:left center;
 }
 
 /* posiciones */
@@ -130,12 +130,12 @@ footer {
   <div class="overlay-line center" id="overlay-bottom">GRAPA</div>
 
   <!-- MUSEOGRAFIA -->
-  <div class="overlay-line left-align" id="museo"> MU5EO</div>
-  <div class="overlay-line left-align" id="fia-superior"> FIA</div>
+  <div class="overlay-line left-align" id="museo">MU5EO</div>
+  <div class="overlay-line left-align" id="fia-superior">FIA</div>
 
   <!-- ESCENOGRAFIA -->
-  <div class="overlay-line left-align" id="esceno"> E5CENO</div>
-  <div class="overlay-line left-align" id="fia-inferior"> FIA</div>
+  <div class="overlay-line left-align" id="esceno">E5CENO</div>
+  <div class="overlay-line left-align" id="fia-inferior">FIA</div>
 </div>
 
 <footer>&copy; 2025 GRAPA</footer>
@@ -146,6 +146,7 @@ const els = ids.map(id=>document.getElementById(id))
 const bg = document.querySelector('.background-image-container')
 const vh = window.innerHeight
 
+/* SCROLL */
 window.addEventListener('scroll',()=>{
   const y = window.scrollY
   const top = bg.offsetTop
@@ -162,6 +163,28 @@ window.addEventListener('scroll',()=>{
   els[4].style.opacity = showBottom ? 1:0
   els[5].style.opacity = showBottom ? 1:0
 })
+
+/* AJUSTE PERFECTO DE ANCHO */
+function ajustarTexto() {
+  const grapa = document.getElementById('overlay-top')
+  const graWidth = grapa.offsetWidth * 0.6 // aprox ancho de "GRA"
+
+  const targets = ['museo','fia-superior','esceno','fia-inferior']
+
+  targets.forEach(id=>{
+    const el = document.getElementById(id)
+
+    el.style.transform = 'translateX(-50%) scaleX(1)' // reset
+    const actual = el.offsetWidth
+
+    const scale = graWidth / actual
+
+    el.style.transform = `translateX(-50%) scaleX(${scale})`
+  })
+}
+
+window.addEventListener('load', ajustarTexto)
+window.addEventListener('resize', ajustarTexto)
 </script>
 
 </body>
