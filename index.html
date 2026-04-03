@@ -112,6 +112,13 @@ footer {
 #fia-superior { top:31.5%; }
 #esceno { top:71.5%; }
 #fia-inferior { top:81.5%; }
+
+/* CLASE CENTRADO FINAL */
+.recenter {
+  left:50% !important;
+  transform:translateX(-50%) !important;
+  transition: left 0.5s ease, transform 0.5s ease;
+}
 </style>
 </head>
 
@@ -142,75 +149,49 @@ footer {
 <footer>&copy; 2025 GRAPA</footer>
 
 <script>
-const ids = ['overlay-top','overlay-bottom','museo','fia-superior','esceno','fia-inferior'];
-const els = ids.map(id=>document.getElementById(id));
-const bg = document.querySelector('.background-image-container');
-const vh = window.innerHeight;
+const ids = ['overlay-top','overlay-bottom','museo','fia-superior','esceno','fia-inferior']
+const els = ids.map(id=>document.getElementById(id))
+const bg = document.querySelector('.background-image-container')
+const vh = window.innerHeight
 
 window.addEventListener('scroll',()=>{
-  const y = window.scrollY;
-  const top = bg.offsetTop;
-  const h = bg.offsetHeight;
+  const y = window.scrollY
+  const top = bg.offsetTop
+  const h = bg.offsetHeight
 
-  const showTop = (y >= top - vh/2 && y < top + h/2 - vh);
-  const showBottom = (y >= top + h/2 - vh/2);
+  // Aparición GRAPA y subsecuentes
+  const showTop = (y >= top - vh/2 && y < top + h/2 - vh)
+  const showBottom = (y >= top + h/2 - vh/2)
 
-  // GRAPA y bloques
-  els[0].style.opacity = showTop ? 1:0;
-  els[2].style.opacity = showTop ? 1:0;
-  els[3].style.opacity = showTop ? 1:0;
+  els[0].style.opacity = showTop ? 1:0
+  els[2].style.opacity = showTop ? 1:0
+  els[3].style.opacity = showTop ? 1:0
 
-  els[1].style.opacity = showBottom ? 1:0;
-  els[4].style.opacity = showBottom ? 1:0;
-  els[5].style.opacity = showBottom ? 1:0;
-});
+  els[1].style.opacity = showBottom ? 1:0
+  els[4].style.opacity = showBottom ? 1:0
+  els[5].style.opacity = showBottom ? 1:0
 
-// NUEVO: centrar todo el conjunto después de PA
-function centerBlock(blockIds) {
-  blockIds.forEach(id=>{
-    const el = document.getElementById(id);
-    el.style.left = '50%';
-    el.style.transform = 'translateX(-50%)';
-  });
-}
+  // Cuando PA desaparece, centrar conjunto restante
+  if(!showTop){ // superior
+    els[0].classList.add('recenter') // GRAPA
+    els[2].classList.add('recenter') // MU5EO
+    els[3].classList.add('recenter') // FIA
+  } else {
+    els[0].classList.remove('recenter')
+    els[2].classList.remove('recenter')
+    els[3].classList.remove('recenter')
+  }
 
-function resetBlock(blockIds) {
-  blockIds.forEach(id=>{
-    const el = document.getElementById(id);
-    if(id.includes('overlay')) {
-      el.style.transform = 'translateX(-50%)';
-    } else {
-      el.style.transform = 'translateX(0)';
-      el.style.left = '0.09em';
-    }
-  });
-}
-
-const blockTop = ['overlay-top','museo','fia-superior'];
-const blockBottom = ['overlay-bottom','esceno','fia-inferior'];
-
-const observerTop = new IntersectionObserver(entries=>{
-  entries.forEach(entry=>{
-    if(entry.isIntersecting){
-      setTimeout(()=> centerBlock(blockTop), 900); // después de PA
-    } else {
-      resetBlock(blockTop);
-    }
-  });
-},{threshold:0.5});
-
-const observerBottom = new IntersectionObserver(entries=>{
-  entries.forEach(entry=>{
-    if(entry.isIntersecting){
-      setTimeout(()=> centerBlock(blockBottom), 900); 
-    } else {
-      resetBlock(blockBottom);
-    }
-  });
-},{threshold:0.5});
-
-observerTop.observe(document.getElementById('museo'));
-observerBottom.observe(document.getElementById('esceno'));
+  if(!showBottom){ // inferior
+    els[1].classList.add('recenter') // GRAPA
+    els[4].classList.add('recenter') // ESCENO
+    els[5].classList.add('recenter') // FIA
+  } else {
+    els[1].classList.remove('recenter')
+    els[4].classList.remove('recenter')
+    els[5].classList.remove('recenter')
+  }
+})
 </script>
 
 </body>
