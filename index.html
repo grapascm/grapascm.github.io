@@ -219,15 +219,27 @@ window.addEventListener('scroll',()=>{
   const bgTop = bgContainer.offsetTop;
   const bgHeight = bgContainer.offsetHeight;
 
-  // GRAPA mitad superior
-  if(scrollY >= bgTop - viewportHeight/2 && scrollY < bgTop + bgHeight/2 - viewportHeight){
-    overlayTop.style.opacity = 1;
-  }else overlayTop.style.opacity=0;
+    // GRAPA mitad superior de la imagen
+  const topTriggerStart = bgTop - viewportHeight / 2;
+  const topTriggerEnd = bgTop + bgHeight / 2 - viewportHeight;
 
-  // GRAPA mitad inferior
-  if(scrollY >= bgTop + bgHeight/2 - viewportHeight/2 && scrollY < bgTop + bgHeight - viewportHeight/4){
+  if(scrollY >= topTriggerStart && scrollY < topTriggerEnd) {
+    overlayTop.style.top = '25%';
+    overlayTop.style.opacity = 1;
+  } else {
+    overlayTop.style.opacity = 0;
+  }
+
+  // GRAPA mitad inferior de la imagen
+  const bottomTriggerStart = bgTop + bgHeight / 2 - viewportHeight / 2;
+  const bottomTriggerEnd = bgTop + bgHeight - viewportHeight / 4;
+
+  if(scrollY >= bottomTriggerStart && scrollY < bottomTriggerEnd) {
+    overlayBottom.style.top = '75%';
     overlayBottom.style.opacity = 1;
-  }else overlayBottom.style.opacity=0;
+  } else {
+    overlayBottom.style.opacity = 0;
+  }
 
   // Museografía sobre GRAPA superior
   if(scrollY >= bgTop - viewportHeight/2 && scrollY < bgTop + bgHeight/2){
