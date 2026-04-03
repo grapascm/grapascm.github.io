@@ -152,7 +152,7 @@ footer {
 <footer>&copy; 2025 GRAPA</footer>
 
 <script>
-// Función para animar cuando la sección es visible
+// Animación reversible al entrar/salir de la sección
 const sections = [
   ['overlay-top','museo','fia-superior'],
   ['overlay-bottom','esceno','fia-inferior']
@@ -161,12 +161,14 @@ const sections = [
 sections.forEach(group => {
   const observer = new IntersectionObserver((entries)=>{
     entries.forEach(entry=>{
-      if(entry.isIntersecting){
-        group.forEach(id=>{
-          const el = document.getElementById(id);
+      group.forEach(id=>{
+        const el = document.getElementById(id);
+        if(entry.isIntersecting){
           el.classList.add('visible');
-        });
-      }
+        } else {
+          el.classList.remove('visible');
+        }
+      });
     });
   },{
     threshold:0.3
