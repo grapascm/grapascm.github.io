@@ -74,7 +74,6 @@ footer {
 .background-image-container img {
   width:100%;
   height:auto;
-  display:block;
 }
 
 /* BASE TEXTO */
@@ -95,27 +94,32 @@ footer {
   font-size:clamp(100px,15vw,200px);
 }
 
-/* alineación base */
+/* alineados con G */
 .left-align {
   text-align:left;
-  font-size:clamp(62px,10.5vw,120px);
+  padding-left:0.06em; /* desplazamiento después de la G */
 }
 
-/* margen fino editable */
-.left-align span {
-  display:inline-block;
-  margin-left:0.06em; /* ← AJUSTA AQUÍ A OJO */
+/* tamaños */
+#museo,
+#esceno {
+  font-size:clamp(55px,9.5vw,110px);
+}
+
+#fia-superior,
+#fia-inferior {
+  font-size:clamp(70px,12vw,150px);
 }
 
 /* posiciones */
 #overlay-top { top:25%; }
 #overlay-bottom { top:75%; }
 
-#museo { top:22%; }
-#fia-superior { top:30%; }
+#museo { top:21.5%; }
+#fia-superior { top:31.5%; }
 
-#esceno { top:72%; }
-#fia-inferior { top:80%; }
+#esceno { top:71.5%; }
+#fia-inferior { top:81.5%; }
 
 </style>
 </head>
@@ -129,19 +133,19 @@ footer {
 </div>
 
 <div class="background-image-container">
-  <img src="images/grapas.jpg" alt="GRAPA">
+  <img src="images/grapas.jpg">
 
   <!-- GRAPA -->
   <div class="overlay-line center" id="overlay-top">GRAPA</div>
   <div class="overlay-line center" id="overlay-bottom">GRAPA</div>
 
   <!-- MUSEOGRAFIA -->
-  <div class="overlay-line left-align" id="museo"><span>MU5EO</span></div>
-  <div class="overlay-line left-align" id="fia-superior"><span>FIA</span></div>
+  <div class="overlay-line left-align" id="museo">MU5EO</div>
+  <div class="overlay-line left-align" id="fia-superior">FIA</div>
 
   <!-- ESCENOGRAFIA -->
-  <div class="overlay-line left-align" id="esceno"><span>E5CENO</span></div>
-  <div class="overlay-line left-align" id="fia-inferior"><span>FIA</span></div>
+  <div class="overlay-line left-align" id="esceno">E5CENO</div>
+  <div class="overlay-line left-align" id="fia-inferior">FIA</div>
 </div>
 
 <footer>&copy; 2025 GRAPA</footer>
