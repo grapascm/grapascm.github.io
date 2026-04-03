@@ -19,7 +19,6 @@ body {
   text-transform: uppercase;
   background-color: #0A1A2A;
   color: #BFC6CF;
-  overflow-x: hidden;
   min-height: 300vh;
 }
 
@@ -74,20 +73,18 @@ footer {
 .background-image-container img {
   width:100%;
   height:auto;
-  display:block;
 }
 
 /* BASE TEXTO */
 .overlay-line {
   position:absolute;
   left:50%;
-  transform:translateX(-50%);
+  transform:translateX(-50%) translateY(20px);
   width:clamp(300px,70vw,1200px);
   color:#E4E8ED;
   opacity:0;
-  transition: opacity 0.5s ease, transform 0.5s ease;
+  transition: opacity 0.6s ease, transform 0.6s ease;
   white-space:nowrap;
-  transform: translateX(-50%) translateY(20px);
 }
 
 /* GRAPA */
@@ -117,18 +114,16 @@ footer {
 #esceno { top:71.5%; }
 #fia-inferior { top:81.5%; }
 
-/* Clases activas para fade-in en cascada */
+/* Clase visible para fade-in */
 .visible {
   opacity:1;
-  transform: translateX(-50%) translateY(0);
+  transform:translateX(-50%) translateY(0);
 }
 
-/* Retraso específico para cascada */
-.delay-1 { transition-delay: 0.1s; }
-.delay-2 { transition-delay: 0.2s; }
-.delay-3 { transition-delay: 0.3s; }
-.delay-4 { transition-delay: 0.4s; }
-
+/* Delay para cascada */
+.delay-1 { transition-delay:0.1s; }
+.delay-2 { transition-delay:0.4s; }
+.delay-3 { transition-delay:0.7s; }
 </style>
 </head>
 
@@ -157,39 +152,28 @@ footer {
 <footer>&copy; 2025 GRAPA</footer>
 
 <script>
-const elements = [
-  { el: document.getElementById('overlay-top'), group: 'top' },
-  { el: document.getElementById('museo'), group: 'top' },
-  { el: document.getElementById('fia-superior'), group: 'top' },
-  { el: document.getElementById('overlay-bottom'), group: 'bottom' },
-  { el: document.getElementById('esceno'), group: 'bottom' },
-  { el: document.getElementById('fia-inferior'), group: 'bottom' }
+// Función para animar cuando la sección es visible
+const sections = [
+  ['overlay-top','museo','fia-superior'],
+  ['overlay-bottom','esceno','fia-inferior']
 ];
 
-const bg = document.querySelector('.background-image-container');
-const vh = window.innerHeight;
-
-function checkVisibility() {
-  const y = window.scrollY;
-  const top = bg.offsetTop;
-  const h = bg.offsetHeight;
-
-  const showTop = (y >= top - vh/2 && y < top + h/2 - vh);
-  const showBottom = (y >= top + h/2 - vh/2);
-
-  elements.forEach((item, i) => {
-    if(item.group === 'top') {
-      if(showTop) item.el.classList.add('visible');
-      else item.el.classList.remove('visible');
-    } else {
-      if(showBottom) item.el.classList.add('visible');
-      else item.el.classList.remove('visible');
-    }
+sections.forEach(group => {
+  const observer = new IntersectionObserver((entries)=>{
+    entries.forEach(entry=>{
+      if(entry.isIntersecting){
+        group.forEach(id=>{
+          const el = document.getElementById(id);
+          el.classList.add('visible');
+        });
+      }
+    });
+  },{
+    threshold:0.3
   });
-}
-
-window.addEventListener('scroll', checkVisibility);
-window.addEventListener('load', checkVisibility);
+  const firstEl = document.getElementById(group[0]);
+  observer.observe(firstEl);
+});
 </script>
 
 </body>
