@@ -97,13 +97,23 @@ footer {
 /* separar letras */
 .center span {
   display:inline-block;
-  transition: transform 0.6s ease;
+  transition: transform 0.6s ease, opacity 0.4s ease;
 }
 
 /* movimiento PA */
 .shift .pa {
   transform: translateX(0.35em);
-  transition-delay: 0.5s;
+  transition-delay:0.5s;
+}
+
+/* desvanecer PA */
+.fade-pa .pa {
+  opacity:0;
+}
+
+/* recentrar TODO el bloque */
+.recenter {
+  transform:translateX(-50%) translateY(0) translateX(-8%);
 }
 
 /* alineados con G */
@@ -184,39 +194,54 @@ sections.forEach(group => {
         const el = document.getElementById(id);
 
         if(entry.isIntersecting){
-  el.classList.add('visible');
+          el.classList.add('visible');
 
-  if(id === 'museo'){
-    setTimeout(()=>{
-      document.getElementById('overlay-top').classList.add('shift');
-    }, 400);
-  }
+          if(id === 'museo'){
+            setTimeout(()=>{
+              const top = document.getElementById('overlay-top');
+              top.classList.add('shift');
 
-  if(id === 'esceno'){
-    setTimeout(()=>{
-      document.getElementById('overlay-bottom').classList.add('shift');
-    }, 400);
-  }
+              setTimeout(()=>{
+                top.classList.add('fade-pa');
+                top.classList.add('recenter');
+              }, 400);
 
-} else {
-  el.classList.remove('visible');
+            }, 400);
+          }
 
-  if(id === 'museo'){
-    document.getElementById('overlay-top').classList.remove('shift');
-  }
+          if(id === 'esceno'){
+            setTimeout(()=>{
+              const bottom = document.getElementById('overlay-bottom');
+              bottom.classList.add('shift');
 
-  if(id === 'esceno'){
-    document.getElementById('overlay-bottom').classList.remove('shift');
-  }
-}
+              setTimeout(()=>{
+                bottom.classList.add('fade-pa');
+                bottom.classList.add('recenter');
+              }, 400);
+
+            }, 400);
+          }
+
+        } else {
+          el.classList.remove('visible');
+
+          if(id === 'museo'){
+            const top = document.getElementById('overlay-top');
+            top.classList.remove('shift','fade-pa','recenter');
+          }
+
+          if(id === 'esceno'){
+            const bottom = document.getElementById('overlay-bottom');
+            bottom.classList.remove('shift','fade-pa','recenter');
+          }
+        }
       });
     });
   },{
     threshold:0.3
   });
 
-  const firstEl = document.getElementById(group[0]);
-  observer.observe(firstEl);
+  observer.observe(document.getElementById(group[0]));
 });
 </script>
 
