@@ -3,7 +3,7 @@
 <head>
 <meta charset="UTF-8">
 <meta name="viewport" content="width=device-width, initial-scale=1.0">
-<title>GRAPA 1.0</title>
+<title>GRAPA 1.0 Responsive</title>
 
 <style>
 @font-face {
@@ -20,14 +20,20 @@ body {
   background-color: #0A1A2A;
   color:#BFC6CF;
   min-height: 300vh;
+  display:flex;
+  flex-direction:column;
+  align-items:center;
 }
 
 /* HERO */
 .hero {
-  min-height: 100svh;
+  width:100%;
+  max-width:1200px;
+  min-height:100svh;
   display:flex;
   flex-direction:column;
   align-items:center;
+  justify-content:flex-start;
   text-align:center;
   padding-top:20vh;
 }
@@ -60,20 +66,25 @@ footer {
   position:fixed;
   bottom:40px;
   width:100%;
+  max-width:1200px;
   text-align:center;
   font-size:clamp(10px,1vw,12px);
   opacity:0.5;
 }
 
-/* Imagen */
+/* Imagen contenedor */
 .background-image-container {
+  width:100%;
+  max-width:1200px;
   position:relative;
+  margin:0 auto;
 }
 
 .background-image-container img {
   width:100%;
   height:auto;
   display:block;
+  object-fit:cover;
 }
 
 /* BASE TEXTO */
@@ -81,7 +92,8 @@ footer {
   position:absolute;
   left:50%;
   transform:translateX(-50%) translateY(20px);
-  width:clamp(250px,70vw,1200px);
+  width:90%;
+  max-width:1200px;
   color:#E4E8ED;
   opacity:0;
   transition: opacity 0.6s ease, transform 0.6s ease;
@@ -148,24 +160,24 @@ footer {
 .delay-3 { transition-delay:0.7s; }
 
 /* RESPONSIVE MEDIA QUERIES */
-@media(max-width:1024px){ /* tablets */
+@media(max-width:1024px){ 
   h1.hero-text { font-size:clamp(60px,12vw,180px); }
   #museo, #esceno { font-size:clamp(40px,7vw,90px); }
   #fia-superior, #fia-inferior { font-size:clamp(50px,9vw,130px); }
 }
 
-@media(max-width:768px){ /* móviles grandes */
+@media(max-width:768px){ 
   h1.hero-text { font-size:clamp(50px,10vw,160px); }
   #museo, #esceno { font-size:clamp(35px,8vw,80px); }
   #fia-superior, #fia-inferior { font-size:clamp(45px,9vw,120px); }
-  .overlay-line { width:80vw; }
+  .overlay-line { width:85%; }
 }
 
-@media(max-width:480px){ /* móviles pequeños */
+@media(max-width:480px){ 
   h1.hero-text { font-size:clamp(40px,12vw,140px); }
   #museo, #esceno { font-size:clamp(30px,10vw,70px); }
   #fia-superior, #fia-inferior { font-size:clamp(35px,10vw,100px); }
-  .overlay-line { width:90vw; }
+  .overlay-line { width:90%; }
 }
 </style>
 </head>
