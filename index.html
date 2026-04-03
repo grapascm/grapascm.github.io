@@ -125,21 +125,21 @@ footer {
   pointer-events:none;
 }
 
+/* Línea individual */
 .section-text .line {
   font-family:'GRAPA', sans-serif;
   text-transform:uppercase;
   color:#E4E8ED;
   display:block;
-  line-height:1.0;
+  line-height:0.9;
 }
 
-/* Museografía (mitad superior) */
-.section-museografia .line:first-child { font-size:clamp(60px,10vw,150px); margin-bottom:0.5em; } /* MUSEO */
-.section-museografia .line:last-child { font-size:clamp(60px,10vw,150px); margin-top:0.5em; } /* FIA */
+/* Museografía y Escenografía */
+.section-museografia .line:first-child { font-size:clamp(70px,12vw,140px); margin-bottom:0.3em; } /* MUSEO encima de GRA */
+.section-museografia .line:last-child { font-size:clamp(70px,12vw,140px); margin-top:0.3em; } /* FIA debajo */
 
-/* Escenografía (mitad inferior) */
-.section-escenografia .line:first-child { font-size:clamp(60px,10vw,150px); margin-bottom:0.5em; } /* ESCENO */
-.section-escenografia .line:last-child { font-size:clamp(60px,10vw,150px); margin-top:0.5em; } /* FIA */
+.section-escenografia .line:first-child { font-size:clamp(70px,12vw,140px); margin-bottom:0.3em; } /* ESCENO encima de GRA */
+.section-escenografia .line:last-child { font-size:clamp(70px,12vw,140px); margin-top:0.3em; } /* FIA debajo */
 
 /* Responsive */
 @media(max-width:768px){
@@ -148,7 +148,7 @@ footer {
   .email-button { margin-top:14vh; padding:1vh 3vw; }
   .overlay-text { font-size:clamp(80px,12vw,150px); }
   .section-museografia .line:first-child, .section-museografia .line:last-child,
-  .section-escenografia .line:first-child, .section-escenografia .line:last-child{ font-size:clamp(40px,10vw,120px); }
+  .section-escenografia .line:first-child, .section-escenografia .line:last-child{ font-size:clamp(50px,10vw,110px); }
   footer { bottom:50px; }
 }
 
@@ -158,7 +158,7 @@ footer {
   .email-button { margin-top:10vh; padding:1vh 4vw; }
   .overlay-text { font-size:clamp(60px,12vw,120px); }
   .section-museografia .line:first-child, .section-museografia .line:last-child,
-  .section-escenografia .line:first-child, .section-escenografia .line:last-child{ font-size:clamp(30px,10vw,90px); }
+  .section-escenografia .line:first-child, .section-escenografia .line:last-child{ font-size:clamp(40px,10vw,90px); }
   footer { bottom:40px; }
 }
 </style>
