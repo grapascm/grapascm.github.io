@@ -1,56 +1,53 @@
-<script>
-// Agrupamos cada bloque en arrays
-const topBlock = [
-  document.getElementById('overlay-top'),
-  document.getElementById('museo'),
-  document.getElementById('fia-superior')
-];
-
-const bottomBlock = [
-  document.getElementById('overlay-bottom'),
-  document.getElementById('esceno'),
-  document.getElementById('fia-inferior')
-];
-
-// Función para centrar un bloque
-function centerBlock(block) {
-  block.forEach(el => {
+// Función para centrar un bloque completo
+function centerBlock(blockIds) {
+  blockIds.forEach(id=>{
+    const el = document.getElementById(id);
     el.style.left = '50%';
     el.style.transform = 'translateX(-50%) translateY(0)';
   });
 }
 
-// Función para resetear bloque
-function resetBlock(block) {
-  block.forEach(el => {
-    el.style.left = '';
-    el.style.transform = '';
+// Función para resetear al estado original (alineado a la G)
+function resetBlock(blockIds) {
+  blockIds.forEach(id=>{
+    const el = document.getElementById(id);
+    if(id.includes('overlay')) {
+      el.style.transform = 'translateX(-50%) translateY(20px)';
+    } else {
+      el.style.transform = 'translateX(0) translateY(0)';
+    }
+    if(id === 'overlay-top' || id === 'overlay-bottom') {
+      el.style.left = '50%';
+    } else {
+      el.style.left = '0.09em';
+    }
   });
 }
 
-// Observadores de scroll para controlar la animación
-const observerTop = new IntersectionObserver(entries => {
-  entries.forEach(entry => {
-    if (entry.isIntersecting) {
-      // Después de un delay (PA desaparece) centramos todo el bloque
-      setTimeout(() => centerBlock(topBlock), 500);
+// Observers para bloques superior e inferior
+const blockTop = ['overlay-top','museo','fia-superior'];
+const blockBottom = ['overlay-bottom','esceno','fia-inferior'];
+
+const observerTop = new IntersectionObserver(entries=>{
+  entries.forEach(entry=>{
+    if(entry.isIntersecting){
+      // Mantener animaciones PA existentes
+      setTimeout(()=> centerBlock(blockTop), 800); 
     } else {
-      resetBlock(topBlock);
+      resetBlock(blockTop);
     }
   });
-},{threshold: 0.3});
+},{threshold:0.5});
 
-const observerBottom = new IntersectionObserver(entries => {
-  entries.forEach(entry => {
-    if (entry.isIntersecting) {
-      setTimeout(() => centerBlock(bottomBlock), 500);
+const observerBottom = new IntersectionObserver(entries=>{
+  entries.forEach(entry=>{
+    if(entry.isIntersecting){
+      setTimeout(()=> centerBlock(blockBottom), 800);
     } else {
-      resetBlock(bottomBlock);
+      resetBlock(blockBottom);
     }
   });
-},{threshold: 0.3});
+},{threshold:0.5});
 
-// Observamos solo el texto MUSEO y ESCENO
 observerTop.observe(document.getElementById('museo'));
 observerBottom.observe(document.getElementById('esceno'));
-</script>
