@@ -3,7 +3,7 @@
 <head>
 <meta charset="UTF-8">
 <meta name="viewport" content="width=device-width, initial-scale=1.0">
-<title>GRAPA 1.0 Responsive</title>
+<title>GRAPA</title>
 
 <style>
 @font-face {
@@ -12,47 +12,44 @@
   font-display: swap;
 }
 
+/* Reset y base */
 * { margin:0; padding:0; box-sizing:border-box; }
 
 body {
   font-family: 'GRAPA', sans-serif;
   text-transform: uppercase;
   background-color: #0A1A2A;
-  color:#BFC6CF;
+  color: #BFC6CF;
+  overflow-x: hidden;
   min-height: 300vh;
-  display:flex;
-  flex-direction:column;
-  align-items:center;
 }
 
 /* HERO */
 .hero {
-  width:100%;
-  max-width:1200px;
-  min-height:100svh;
+  min-height: 100svh;
   display:flex;
   flex-direction:column;
+  justify-content:center;
   align-items:center;
-  justify-content:flex-start;
   text-align:center;
-  padding-top:20vh;
+  padding:0 5vw;
 }
 
 h1.hero-text {
-  font-size:clamp(60px,10vw,200px);
+  font-size: clamp(80px,15vw,200px);
   letter-spacing:0.04em;
   color:#E4E8ED;
   line-height:0.9;
 }
 
 .subtitle {
-  margin-top:6vh;
-  font-size:clamp(12px,2vw,20px);
+  margin-top:8vh;
+  font-size:clamp(14px,2vw,20px);
   letter-spacing:0.35em;
 }
 
 .email-button {
-  margin-top:15vh;
+  margin-top:18vh;
   font-size:clamp(10px,1.2vw,14px);
   letter-spacing:0.3em;
   text-decoration:none;
@@ -64,9 +61,8 @@ h1.hero-text {
 /* Footer */
 footer {
   position:fixed;
-  bottom:40px;
+  bottom:60px;
   width:100%;
-  max-width:1200px;
   text-align:center;
   font-size:clamp(10px,1vw,12px);
   opacity:0.5;
@@ -74,9 +70,9 @@ footer {
 
 /* Imagen contenedor */
 .background-image-container {
-  width:100%;
-  max-width:1200px;
   position:relative;
+  width:100%;
+  max-width:2000px;
   margin:0 auto;
 }
 
@@ -84,104 +80,75 @@ footer {
   width:100%;
   height:auto;
   display:block;
-  object-fit:cover;
 }
 
 /* BASE TEXTO */
 .overlay-line {
   position:absolute;
-  left:50%;
-  transform:translateX(-50%) translateY(20px);
-  width:90%;
-  max-width:1200px;
+  left:0;
+  right:0;
+  margin:0 auto;
+  width:clamp(300px,70%,1200px);
   color:#E4E8ED;
   opacity:0;
-  transition: opacity 0.6s ease, transform 0.6s ease;
+  transition:0.5s;
   white-space:nowrap;
 }
 
 /* GRAPA */
 .center {
   text-align:center;
-  font-size:clamp(80px,15vw,200px);
+  font-size:clamp(100px,15vw,200px);
 }
 
-.center span {
-  display:inline-block;
-  transition: transform 0.6s ease, opacity 0.4s ease;
-}
-
-/* PA movimiento */
-.shift .pa {
-  transform: translateX(0.35em);
-  transition-delay:0.5s;
-}
-
-/* PA desaparece */
-.fade-pa .pa {
-  opacity:0;
-}
-
-/* RECENTER GLOBAL */
-.recenter {
-  transform:translateX(-50%) translateY(0) translateX(-8%);
-}
-
-/* alineación izquierda */
+/* alineados con G */
 .left-align {
   text-align:left;
   padding-left:0.09em;
 }
 
-/* tamaños */
-#museo { font-size:clamp(45px,8vw,110px); }
-#esceno { font-size:clamp(45px,8vw,100px); }
-#fia-superior, #fia-inferior { font-size:clamp(60px,10vw,150px); }
+/* tamaños específicos */
+#museo { font-size:clamp(55px,9.5vw,110px); }
+#esceno { font-size:clamp(50px,9vw,100px); }
+#fia-superior, #fia-inferior { font-size:clamp(70px,12vw,150px); }
 
 /* posiciones */
 #overlay-top { top:25%; }
 #overlay-bottom { top:75%; }
-
 #museo { top:21.5%; }
 #fia-superior { top:31.5%; }
-
 #esceno { top:71.5%; }
 #fia-inferior { top:81.5%; }
 
-/* visible */
-.visible {
-  opacity:1;
-  transform:translateX(-50%) translateY(0);
+/* ANIMACIONES ADICIONALES */
+.recenter .gra,
+.recenter .mu,
+.recenter .fi {
+  left:50%;
+  transform:translateX(-50%);
+  transition: all 0.8s ease-in-out;
 }
 
-/* delays */
-.delay-1 { transition-delay:0.1s; }
-.delay-2 { transition-delay:0.4s; }
-.delay-3 { transition-delay:0.7s; }
-
-/* RESPONSIVE MEDIA QUERIES */
-@media(max-width:1024px){ 
-  h1.hero-text { font-size:clamp(60px,12vw,180px); }
-  #museo, #esceno { font-size:clamp(40px,7vw,90px); }
-  #fia-superior, #fia-inferior { font-size:clamp(50px,9vw,130px); }
+/* Responsive */
+@media(max-width:768px){
+  h1.hero-text { font-size:clamp(50px,12vw,150px); }
+  .subtitle { margin-top:6vh; }
+  .email-button { margin-top:14vh; padding:1vh 3vw; }
+  #overlay-top, #overlay-bottom { font-size:clamp(80px,12vw,150px); }
+  #museo, #esceno, #fia-superior, #fia-inferior { font-size:clamp(40px,10vw,90px); }
+  footer { bottom:50px; }
 }
 
-@media(max-width:768px){ 
-  h1.hero-text { font-size:clamp(50px,10vw,160px); }
-  #museo, #esceno { font-size:clamp(35px,8vw,80px); }
-  #fia-superior, #fia-inferior { font-size:clamp(45px,9vw,120px); }
-  .overlay-line { width:85%; }
-}
-
-@media(max-width:480px){ 
-  h1.hero-text { font-size:clamp(40px,12vw,140px); }
-  #museo, #esceno { font-size:clamp(30px,10vw,70px); }
-  #fia-superior, #fia-inferior { font-size:clamp(35px,10vw,100px); }
-  .overlay-line { width:90%; }
+@media(max-width:480px){
+  h1.hero-text { font-size:clamp(40px,10vw,100px); }
+  .subtitle { margin-top:4vh; letter-spacing:0.2em; }
+  .email-button { margin-top:10vh; padding:1vh 4vw; }
+  #overlay-top, #overlay-bottom { font-size:clamp(60px,12vw,120px); }
+  #museo, #esceno, #fia-superior, #fia-inferior { font-size:clamp(30px,10vw,80px); }
+  footer { bottom:40px; }
 }
 </style>
 </head>
-
 <body>
 
 <div class="hero">
@@ -191,93 +158,64 @@ footer {
 </div>
 
 <div class="background-image-container">
-  <img src="images/grapas.jpg">
+  <img src="images/grapas.jpg" alt="GRAPA">
 
-  <!-- SUPERIOR -->
-  <div class="overlay-line center delay-1" id="overlay-top">
-    <span class="gra">GRA</span><span class="pa">PA</span>
-  </div>
-  <div class="overlay-line left-align delay-2" id="museo">MU5EO</div>
-  <div class="overlay-line left-align delay-3" id="fia-superior">FIA</div>
+  <!-- GRAPA -->
+  <div class="overlay-line center gra" id="overlay-top">GRAPA</div>
+  <div class="overlay-line center gra" id="overlay-bottom">GRAPA</div>
 
-  <!-- INFERIOR -->
-  <div class="overlay-line center delay-1" id="overlay-bottom">
-    <span class="gra">GRA</span><span class="pa">PA</span>
-  </div>
-  <div class="overlay-line left-align delay-2" id="esceno">E5CENO</div>
-  <div class="overlay-line left-align delay-3" id="fia-inferior">FIA</div>
+  <!-- MUSEOGRAFIA -->
+  <div class="overlay-line left-align mu" id="museo">MU5EO</div>
+  <div class="overlay-line left-align fi" id="fia-superior">FIA</div>
+
+  <!-- ESCENOGRAFIA -->
+  <div class="overlay-line left-align mu" id="esceno">E5CENO</div>
+  <div class="overlay-line left-align fi" id="fia-inferior">FIA</div>
 </div>
 
 <footer>&copy; 2025 GRAPA</footer>
 
 <script>
-const sections = [
-  ['overlay-top','museo','fia-superior'],
-  ['overlay-bottom','esceno','fia-inferior']
-];
+const ids = ['overlay-top','overlay-bottom','museo','fia-superior','esceno','fia-inferior']
+const els = ids.map(id=>document.getElementById(id))
+const bg = document.querySelector('.background-image-container')
+const vh = window.innerHeight
 
-sections.forEach(group => {
-  const observer = new IntersectionObserver((entries)=>{
-    entries.forEach(entry=>{
-      group.forEach(id=>{
-        const el = document.getElementById(id);
+window.addEventListener('scroll',()=>{
+  const y = window.scrollY
+  const top = bg.offsetTop
+  const h = bg.offsetHeight
 
-        if(entry.isIntersecting){
-          el.classList.add('visible');
+  // Mostrar GRAPA y luego MUSEO/FIA
+  const showTop = (y >= top - vh/2 && y < top + h/2 - vh)
+  const showBottom = (y >= top + h/2 - vh/2)
 
-          if(id === 'museo'){
-            setTimeout(()=>{
-              const top = document.getElementById('overlay-top');
-              top.classList.add('shift');
+  // Mitad superior
+  els[0].style.opacity = showTop ? 1:0
+  els[2].style.opacity = showTop ? 1:0
+  els[3].style.opacity = showTop ? 1:0
 
-              setTimeout(()=>{
-                top.classList.add('fade-pa','recenter');
-                document.getElementById('museo').classList.add('recenter');
-                document.getElementById('fia-superior').classList.add('recenter');
-              }, 400);
+  // Mitad inferior
+  els[1].style.opacity = showBottom ? 1:0
+  els[4].style.opacity = showBottom ? 1:0
+  els[5].style.opacity = showBottom ? 1:0
 
-            }, 400);
-          }
+  // Desplazamiento PA y recenter
+  if(showTop){
+    els[0].style.transform = "translateX(-40%)"
+    setTimeout(()=>document.querySelector('.background-image-container').classList.add('recenter'),400)
+  } else {
+    els[0].style.transform = "translateX(-50%)"
+    document.querySelector('.background-image-container').classList.remove('recenter')
+  }
 
-          if(id === 'esceno'){
-            setTimeout(()=>{
-              const bottom = document.getElementById('overlay-bottom');
-              bottom.classList.add('shift');
-
-              setTimeout(()=>{
-                bottom.classList.add('fade-pa','recenter');
-                document.getElementById('esceno').classList.add('recenter');
-                document.getElementById('fia-inferior').classList.add('recenter');
-              }, 400);
-
-            }, 400);
-          }
-
-        } else {
-          el.classList.remove('visible');
-
-          if(id === 'museo'){
-            const top = document.getElementById('overlay-top');
-            top.classList.remove('shift','fade-pa','recenter');
-            document.getElementById('museo').classList.remove('recenter');
-            document.getElementById('fia-superior').classList.remove('recenter');
-          }
-
-          if(id === 'esceno'){
-            const bottom = document.getElementById('overlay-bottom');
-            bottom.classList.remove('shift','fade-pa','recenter');
-            document.getElementById('esceno').classList.remove('recenter');
-            document.getElementById('fia-inferior').classList.remove('recenter');
-          }
-        }
-      });
-    });
-  },{
-    threshold:0.3
-  });
-
-  observer.observe(document.getElementById(group[0]));
-});
+  if(showBottom){
+    els[1].style.transform = "translateX(-40%)"
+    setTimeout(()=>document.querySelector('.background-image-container').classList.add('recenter'),400)
+  } else {
+    els[1].style.transform = "translateX(-50%)"
+  }
+})
 </script>
 
 </body>
