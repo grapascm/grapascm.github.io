@@ -94,29 +94,28 @@ footer {
   font-size:clamp(100px,15vw,200px);
 }
 
-/* separar letras */
 .center span {
   display:inline-block;
   transition: transform 0.6s ease, opacity 0.4s ease;
 }
 
-/* movimiento PA */
+/* PA movimiento */
 .shift .pa {
   transform: translateX(0.35em);
   transition-delay:0.5s;
 }
 
-/* desvanecer PA */
+/* PA desaparece */
 .fade-pa .pa {
   opacity:0;
 }
 
-/* recentrar TODO el bloque */
+/* RECENTER GLOBAL */
 .recenter {
   transform:translateX(-50%) translateY(0) translateX(-8%);
 }
 
-/* alineados con G */
+/* alineación izquierda */
 .left-align {
   text-align:left;
   padding-left:0.09em;
@@ -143,7 +142,7 @@ footer {
   transform:translateX(-50%) translateY(0);
 }
 
-/* cascada */
+/* delays */
 .delay-1 { transition-delay:0.1s; }
 .delay-2 { transition-delay:0.4s; }
 .delay-3 { transition-delay:0.7s; }
@@ -162,19 +161,17 @@ footer {
 <div class="background-image-container">
   <img src="images/grapas.jpg">
 
-  <!-- GRAPA superior -->
+  <!-- SUPERIOR -->
   <div class="overlay-line center delay-1" id="overlay-top">
     <span class="gra">GRA</span><span class="pa">PA</span>
   </div>
-
   <div class="overlay-line left-align delay-2" id="museo">MU5EO</div>
   <div class="overlay-line left-align delay-3" id="fia-superior">FIA</div>
 
-  <!-- GRAPA inferior -->
+  <!-- INFERIOR -->
   <div class="overlay-line center delay-1" id="overlay-bottom">
     <span class="gra">GRA</span><span class="pa">PA</span>
   </div>
-
   <div class="overlay-line left-align delay-2" id="esceno">E5CENO</div>
   <div class="overlay-line left-align delay-3" id="fia-inferior">FIA</div>
 </div>
@@ -202,8 +199,9 @@ sections.forEach(group => {
               top.classList.add('shift');
 
               setTimeout(()=>{
-                top.classList.add('fade-pa');
-                top.classList.add('recenter');
+                top.classList.add('fade-pa','recenter');
+                document.getElementById('museo').classList.add('recenter');
+                document.getElementById('fia-superior').classList.add('recenter');
               }, 400);
 
             }, 400);
@@ -215,8 +213,9 @@ sections.forEach(group => {
               bottom.classList.add('shift');
 
               setTimeout(()=>{
-                bottom.classList.add('fade-pa');
-                bottom.classList.add('recenter');
+                bottom.classList.add('fade-pa','recenter');
+                document.getElementById('esceno').classList.add('recenter');
+                document.getElementById('fia-inferior').classList.add('recenter');
               }, 400);
 
             }, 400);
@@ -228,11 +227,15 @@ sections.forEach(group => {
           if(id === 'museo'){
             const top = document.getElementById('overlay-top');
             top.classList.remove('shift','fade-pa','recenter');
+            document.getElementById('museo').classList.remove('recenter');
+            document.getElementById('fia-superior').classList.remove('recenter');
           }
 
           if(id === 'esceno'){
             const bottom = document.getElementById('overlay-bottom');
             bottom.classList.remove('shift','fade-pa','recenter');
+            document.getElementById('esceno').classList.remove('recenter');
+            document.getElementById('fia-inferior').classList.remove('recenter');
           }
         }
       });
