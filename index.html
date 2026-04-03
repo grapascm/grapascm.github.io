@@ -76,21 +76,25 @@ footer {
   display:block;
 }
 
-/* BASE TEXTO */
-.overlay-line {
+/* Contenedor de grupo */
+.group-container {
   position:absolute;
   left:50%;
-  transform:translateX(-50%) translateY(20px);
-  width:clamp(300px,70vw,1200px);
+  transform:translateX(-50%);
+  transition: transform 0.8s ease;
+  white-space:nowrap;
+}
+
+/* BASE TEXTO */
+.overlay-line {
+  display:block;
   color:#E4E8ED;
   opacity:0;
   transition: opacity 0.6s ease, transform 0.6s ease;
-  white-space:nowrap;
 }
 
 /* GRAPA */
 .center {
-  text-align:center;
   font-size:clamp(100px,15vw,200px);
 }
 
@@ -110,11 +114,6 @@ footer {
   opacity:0;
 }
 
-/* RECENTER SUAVE HACIA LA DERECHA */
-.recenter-group {
-  transition: transform 0.8s ease;
-}
-
 /* alineación izquierda */
 .left-align {
   text-align:left;
@@ -127,26 +126,25 @@ footer {
 #fia-superior, #fia-inferior { font-size:clamp(70px,12vw,150px); }
 
 /* posiciones */
-#overlay-top { top:25%; }
-#overlay-bottom { top:75%; }
+#overlay-top-container { top:25%; }
+#overlay-bottom-container { top:75%; }
 
-#museo { top:21.5%; }
-#fia-superior { top:31.5%; }
+#museo { top:0; }
+#fia-superior { top:10%; }
 
-#esceno { top:71.5%; }
-#fia-inferior { top:81.5%; }
+#esceno { top:0; }
+#fia-inferior { top:10%; }
 
 /* visible */
 .visible {
   opacity:1;
-  transform:translateX(-50%) translateY(0);
+  transform:translateY(0);
 }
 
 /* delays */
 .delay-1 { transition-delay:0.1s; }
 .delay-2 { transition-delay:0.4s; }
 .delay-3 { transition-delay:0.7s; }
-
 </style>
 </head>
 
@@ -162,79 +160,68 @@ footer {
   <img src="images/grapas.jpg">
 
   <!-- SUPERIOR -->
-  <div class="overlay-line center delay-1 recenter-group" id="overlay-top">
-    <span class="gra">GRA</span><span class="pa">PA</span>
+  <div class="group-container" id="overlay-top-container">
+    <div class="overlay-line center delay-1">
+      <span class="gra">GRA</span><span class="pa">PA</span>
+    </div>
+    <div class="overlay-line left-align delay-2" id="museo">MU5EO</div>
+    <div class="overlay-line left-align delay-3" id="fia-superior">FIA</div>
   </div>
-  <div class="overlay-line left-align delay-2 recenter-group" id="museo">MU5EO</div>
-  <div class="overlay-line left-align delay-3 recenter-group" id="fia-superior">FIA</div>
 
   <!-- INFERIOR -->
-  <div class="overlay-line center delay-1 recenter-group" id="overlay-bottom">
-    <span class="gra">GRA</span><span class="pa">PA</span>
+  <div class="group-container" id="overlay-bottom-container">
+    <div class="overlay-line center delay-1">
+      <span class="gra">GRA</span><span class="pa">PA</span>
+    </div>
+    <div class="overlay-line left-align delay-2" id="esceno">E5CENO</div>
+    <div class="overlay-line left-align delay-3" id="fia-inferior">FIA</div>
   </div>
-  <div class="overlay-line left-align delay-2 recenter-group" id="esceno">E5CENO</div>
-  <div class="overlay-line left-align delay-3 recenter-group" id="fia-inferior">FIA</div>
+
 </div>
 
 <footer>&copy; 2025 GRAPA</footer>
 
 <script>
-const sections = [
-  ['overlay-top','museo','fia-superior'],
-  ['overlay-bottom','esceno','fia-inferior']
+const groups = [
+  { container:'overlay-top-container', pa:true },
+  { container:'overlay-bottom-container', pa:true }
 ];
 
-sections.forEach(group => {
-  const observer = new IntersectionObserver((entries)=>{
+groups.forEach(g=>{
+  const container = document.getElementById(g.container);
+  const observer = new IntersectionObserver(entries=>{
     entries.forEach(entry=>{
-      group.forEach(id=>{
-        const el = document.getElementById(id);
-
-        if(entry.isIntersecting){
-          // Aparece
+      if(entry.isIntersecting){
+        container.querySelectorAll('.overlay-line').forEach(el=>{
           el.classList.add('visible');
+        });
 
-          // Solo para MUSEO/ESCENO
-          if(id === 'museo' || id === 'esceno'){
-            setTimeout(()=>{
-              // Desplaza PA
-              const topEl = group[0] === 'overlay-top' ? document.getElementById('overlay-top') : document.getElementById('overlay-bottom');
-              topEl.classList.add('shift');
-
-              setTimeout(()=>{
-                // Desaparece PA
-                topEl.classList.add('fade-pa');
-
-                // Recentrado parcial hacia la derecha
-                group.forEach(innerId=>{
-                  const innerEl = document.getElementById(innerId);
-                  // Solo un pequeño desplazamiento para centrar el conjunto visual
-                  innerEl.style.transform = 'translateX(calc(-50% + 2vw)) translateY(0)';
-                });
-              }, 400);
-            }, 400);
-          }
-
-        } else {
-          // Reset
-          el.classList.remove('visible');
-
-          if(id === 'museo' || id === 'esceno'){
-            const topEl = group[0] === 'overlay-top' ? document.getElementById('overlay-top') : document.getElementById('overlay-bottom');
-            topEl.classList.remove('shift','fade-pa');
-            group.forEach(innerId=>{
-              const innerEl = document.getElementById(innerId);
-              innerEl.style.transform = 'translateX(-50%) translateY(20px)';
-            });
-          }
+        if(g.pa){
+          const graEl = container.querySelector('.gra');
+          graEl.parentElement.classList.add('shift');
+          setTimeout(()=>{
+            graEl.parentElement.classList.add('fade-pa');
+            // Después de PA desaparecer, el contenedor se centra
+            container.style.transform = 'translateX(-50%)';
+          },400);
         }
-      });
+
+      } else {
+        container.querySelectorAll('.overlay-line').forEach(el=>{
+          el.classList.remove('visible');
+        });
+        if(g.pa){
+          const graEl = container.querySelector('.gra');
+          graEl.parentElement.classList.remove('shift','fade-pa');
+          container.style.transform = 'translateX(-50%)';
+        }
+      }
     });
   },{
     threshold:0.3
   });
 
-  observer.observe(document.getElementById(group[0]));
+  observer.observe(container);
 });
 </script>
 
