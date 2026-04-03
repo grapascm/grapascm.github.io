@@ -154,6 +154,10 @@ const els = ids.map(id=>document.getElementById(id))
 const bg = document.querySelector('.background-image-container')
 const vh = window.innerHeight
 
+// Variables para controlar cuándo centrar el conjunto
+let topCentered = false
+let bottomCentered = false
+
 window.addEventListener('scroll',()=>{
   const y = window.scrollY
   const top = bg.offsetTop
@@ -171,25 +175,33 @@ window.addEventListener('scroll',()=>{
   els[4].style.opacity = showBottom ? 1:0
   els[5].style.opacity = showBottom ? 1:0
 
-  // Cuando PA desaparece, centrar conjunto restante
-  if(!showTop){ // superior
+  // CENTRADO DEL CONJUNTO DESPUES DE QUE PA DESAPARECE
+  // Superior
+  if(!showTop && !topCentered){
     els[0].classList.add('recenter') // GRAPA
     els[2].classList.add('recenter') // MU5EO
     els[3].classList.add('recenter') // FIA
-  } else {
+    topCentered = true
+  }
+  if(showTop && topCentered){
     els[0].classList.remove('recenter')
     els[2].classList.remove('recenter')
     els[3].classList.remove('recenter')
+    topCentered = false
   }
 
-  if(!showBottom){ // inferior
+  // Inferior
+  if(!showBottom && !bottomCentered){
     els[1].classList.add('recenter') // GRAPA
     els[4].classList.add('recenter') // ESCENO
     els[5].classList.add('recenter') // FIA
-  } else {
+    bottomCentered = true
+  }
+  if(showBottom && bottomCentered){
     els[1].classList.remove('recenter')
     els[4].classList.remove('recenter')
     els[5].classList.remove('recenter')
+    bottomCentered = false
   }
 })
 </script>
