@@ -3,196 +3,170 @@
 <head>
 <meta charset="UTF-8">
 <meta name="viewport" content="width=device-width, initial-scale=1.0">
-<title>GRAPA 1.0 Adaptativa</title>
+<title>GRAPA</title>
 
 <style>
 @font-face {
   font-family: 'GRAPA';
   src: url('./fonts/GRAPA.woff2') format('woff2');
-  font-display: swap;
 }
 
-* { margin:0; padding:0; box-sizing:border-box; }
+/* RESET */
+*{margin:0;padding:0;box-sizing:border-box;}
 
-body {
-  font-family: 'GRAPA', sans-serif;
-  text-transform: uppercase;
-  background-color: #0A1A2A;
-  color: #BFC6CF;
-  overflow-x: hidden;
-  min-height: 300vh;
+body{
+  font-family:'GRAPA',sans-serif;
+  text-transform:uppercase;
+  background:#0A1A2A;
+  color:#E4E8ED;
+  overflow-x:hidden;
+}
+
+/* SECCIONES */
+.section{
+  height:100svh;
+  width:100%;
+  position:relative;
+  display:flex;
+  align-items:center;
+  justify-content:center;
 }
 
 /* HERO */
-.hero {
-  min-height: 100svh;
-  display:flex;
+.hero{
   flex-direction:column;
-  align-items:center;
   text-align:center;
-  justify-content:center;
-  padding-top:20vh;
 }
 
-h1.hero-text {
-  font-size: clamp(80px,15vw,200px);
-  letter-spacing:0.04em;
-  color:#E4E8ED;
+.hero h1{
+  font-size:clamp(80px,15vw,200px);
   line-height:0.9;
 }
 
-.subtitle {
+.subtitle{
   margin-top:8vh;
   font-size:clamp(14px,2vw,20px);
   letter-spacing:0.35em;
 }
 
-.email-button {
+.email{
   margin-top:18vh;
   font-size:clamp(10px,1.2vw,14px);
-  letter-spacing:0.3em;
-  text-decoration:none;
-  color:#E4E8ED;
-  border:1px solid rgba(228,232,237,0.2);
+  border:1px solid rgba(255,255,255,0.2);
   padding:1vh 2vw;
 }
 
-/* Footer */
-footer {
-  position:fixed;
-  bottom:60px;
+/* IMAGEN FULL */
+.image-section{
+  background-image:url('images/grapas.jpg');
+  background-size:cover;
+  background-position:center;
+}
+
+/* OVERLAY TEXT */
+.overlay{
+  position:absolute;
   width:100%;
   text-align:center;
-  font-size:clamp(10px,1vw,12px);
-  opacity:0.5;
-}
-
-/* Imagen contenedor */
-.background-image-container {
-  position:relative;
-  width:100%;
-  display:flex;
-  justify-content:center;
-}
-
-.background-image-container img {
-  width:100%;
-  max-width:100%;
-  height:auto;
-}
-
-/* BASE TEXTO */
-.overlay-line {
-  position:absolute;
-  color:#E4E8ED;
   opacity:0;
-  transition: 0.5s;
-  white-space:nowrap;
+  transform:translateY(40px);
+  transition:0.6s ease;
 }
 
 /* GRAPA */
-.center {
-  text-align:center;
+.grapa{
   font-size:clamp(100px,15vw,200px);
 }
 
-/* alineados con G */
-.left-align {
-  text-align:left;
-  padding-left:0.09em;
+/* MU / ESCENO */
+.sub{
+  font-size:clamp(60px,10vw,120px);
 }
 
-/* POSICIONES DESKTOP */
-@media(min-width:1024px){
-  #overlay-top { top:25%; left:50%; transform:translateX(-50%); font-size:clamp(100px,15vw,200px);}
-  #overlay-bottom { top:75%; left:50%; transform:translateX(-50%); font-size:clamp(100px,15vw,200px);}
-
-  #museo { top:21.5%; font-size:clamp(55px,9.5vw,110px); left:calc(50% + 0.1em); }
-  #fia-superior { top:31.5%; font-size:clamp(70px,12vw,150px); left:calc(50% + 0.1em); }
-
-  #esceno { top:71.5%; font-size:clamp(50px,9vw,100px); left:calc(50% + 0.1em); }
-  #fia-inferior { top:81.5%; font-size:clamp(70px,12vw,150px); left:calc(50% + 0.1em); }
+/* FIA */
+.fia{
+  font-size:clamp(80px,12vw,150px);
 }
 
-/* POSICIONES MOBILE/TABLET */
-@media(max-width:1023px){
-  #overlay-top { top:20%; left:50%; transform:translateX(-50%); font-size:clamp(60px,12vw,120px);}
-  #overlay-bottom { top:75%; left:50%; transform:translateX(-50%); font-size:clamp(60px,12vw,120px);}
+/* POSICIONES */
+.top{ top:25%; }
+.middle{ top:50%; transform:translateY(-50%); }
+.bottom{ top:75%; }
 
-  #museo { top:18%; font-size:clamp(40px,10vw,90px); left:calc(50% + 0.05em);}
-  #fia-superior { top:28%; font-size:clamp(50px,11vw,100px); left:calc(50% + 0.05em);}
-
-  #esceno { top:68%; font-size:clamp(40px,10vw,90px); left:calc(50% + 0.05em);}
-  #fia-inferior { top:78%; font-size:clamp(50px,11vw,100px); left:calc(50% + 0.05em);}
+/* VISIBLE */
+.visible{
+  opacity:1;
+  transform:translateY(0);
 }
+
+/* FOOTER */
+footer{
+  position:fixed;
+  bottom:40px;
+  width:100%;
+  text-align:center;
+  font-size:12px;
+  opacity:0.5;
+}
+
 </style>
 </head>
 
 <body>
 
-<div class="hero">
-  <h1 class="hero-text">GRAPA</h1>
+<!-- 1️⃣ HERO -->
+<section class="section hero">
+  <h1>GRAPA</h1>
   <div class="subtitle">5ociedad Cooperativa Madrileña</div>
-  <a href="mailto:grapa@grapa.e5" class="email-button">grapa@grapa.e5</a>
-</div>
+  <div class="email">grapa@grapa.e5</div>
+</section>
 
-<div class="background-image-container">
-  <img src="images/grapas.jpg">
+<!-- 2️⃣ MUSEOGRAFIA -->
+<section class="section image-section" id="museo-section">
+  <div class="overlay grapa top" id="g1">GRAPA</div>
+  <div class="overlay sub middle" id="m1">MU5EO</div>
+  <div class="overlay fia bottom" id="f1">FIA</div>
+</section>
 
-  <!-- GRAPA -->
-  <div class="overlay-line center" id="overlay-top">GRAPA</div>
-  <div class="overlay-line center" id="overlay-bottom">GRAPA</div>
-
-  <!-- MUSEOGRAFIA -->
-  <div class="overlay-line left-align" id="museo">MU5EO</div>
-  <div class="overlay-line left-align" id="fia-superior">FIA</div>
-
-  <!-- ESCENOGRAFIA -->
-  <div class="overlay-line left-align" id="esceno">E5CENO</div>
-  <div class="overlay-line left-align" id="fia-inferior">FIA</div>
-</div>
+<!-- 3️⃣ ESCENOGRAFIA -->
+<section class="section image-section" id="esceno-section">
+  <div class="overlay grapa top" id="g2">GRAPA</div>
+  <div class="overlay sub middle" id="m2">E5CENO</div>
+  <div class="overlay fia bottom" id="f2">FIA</div>
+</section>
 
 <footer>&copy; 2025 GRAPA</footer>
 
 <script>
-const ids = ['overlay-top','overlay-bottom','museo','fia-superior','esceno','fia-inferior'];
-const els = ids.map(id => document.getElementById(id));
-const bg = document.querySelector('.background-image-container');
-const vh = window.innerHeight;
+const blocks = [
+  ['g1','m1','f1'],
+  ['g2','m2','f2']
+];
 
-window.addEventListener('scroll',()=>{
-  const y = window.scrollY;
-  const top = bg.offsetTop;
-  const h = bg.offsetHeight;
+blocks.forEach(group=>{
+  const observer = new IntersectionObserver(entries=>{
+    entries.forEach(entry=>{
+      if(entry.isIntersecting){
 
-  // Mostrar GRAPA primero, luego MUSEO/FIA, luego mover PA y centrar
-  const showTop = (y >= top - vh/2 && y < top + h/2 - vh/4);
-  const showBottom = (y >= top + h/2 - vh/2);
+        document.getElementById(group[0]).classList.add('visible');
 
-  // GRAPA superior
-  els[0].style.opacity = showTop ? 1 : 0;
-  // MUSEO y FIA siguen
-  els[2].style.opacity = showTop ? 1 : 0;
-  els[3].style.opacity = showTop ? 1 : 0;
+        setTimeout(()=>{
+          document.getElementById(group[1]).classList.add('visible');
+        },300);
 
-  // GRAPA inferior
-  els[1].style.opacity = showBottom ? 1 : 0;
-  // ESCENO y FIA inferior
-  els[4].style.opacity = showBottom ? 1 : 0;
-  els[5].style.opacity = showBottom ? 1 : 0;
+        setTimeout(()=>{
+          document.getElementById(group[2]).classList.add('visible');
+        },600);
 
-  // Animación PA desplazamiento a la derecha y recenter
-  if(showTop && els[2].style.opacity == "1"){
-    els[0].style.transform = 'translateX(-40%)';
-  } else {
-    els[0].style.transform = 'translateX(-50%)';
-  }
+      } else {
+        group.forEach(id=>{
+          document.getElementById(id).classList.remove('visible');
+        });
+      }
+    });
+  },{threshold:0.4});
 
-  if(showBottom && els[4].style.opacity == "1"){
-    els[1].style.transform = 'translateX(-40%)';
-  } else {
-    els[1].style.transform = 'translateX(-50%)';
-  }
+  observer.observe(document.getElementById(group[0]).parentElement);
 });
 </script>
 
