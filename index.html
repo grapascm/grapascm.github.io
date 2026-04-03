@@ -81,11 +81,11 @@ footer {
   position:absolute;
   color:#E4E8ED;
   opacity:0;
-  transition: all 0.5s ease;
+  transition:0.5s;
   white-space:nowrap;
 }
 
-/* GRAPA centrado */
+/* GRAPA */
 .center {
   text-align:center;
   font-size:clamp(100px,15vw,200px);
@@ -96,30 +96,31 @@ footer {
 /* alineados con G */
 .left-align {
   text-align:left;
-  padding-left:0.09em; /* pequeño desplazamiento después de la G */
+  padding-left:0.09em; /* margen tras la G */
+  transition:0.5s;
 }
 
 /* tamaños */
-#museo { font-size:clamp(55px,9.5vw,110px); }
-#esceno { font-size:clamp(50px,9vw,100px); }
-#fia-superior,
-#fia-inferior { font-size:clamp(70px,12vw,150px); }
+#museo { font-size:clamp(55px,9.5vw,110px);}
+#esceno { font-size:clamp(50px,9vw,100px);}
+#fia-superior,#fia-inferior { font-size:clamp(70px,12vw,150px);}
 
 /* posiciones iniciales */
 #overlay-top { top:25%; }
 #overlay-bottom { top:75%; }
 
-#museo { top:21.5%; left:50%; transform:translateX(-50%);}
-#fia-superior { top:31.5%; left:50%; transform:translateX(-50%);}
+#museo { top:21.5%; left:calc(50% - 7vw); transform:none;}
+#fia-superior { top:31.5%; left:calc(50% - 7vw); transform:none;}
 
-#esceno { top:71.5%; left:50%; transform:translateX(-50%);}
-#fia-inferior { top:81.5%; left:50%; transform:translateX(-50%);}
+#esceno { top:71.5%; left:calc(50% - 7vw); transform:none;}
+#fia-inferior { top:81.5%; left:calc(50% - 7vw); transform:none;}
 
-/* Recenter clase para centrar conjunto */
+/* Recenter cuando PA desaparece */
 .recenter {
   left:50% !important;
   transform:translateX(-50%) !important;
 }
+
 </style>
 </head>
 
@@ -151,8 +152,8 @@ footer {
 
 <script>
 const els = {
-  overlayTop: document.getElementById('overlay-top'),
-  overlayBottom: document.getElementById('overlay-bottom'),
+  top: document.getElementById('overlay-top'),
+  bottom: document.getElementById('overlay-bottom'),
   museo: document.getElementById('museo'),
   fiaSup: document.getElementById('fia-superior'),
   esceno: document.getElementById('esceno'),
@@ -162,91 +163,61 @@ const els = {
 const bg = document.querySelector('.background-image-container');
 const vh = window.innerHeight;
 
-window.addEventListener('scroll',()=> {
+window.addEventListener('scroll',()=>{
   const y = window.scrollY;
   const top = bg.offsetTop;
   const h = bg.offsetHeight;
 
-  // ----------------------------------------
-  // ARRIBA: GRAPA superior
+  // Mitad superior
   const showTop = (y >= top - vh/2 && y < top + h/2 - vh);
+  els.top.style.opacity = showTop ? 1:0;
 
-  els.overlayTop.style.opacity = showTop ? 1 : 0;
+  if(showTop){
+    els.museo.style.opacity = 1;
+    els.fiaSup.style.opacity = 1;
 
-  // GRAPA aparece primero
-  if(showTop) {
-    els.overlayTop.classList.remove('recenter');
-    els.museo.style.opacity = 0;
-    els.fiaSup.style.opacity = 0;
-
-    // MUSEO/FIA aparecen después de GRAPA
-    if(y > top - vh/4) {
-      els.museo.style.opacity = 1;
-      els.fiaSup.style.opacity = 1;
-    }
-
-    // PA se separa a la derecha
-    if(y > top) {
-      els.overlayTop.style.left = '60%';
-    } else {
-      els.overlayTop.style.left = '50%';
-    }
-
-    // Después de que PA desaparece (opacity <0.1) recenter conjunto
-    if(y > top + 50) { 
-      els.overlayTop.classList.add('recenter');
+    // Animación PA: desplazamos "PA" de GRAPA a la derecha
+    els.top.style.transform = 'translateX(-35%)';
+    // Después de 0.6s centramos el conjunto
+    setTimeout(()=>{
+      els.top.style.opacity = 0; // PA desaparece
       els.museo.classList.add('recenter');
       els.fiaSup.classList.add('recenter');
-    } else {
-      els.overlayTop.classList.remove('recenter');
-      els.museo.classList.remove('recenter');
-      els.fiaSup.classList.remove('recenter');
-    }
+      els.top.classList.remove('center'); // quitamos clase para no interferir
+    },600);
   } else {
+    els.top.style.opacity = 0;
     els.museo.style.opacity = 0;
     els.fiaSup.style.opacity = 0;
-    els.overlayTop.style.left = '50%';
+    els.museo.classList.remove('recenter');
+    els.fiaSup.classList.remove('recenter');
+    els.top.classList.add('center');
+    els.top.style.transform = 'translateX(-50%)';
   }
 
-  // ----------------------------------------
-  // ABAJO: GRAPA inferior
+  // Mitad inferior
   const showBottom = (y >= top + h/2 - vh/2);
+  els.bottom.style.opacity = showBottom ? 1:0;
 
-  els.overlayBottom.style.opacity = showBottom ? 1 : 0;
+  if(showBottom){
+    els.esceno.style.opacity = 1;
+    els.fiaInf.style.opacity = 1;
 
-  if(showBottom) {
-    els.overlayBottom.classList.remove('recenter');
-    els.esceno.style.opacity = 0;
-    els.fiaInf.style.opacity = 0;
-
-    // ESCENO/FIA aparecen después de GRAPA
-    if(y > top + h/2 - vh/4) {
-      els.esceno.style.opacity = 1;
-      els.fiaInf.style.opacity = 1;
-    }
-
-    // PA se separa a la derecha
-    if(y > top + h/2) {
-      els.overlayBottom.style.left = '60%';
-    } else {
-      els.overlayBottom.style.left = '50%';
-    }
-
-    // Después de que PA desaparece recenter conjunto
-    if(y > top + h/2 + 50) {
-      els.overlayBottom.classList.add('recenter');
+    els.bottom.style.transform = 'translateX(-35%)';
+    setTimeout(()=>{
+      els.bottom.style.opacity = 0;
       els.esceno.classList.add('recenter');
       els.fiaInf.classList.add('recenter');
-    } else {
-      els.overlayBottom.classList.remove('recenter');
-      els.esceno.classList.remove('recenter');
-      els.fiaInf.classList.remove('recenter');
-    }
-
+      els.bottom.classList.remove('center');
+    },600);
   } else {
+    els.bottom.style.opacity = 0;
     els.esceno.style.opacity = 0;
     els.fiaInf.style.opacity = 0;
-    els.overlayBottom.style.left = '50%';
+    els.esceno.classList.remove('recenter');
+    els.fiaInf.classList.remove('recenter');
+    els.bottom.classList.add('center');
+    els.bottom.style.transform = 'translateX(-50%)';
   }
 });
 </script>
