@@ -3,7 +3,7 @@
 <head>
 <meta charset="UTF-8">
 <meta name="viewport" content="width=device-width, initial-scale=1.0">
-<title>GRAPA</title>
+<title>GRAPA 1.0 Adaptativa</title>
 
 <style>
 @font-face {
@@ -12,7 +12,6 @@
   font-display: swap;
 }
 
-/* Reset y base */
 * { margin:0; padding:0; box-sizing:border-box; }
 
 body {
@@ -29,10 +28,10 @@ body {
   min-height: 100svh;
   display:flex;
   flex-direction:column;
-  justify-content:center;
   align-items:center;
   text-align:center;
-  padding:0 5vw;
+  justify-content:center;
+  padding-top:20vh;
 }
 
 h1.hero-text {
@@ -72,26 +71,22 @@ footer {
 .background-image-container {
   position:relative;
   width:100%;
-  max-width:2000px;
-  margin:0 auto;
+  display:flex;
+  justify-content:center;
 }
 
 .background-image-container img {
   width:100%;
+  max-width:100%;
   height:auto;
-  display:block;
 }
 
 /* BASE TEXTO */
 .overlay-line {
   position:absolute;
-  left:0;
-  right:0;
-  margin:0 auto;
-  width:clamp(300px,70%,1200px);
   color:#E4E8ED;
   opacity:0;
-  transition:0.5s;
+  transition: 0.5s;
   white-space:nowrap;
 }
 
@@ -107,48 +102,32 @@ footer {
   padding-left:0.09em;
 }
 
-/* tamaños específicos */
-#museo { font-size:clamp(55px,9.5vw,110px); }
-#esceno { font-size:clamp(50px,9vw,100px); }
-#fia-superior, #fia-inferior { font-size:clamp(70px,12vw,150px); }
+/* POSICIONES DESKTOP */
+@media(min-width:1024px){
+  #overlay-top { top:25%; left:50%; transform:translateX(-50%); font-size:clamp(100px,15vw,200px);}
+  #overlay-bottom { top:75%; left:50%; transform:translateX(-50%); font-size:clamp(100px,15vw,200px);}
 
-/* posiciones */
-#overlay-top { top:25%; }
-#overlay-bottom { top:75%; }
-#museo { top:21.5%; }
-#fia-superior { top:31.5%; }
-#esceno { top:71.5%; }
-#fia-inferior { top:81.5%; }
+  #museo { top:21.5%; font-size:clamp(55px,9.5vw,110px); left:calc(50% + 0.1em); }
+  #fia-superior { top:31.5%; font-size:clamp(70px,12vw,150px); left:calc(50% + 0.1em); }
 
-/* ANIMACIONES ADICIONALES */
-.recenter .gra,
-.recenter .mu,
-.recenter .fi {
-  left:50%;
-  transform:translateX(-50%);
-  transition: all 0.8s ease-in-out;
+  #esceno { top:71.5%; font-size:clamp(50px,9vw,100px); left:calc(50% + 0.1em); }
+  #fia-inferior { top:81.5%; font-size:clamp(70px,12vw,150px); left:calc(50% + 0.1em); }
 }
 
-/* Responsive */
-@media(max-width:768px){
-  h1.hero-text { font-size:clamp(50px,12vw,150px); }
-  .subtitle { margin-top:6vh; }
-  .email-button { margin-top:14vh; padding:1vh 3vw; }
-  #overlay-top, #overlay-bottom { font-size:clamp(80px,12vw,150px); }
-  #museo, #esceno, #fia-superior, #fia-inferior { font-size:clamp(40px,10vw,90px); }
-  footer { bottom:50px; }
-}
+/* POSICIONES MOBILE/TABLET */
+@media(max-width:1023px){
+  #overlay-top { top:20%; left:50%; transform:translateX(-50%); font-size:clamp(60px,12vw,120px);}
+  #overlay-bottom { top:75%; left:50%; transform:translateX(-50%); font-size:clamp(60px,12vw,120px);}
 
-@media(max-width:480px){
-  h1.hero-text { font-size:clamp(40px,10vw,100px); }
-  .subtitle { margin-top:4vh; letter-spacing:0.2em; }
-  .email-button { margin-top:10vh; padding:1vh 4vw; }
-  #overlay-top, #overlay-bottom { font-size:clamp(60px,12vw,120px); }
-  #museo, #esceno, #fia-superior, #fia-inferior { font-size:clamp(30px,10vw,80px); }
-  footer { bottom:40px; }
+  #museo { top:18%; font-size:clamp(40px,10vw,90px); left:calc(50% + 0.05em);}
+  #fia-superior { top:28%; font-size:clamp(50px,11vw,100px); left:calc(50% + 0.05em);}
+
+  #esceno { top:68%; font-size:clamp(40px,10vw,90px); left:calc(50% + 0.05em);}
+  #fia-inferior { top:78%; font-size:clamp(50px,11vw,100px); left:calc(50% + 0.05em);}
 }
 </style>
 </head>
+
 <body>
 
 <div class="hero">
@@ -158,64 +137,63 @@ footer {
 </div>
 
 <div class="background-image-container">
-  <img src="images/grapas.jpg" alt="GRAPA">
+  <img src="images/grapas.jpg">
 
   <!-- GRAPA -->
-  <div class="overlay-line center gra" id="overlay-top">GRAPA</div>
-  <div class="overlay-line center gra" id="overlay-bottom">GRAPA</div>
+  <div class="overlay-line center" id="overlay-top">GRAPA</div>
+  <div class="overlay-line center" id="overlay-bottom">GRAPA</div>
 
   <!-- MUSEOGRAFIA -->
-  <div class="overlay-line left-align mu" id="museo">MU5EO</div>
-  <div class="overlay-line left-align fi" id="fia-superior">FIA</div>
+  <div class="overlay-line left-align" id="museo">MU5EO</div>
+  <div class="overlay-line left-align" id="fia-superior">FIA</div>
 
   <!-- ESCENOGRAFIA -->
-  <div class="overlay-line left-align mu" id="esceno">E5CENO</div>
-  <div class="overlay-line left-align fi" id="fia-inferior">FIA</div>
+  <div class="overlay-line left-align" id="esceno">E5CENO</div>
+  <div class="overlay-line left-align" id="fia-inferior">FIA</div>
 </div>
 
 <footer>&copy; 2025 GRAPA</footer>
 
 <script>
-const ids = ['overlay-top','overlay-bottom','museo','fia-superior','esceno','fia-inferior']
-const els = ids.map(id=>document.getElementById(id))
-const bg = document.querySelector('.background-image-container')
-const vh = window.innerHeight
+const ids = ['overlay-top','overlay-bottom','museo','fia-superior','esceno','fia-inferior'];
+const els = ids.map(id => document.getElementById(id));
+const bg = document.querySelector('.background-image-container');
+const vh = window.innerHeight;
 
 window.addEventListener('scroll',()=>{
-  const y = window.scrollY
-  const top = bg.offsetTop
-  const h = bg.offsetHeight
+  const y = window.scrollY;
+  const top = bg.offsetTop;
+  const h = bg.offsetHeight;
 
-  // Mostrar GRAPA y luego MUSEO/FIA
-  const showTop = (y >= top - vh/2 && y < top + h/2 - vh)
-  const showBottom = (y >= top + h/2 - vh/2)
+  // Mostrar GRAPA primero, luego MUSEO/FIA, luego mover PA y centrar
+  const showTop = (y >= top - vh/2 && y < top + h/2 - vh/4);
+  const showBottom = (y >= top + h/2 - vh/2);
 
-  // Mitad superior
-  els[0].style.opacity = showTop ? 1:0
-  els[2].style.opacity = showTop ? 1:0
-  els[3].style.opacity = showTop ? 1:0
+  // GRAPA superior
+  els[0].style.opacity = showTop ? 1 : 0;
+  // MUSEO y FIA siguen
+  els[2].style.opacity = showTop ? 1 : 0;
+  els[3].style.opacity = showTop ? 1 : 0;
 
-  // Mitad inferior
-  els[1].style.opacity = showBottom ? 1:0
-  els[4].style.opacity = showBottom ? 1:0
-  els[5].style.opacity = showBottom ? 1:0
+  // GRAPA inferior
+  els[1].style.opacity = showBottom ? 1 : 0;
+  // ESCENO y FIA inferior
+  els[4].style.opacity = showBottom ? 1 : 0;
+  els[5].style.opacity = showBottom ? 1 : 0;
 
-  // Desplazamiento PA y recenter
-  if(showTop){
-    els[0].style.transform = "translateX(-40%)"
-    setTimeout(()=>document.querySelector('.background-image-container').classList.add('recenter'),400)
+  // Animación PA desplazamiento a la derecha y recenter
+  if(showTop && els[2].style.opacity == "1"){
+    els[0].style.transform = 'translateX(-40%)';
   } else {
-    els[0].style.transform = "translateX(-50%)"
-    document.querySelector('.background-image-container').classList.remove('recenter')
+    els[0].style.transform = 'translateX(-50%)';
   }
 
-  if(showBottom){
-    els[1].style.transform = "translateX(-40%)"
-    setTimeout(()=>document.querySelector('.background-image-container').classList.add('recenter'),400)
+  if(showBottom && els[4].style.opacity == "1"){
+    els[1].style.transform = 'translateX(-40%)';
   } else {
-    els[1].style.transform = "translateX(-50%)"
+    els[1].style.transform = 'translateX(-50%)';
   }
-})
+});
 </script>
 
 </body>
