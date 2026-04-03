@@ -20,12 +20,11 @@ body {
   background-color: #0A1A2A;
   color:#BFC6CF;
   min-height:300vh;
-  overflow-x:hidden;
 }
 
 /* HERO */
 .hero {
-  min-height:100svh;
+  min-height: 100svh;
   display:flex;
   flex-direction:column;
   align-items:center;
@@ -77,91 +76,78 @@ footer {
   display:block;
 }
 
-/* BLOQUE COMPLETO */
-.section-group {
+/* BASE TEXTO */
+.overlay-line {
   position:absolute;
   left:50%;
-  transform:translateX(-50%);
+  transform:translateX(-50%) translateY(20px);
   width:clamp(300px,70vw,1200px);
-  display:flex;
-  flex-direction:column;
-  align-items:flex-start;
-  padding-left:0.09em;
-  opacity:0;
-  pointer-events:none;
-  transition: opacity 0.6s ease;
-}
-
-/* mostrar bloque */
-.section-group.visible {
-  opacity:1;
-  pointer-events:auto;
-}
-
-/* línea base */
-.line {
   color:#E4E8ED;
+  opacity:0;
+  transition: opacity 0.6s ease, transform 0.6s ease;
   white-space:nowrap;
-  transition: opacity 0.6s ease, transform 0.6s ease, margin-left 0.6s ease;
 }
 
-/* línea principal GRA/PA */
-.gra-line {
-  width:100%;
+/* GRAPA */
+.center {
   text-align:center;
   font-size:clamp(100px,15vw,200px);
-  line-height:0.9;
 }
 
-/* sublíneas */
-.sub-line {
-  font-size:clamp(55px,9.5vw,110px);
-  line-height:0.9;
-  opacity:0;
-  transform:translateY(16px);
-  text-align:left;
-  margin-left:0.09em;
-  transition:opacity 0.6s ease, transform 0.6s ease;
+.center span {
+  display:inline-block;
+  transition: transform 0.6s ease, opacity 0.4s ease;
 }
 
-.fia-line {
-  font-size:clamp(55px,9.5vw,110px);
-  line-height:0.9;
-  opacity:0;
-  transform:translateY(16px);
-  text-align:left;
-  margin-left:0.09em;
-  transition:opacity 0.6s ease, transform 0.6s ease;
-}
-
-/* aparecen las sublíneas */
-.section-group.show-sub .sub-line,
-.section-group.show-sub .fia-line {
-  opacity:1;
-  transform:translateY(0);
-}
-
-/* PA se desplaza */
-.section-group.open .pa {
-  transform:translateX(0.35em);
-  transition-delay:0.4s;
+/* PA movimiento */
+.shift .pa {
+  transform: translateX(0.35em);
+  transition-delay:0.5s;
 }
 
 /* PA desaparece */
-.section-group.fade-pa .pa {
+.fade-pa .pa {
   opacity:0;
 }
 
-/* al recentrar, el conjunto entero se centra */
-.section-group.centered .sub-line,
-.section-group.centered .fia-line {
-  text-align:center;
-  margin-left:0;
+/* Recentrado de todo el conjunto */
+.recenter-block {
+  left:50% !important;
+  transform: translateX(-50%) translateY(0) !important;
 }
 
+/* alineación izquierda */
+.left-align {
+  text-align:left;
+  padding-left:0.09em;
+}
+
+/* tamaños */
+#museo { font-size:clamp(55px,9.5vw,110px); }
+#esceno { font-size:clamp(50px,9vw,100px); }
+#fia-superior, #fia-inferior { font-size:clamp(70px,12vw,150px); }
+
 /* posiciones */
-#top-group { top:25%; }
-#bottom-group { top:75%; }
+#overlay-top { top:25%; }
+#overlay-bottom { top:75%; }
+
+#museo { top:21.5%; }
+#fia-superior { top:31.5%; }
+
+#esceno { top:71.5%; }
+#fia-inferior { top:81.5%; }
+
+/* visible */
+.visible {
+  opacity:1;
+  transform:translateX(-50%) translateY(0);
+}
+
+/* delays */
+.delay-1 { transition-delay:0.1s; }
+.delay-2 { transition-delay:0.4s; }
+.delay-3 { transition-delay:0.7s; }
+
 </style>
 </head>
 
@@ -174,63 +160,92 @@ footer {
 </div>
 
 <div class="background-image-container">
-  <img src="images/grapas.jpg" alt="GRAPA">
+  <img src="images/grapas.jpg">
 
-  <!-- BLOQUE SUPERIOR -->
-  <div class="section-group" id="top-group">
-    <div class="line gra-line">
-      <span class="gra">GRA</span><span class="pa">PA</span>
-    </div>
-    <div class="line sub-line" id="museo">MU5EO</div>
-    <div class="line fia-line" id="fia-superior">FIA</div>
+  <!-- SUPERIOR -->
+  <div class="overlay-line center delay-1" id="overlay-top">
+    <span class="gra">GRA</span><span class="pa">PA</span>
   </div>
+  <div class="overlay-line left-align delay-2" id="museo">MU5EO</div>
+  <div class="overlay-line left-align delay-3" id="fia-superior">FIA</div>
 
-  <!-- BLOQUE INFERIOR -->
-  <div class="section-group" id="bottom-group">
-    <div class="line gra-line">
-      <span class="gra">GRA</span><span class="pa">PA</span>
-    </div>
-    <div class="line sub-line" id="esceno">E5CENO</div>
-    <div class="line fia-line" id="fia-inferior">FIA</div>
+  <!-- INFERIOR -->
+  <div class="overlay-line center delay-1" id="overlay-bottom">
+    <span class="gra">GRA</span><span class="pa">PA</span>
   </div>
+  <div class="overlay-line left-align delay-2" id="esceno">E5CENO</div>
+  <div class="overlay-line left-align delay-3" id="fia-inferior">FIA</div>
 </div>
 
 <footer>&copy; 2025 GRAPA</footer>
 
 <script>
-const groups = [
-  document.getElementById('top-group'),
-  document.getElementById('bottom-group')
+const sections = [
+  ['overlay-top','museo','fia-superior'],
+  ['overlay-bottom','esceno','fia-inferior']
 ];
 
-const vh = window.innerHeight;
+sections.forEach(group => {
+  const observer = new IntersectionObserver((entries)=>{
+    entries.forEach(entry=>{
+      group.forEach(id=>{
+        const el = document.getElementById(id);
 
-function resetGroup(wrapper){
-  wrapper.classList.remove('show-sub','open','fade-pa','centered','visible');
-}
+        if(entry.isIntersecting){
+          el.classList.add('visible');
 
-function runGroupSequence(wrapper){
-  wrapper.classList.add('visible');
+          // Animación PA y recenter completo
+          if(id === 'museo'){
+            const top = document.getElementById('overlay-top');
+            setTimeout(()=>{
+              top.classList.add('shift');
+              setTimeout(()=>{
+                top.classList.add('fade-pa');
+                // CENTRAR TODO EL BLOQUE SUPERIOR
+                [top, document.getElementById('museo'), document.getElementById('fia-superior')]
+                  .forEach(e=>e.classList.add('recenter-block'));
+              },400);
+            },400);
+          }
 
-  setTimeout(()=> wrapper.classList.add('show-sub'), 350);
-  setTimeout(()=> wrapper.classList.add('open'), 750);
-  setTimeout(()=> wrapper.classList.add('fade-pa','centered'), 1150);
-}
+          if(id === 'esceno'){
+            const bottom = document.getElementById('overlay-bottom');
+            setTimeout(()=>{
+              bottom.classList.add('shift');
+              setTimeout(()=>{
+                bottom.classList.add('fade-pa');
+                // CENTRAR TODO EL BLOQUE INFERIOR
+                [bottom, document.getElementById('esceno'), document.getElementById('fia-inferior')]
+                  .forEach(e=>e.classList.add('recenter-block'));
+              },400);
+            },400);
+          }
 
-window.addEventListener('scroll', ()=>{
-  const y = window.scrollY;
-  groups.forEach(wrapper=>{
-    const top = wrapper.offsetTop;
-    const h = wrapper.offsetHeight;
+        } else {
+          // Reset cuando salimos del viewport
+          el.classList.remove('visible');
 
-    if(y + vh*0.6 >= top && y + vh*0.4 <= top + h){
-      if(!wrapper.classList.contains('visible')){
-        runGroupSequence(wrapper);
-      }
-    } else {
-      resetGroup(wrapper);
-    }
+          if(id === 'museo'){
+            const top = document.getElementById('overlay-top');
+            top.classList.remove('shift','fade-pa','recenter-block');
+            document.getElementById('museo').classList.remove('recenter-block');
+            document.getElementById('fia-superior').classList.remove('recenter-block');
+          }
+
+          if(id === 'esceno'){
+            const bottom = document.getElementById('overlay-bottom');
+            bottom.classList.remove('shift','fade-pa','recenter-block');
+            document.getElementById('esceno').classList.remove('recenter-block');
+            document.getElementById('fia-inferior').classList.remove('recenter-block');
+          }
+        }
+      });
+    });
+  },{
+    threshold:0.3
   });
+
+  observer.observe(document.getElementById(group[0]));
 });
 </script>
 
