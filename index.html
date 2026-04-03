@@ -19,7 +19,6 @@ body {
   text-transform: uppercase;
   background-color: #0A1A2A;
   color: #BFC6CF;
-  overflow-x: hidden;
   min-height: 300vh;
 }
 
@@ -74,17 +73,18 @@ footer {
 .background-image-container img {
   width:100%;
   height:auto;
+  display:block;
 }
 
-/* TEXTOS */
+/* BASE TEXTO */
 .overlay-line {
   position:absolute;
   left:50%;
-  transform:translateX(-50%);
+  transform:translateX(-50%) translateY(20px);
   width:clamp(300px,70vw,1200px);
   color:#E4E8ED;
   opacity:0;
-  transition:opacity 0.6s ease;
+  transition: opacity 0.6s ease, transform 0.6s ease;
   white-space:nowrap;
 }
 
@@ -94,7 +94,28 @@ footer {
   font-size:clamp(100px,15vw,200px);
 }
 
-/* alineados con G */
+.center span {
+  display:inline-block;
+  transition: transform 0.6s ease, opacity 0.4s ease;
+}
+
+/* PA movimiento */
+.shift .pa {
+  transform: translateX(0.35em);
+  transition-delay:0.5s;
+}
+
+/* PA desaparece */
+.fade-pa .pa {
+  opacity:0;
+}
+
+/* RECENTER GLOBAL */
+.recenter {
+  transform:translateX(-50%) translateY(0) translateX(-8%);
+}
+
+/* alineación izquierda */
 .left-align {
   text-align:left;
   padding-left:0.09em;
@@ -103,8 +124,7 @@ footer {
 /* tamaños */
 #museo { font-size:clamp(55px,9.5vw,110px); }
 #esceno { font-size:clamp(50px,9vw,100px); }
-#fia-superior,
-#fia-inferior { font-size:clamp(70px,12vw,150px); }
+#fia-superior, #fia-inferior { font-size:clamp(70px,12vw,150px); }
 
 /* posiciones */
 #overlay-top { top:25%; }
@@ -115,6 +135,17 @@ footer {
 
 #esceno { top:71.5%; }
 #fia-inferior { top:81.5%; }
+
+/* visible */
+.visible {
+  opacity:1;
+  transform:translateX(-50%) translateY(0);
+}
+
+/* delays */
+.delay-1 { transition-delay:0.1s; }
+.delay-2 { transition-delay:0.4s; }
+.delay-3 { transition-delay:0.7s; }
 
 </style>
 </head>
@@ -130,69 +161,91 @@ footer {
 <div class="background-image-container">
   <img src="images/grapas.jpg">
 
-  <!-- GRAPA -->
-  <div class="overlay-line center" id="overlay-top">GRAPA</div>
-  <div class="overlay-line center" id="overlay-bottom">GRAPA</div>
+  <!-- SUPERIOR -->
+  <div class="overlay-line center delay-1" id="overlay-top">
+    <span class="gra">GRA</span><span class="pa">PA</span>
+  </div>
+  <div class="overlay-line left-align delay-2" id="museo">MU5EO</div>
+  <div class="overlay-line left-align delay-3" id="fia-superior">FIA</div>
 
-  <!-- MUSEOGRAFIA -->
-  <div class="overlay-line left-align" id="museo">MU5EO</div>
-  <div class="overlay-line left-align" id="fia-superior">FIA</div>
-
-  <!-- ESCENOGRAFIA -->
-  <div class="overlay-line left-align" id="esceno">E5CENO</div>
-  <div class="overlay-line left-align" id="fia-inferior">FIA</div>
+  <!-- INFERIOR -->
+  <div class="overlay-line center delay-1" id="overlay-bottom">
+    <span class="gra">GRA</span><span class="pa">PA</span>
+  </div>
+  <div class="overlay-line left-align delay-2" id="esceno">E5CENO</div>
+  <div class="overlay-line left-align delay-3" id="fia-inferior">FIA</div>
 </div>
 
 <footer>&copy; 2025 GRAPA</footer>
 
 <script>
-const overlayTop = document.getElementById('overlay-top')
-const overlayBottom = document.getElementById('overlay-bottom')
-const museo = document.getElementById('museo')
-const fiaSup = document.getElementById('fia-superior')
-const esceno = document.getElementById('esceno')
-const fiaInf = document.getElementById('fia-inferior')
+const sections = [
+  ['overlay-top','museo','fia-superior'],
+  ['overlay-bottom','esceno','fia-inferior']
+];
 
-const bg = document.querySelector('.background-image-container')
-const vh = window.innerHeight
+sections.forEach(group => {
+  const observer = new IntersectionObserver((entries)=>{
+    entries.forEach(entry=>{
+      group.forEach(id=>{
+        const el = document.getElementById(id);
 
-window.addEventListener('scroll',()=>{
-  const y = window.scrollY
-  const top = bg.offsetTop
-  const h = bg.offsetHeight
+        if(entry.isIntersecting){
+          el.classList.add('visible');
 
-  const showTop = (y >= top - vh/2 && y < top + h/2 - vh)
-  const showBottom = (y >= top + h/2 - vh/2 && y < top + h)
+          if(id === 'museo'){
+            setTimeout(()=>{
+              const top = document.getElementById('overlay-top');
+              top.classList.add('shift');
 
-  /* RESET */
-  overlayTop.style.opacity = 0
-  museo.style.opacity = 0
-  fiaSup.style.opacity = 0
+              setTimeout(()=>{
+                top.classList.add('fade-pa','recenter');
+                document.getElementById('museo').classList.add('recenter');
+                document.getElementById('fia-superior').classList.add('recenter');
+              }, 400);
 
-  overlayBottom.style.opacity = 0
-  esceno.style.opacity = 0
-  fiaInf.style.opacity = 0
+            }, 400);
+          }
 
-  /* ARRIBA */
-  if(showTop){
-    overlayTop.style.opacity = 1
+          if(id === 'esceno'){
+            setTimeout(()=>{
+              const bottom = document.getElementById('overlay-bottom');
+              bottom.classList.add('shift');
 
-    setTimeout(()=>{
-      museo.style.opacity = 1
-      fiaSup.style.opacity = 1
-    }, 300)
-  }
+              setTimeout(()=>{
+                bottom.classList.add('fade-pa','recenter');
+                document.getElementById('esceno').classList.add('recenter');
+                document.getElementById('fia-inferior').classList.add('recenter');
+              }, 400);
 
-  /* ABAJO */
-  if(showBottom){
-    overlayBottom.style.opacity = 1
+            }, 400);
+          }
 
-    setTimeout(()=>{
-      esceno.style.opacity = 1
-      fiaInf.style.opacity = 1
-    }, 300)
-  }
-})
+        } else {
+          el.classList.remove('visible');
+
+          if(id === 'museo'){
+            const top = document.getElementById('overlay-top');
+            top.classList.remove('shift','fade-pa','recenter');
+            document.getElementById('museo').classList.remove('recenter');
+            document.getElementById('fia-superior').classList.remove('recenter');
+          }
+
+          if(id === 'esceno'){
+            const bottom = document.getElementById('overlay-bottom');
+            bottom.classList.remove('shift','fade-pa','recenter');
+            document.getElementById('esceno').classList.remove('recenter');
+            document.getElementById('fia-inferior').classList.remove('recenter');
+          }
+        }
+      });
+    });
+  },{
+    threshold:0.3
+  });
+
+  observer.observe(document.getElementById(group[0]));
+});
 </script>
 
 </body>
