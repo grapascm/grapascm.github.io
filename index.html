@@ -18,13 +18,13 @@ body {
   font-family: 'GRAPA', sans-serif;
   text-transform: uppercase;
   background-color: #0A1A2A;
-  color:#BFC6CF;
-  min-height:300vh;
+  color: #BFC6CF;
+  min-height: 300vh;
 }
 
 /* HERO */
 .hero {
-  min-height:100svh;
+  min-height: 100svh;
   display:flex;
   flex-direction:column;
   align-items:center;
@@ -76,36 +76,59 @@ footer {
   display:block;
 }
 
-/* CONJUNTOS */
-.group {
+/* BASE TEXTO */
+.overlay-line {
   position:absolute;
   left:50%;
   transform:translateX(-50%) translateY(20px);
-  transition: transform 0.6s ease, opacity 0.6s ease;
-  white-space:nowrap;
+  width:clamp(300px,70vw,1200px);
+  color:#E4E8ED;
   opacity:0;
+  transition: opacity 0.6s ease, transform 0.6s ease;
+  white-space:nowrap;
 }
 
 /* GRAPA */
-.gra { font-size:clamp(100px,15vw,200px); display:inline-block; transition: transform 0.6s ease, opacity 0.4s ease; }
-.pa { font-size:clamp(100px,15vw,200px); display:inline-block; transition: transform 0.6s ease, opacity 0.4s ease; }
+.center {
+  text-align:center;
+  font-size:clamp(100px,15vw,200px);
+}
 
-/* textos de conjunto */
-.left-align { font-size:clamp(55px,9.5vw,110px); display:block; text-align:left; padding-left:0.09em; }
+.center span {
+  display:inline-block;
+  transition: transform 0.6s ease, opacity 0.4s ease;
+}
 
-/* fade visible */
-.visible { opacity:1; transform:translateX(-50%) translateY(0); }
+/* PA movimiento */
+.shift .pa {
+  transform: translateX(0.35em);
+  transition-delay:0.5s;
+}
 
-/* PA desplazamiento y fade */
-.shift .pa { transform:translateX(0.35em); }
-.fade-pa .pa { opacity:0; }
+/* PA desaparece */
+.fade-pa .pa {
+  opacity:0;
+}
 
-/* Recentrado del grupo */
-.recenter { transform: translateX(-50%) translateY(0); left:50%; }
+/* RECENTER GLOBAL */
+.recenter {
+  transform:translateX(-50%) translateY(0) translateX(-8%);
+}
 
-/* Posiciones verticales */
-#group-top { top:25%; }
-#group-bottom { top:75%; }
+/* alineación izquierda */
+.left-align {
+  text-align:left;
+  padding-left:0.09em;
+}
+
+/* tamaños */
+#museo { font-size:clamp(55px,9.5vw,110px); }
+#esceno { font-size:clamp(50px,9vw,100px); }
+#fia-superior, #fia-inferior { font-size:clamp(70px,12vw,150px); }
+
+/* posiciones */
+#overlay-top { top:25%; }
+#overlay-bottom { top:75%; }
 
 #museo { top:21.5%; }
 #fia-superior { top:31.5%; }
@@ -113,8 +136,20 @@ footer {
 #esceno { top:71.5%; }
 #fia-inferior { top:81.5%; }
 
+/* visible */
+.visible {
+  opacity:1;
+  transform:translateX(-50%) translateY(0);
+}
+
+/* delays */
+.delay-1 { transition-delay:0.1s; }
+.delay-2 { transition-delay:0.4s; }
+.delay-3 { transition-delay:0.7s; }
+
 </style>
 </head>
+
 <body>
 
 <div class="hero">
@@ -127,58 +162,89 @@ footer {
   <img src="images/grapas.jpg">
 
   <!-- SUPERIOR -->
-  <div class="group" id="group-top">
+  <div class="overlay-line center delay-1" id="overlay-top">
     <span class="gra">GRA</span><span class="pa">PA</span>
-    <div class="left-align" id="museo">MU5EO</div>
-    <div class="left-align" id="fia-superior">FIA</div>
   </div>
+  <div class="overlay-line left-align delay-2" id="museo">MU5EO</div>
+  <div class="overlay-line left-align delay-3" id="fia-superior">FIA</div>
 
   <!-- INFERIOR -->
-  <div class="group" id="group-bottom">
+  <div class="overlay-line center delay-1" id="overlay-bottom">
     <span class="gra">GRA</span><span class="pa">PA</span>
-    <div class="left-align" id="esceno">E5CENO</div>
-    <div class="left-align" id="fia-inferior">FIA</div>
   </div>
-
+  <div class="overlay-line left-align delay-2" id="esceno">E5CENO</div>
+  <div class="overlay-line left-align delay-3" id="fia-inferior">FIA</div>
 </div>
 
 <footer>&copy; 2025 GRAPA</footer>
 
 <script>
-const groups = [
-  {groupId:'group-top', pa: true},
-  {groupId:'group-bottom', pa: true}
+const sections = [
+  ['overlay-top','museo','fia-superior'],
+  ['overlay-bottom','esceno','fia-inferior']
 ];
 
-groups.forEach(item => {
-  const group = document.getElementById(item.groupId);
-  const pa = group.querySelector('.pa');
-
-  const observer = new IntersectionObserver(entries=>{
+sections.forEach(group => {
+  const observer = new IntersectionObserver((entries)=>{
     entries.forEach(entry=>{
-      if(entry.isIntersecting){
-        // Aparece todo
-        group.classList.add('visible');
+      group.forEach(id=>{
+        const el = document.getElementById(id);
 
-        // Después de un tiempo PA se mueve
-        setTimeout(()=>{
-          group.classList.add('shift');
-          // Luego PA desaparece y el grupo se centra
-          setTimeout(()=>{
-            group.classList.add('fade-pa','recenter');
-          }, 400);
-        },400);
+        if(entry.isIntersecting){
+          el.classList.add('visible');
 
-      } else {
-        // Reset al salir del viewport
-        group.classList.remove('visible','shift','fade-pa','recenter');
-      }
+          if(id === 'museo'){
+            setTimeout(()=>{
+              const top = document.getElementById('overlay-top');
+              top.classList.add('shift');
+
+              setTimeout(()=>{
+                top.classList.add('fade-pa','recenter');
+                document.getElementById('museo').classList.add('recenter');
+                document.getElementById('fia-superior').classList.add('recenter');
+              }, 400);
+
+            }, 400);
+          }
+
+          if(id === 'esceno'){
+            setTimeout(()=>{
+              const bottom = document.getElementById('overlay-bottom');
+              bottom.classList.add('shift');
+
+              setTimeout(()=>{
+                bottom.classList.add('fade-pa','recenter');
+                document.getElementById('esceno').classList.add('recenter');
+                document.getElementById('fia-inferior').classList.add('recenter');
+              }, 400);
+
+            }, 400);
+          }
+
+        } else {
+          el.classList.remove('visible');
+
+          if(id === 'museo'){
+            const top = document.getElementById('overlay-top');
+            top.classList.remove('shift','fade-pa','recenter');
+            document.getElementById('museo').classList.remove('recenter');
+            document.getElementById('fia-superior').classList.remove('recenter');
+          }
+
+          if(id === 'esceno'){
+            const bottom = document.getElementById('overlay-bottom');
+            bottom.classList.remove('shift','fade-pa','recenter');
+            document.getElementById('esceno').classList.remove('recenter');
+            document.getElementById('fia-inferior').classList.remove('recenter');
+          }
+        }
+      });
     });
   },{
     threshold:0.3
   });
 
-  observer.observe(group);
+  observer.observe(document.getElementById(group[0]));
 });
 </script>
 
