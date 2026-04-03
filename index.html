@@ -76,13 +76,12 @@ footer {
   height:auto;
 }
 
-/* TEXTOS */
+/* BASE TEXTO */
 .overlay-line {
   position:absolute;
   left:50%;
   transform:translateX(-50%);
-  width:70vw;
-  max-width:1200px;
+  width:clamp(300px,70vw,1200px);
   color:#E4E8ED;
   opacity:0;
   transition:0.5s;
@@ -98,18 +97,19 @@ footer {
 /* alineados con G */
 .left-align {
   text-align:left;
-  transform-origin:left center;
+  font-size:clamp(65px,11vw,130px);
 }
 
-/* posiciones */
+/* POSICIONES EXACTAS */
 #overlay-top { top:25%; }
 #overlay-bottom { top:75%; }
 
-#museo { top:20%; }
-#fia-superior { top:32%; }
+/* AJUSTE FINO SOBRE GRA */
+#museo { top:22.5%; }       /* ligeramente encima */
+#fia-superior { top:30%; }  /* debajo con aire */
 
-#esceno { top:70%; }
-#fia-inferior { top:82%; }
+#esceno { top:72.5%; }
+#fia-inferior { top:80%; }
 
 </style>
 </head>
@@ -146,7 +146,6 @@ const els = ids.map(id=>document.getElementById(id))
 const bg = document.querySelector('.background-image-container')
 const vh = window.innerHeight
 
-/* SCROLL */
 window.addEventListener('scroll',()=>{
   const y = window.scrollY
   const top = bg.offsetTop
@@ -163,28 +162,6 @@ window.addEventListener('scroll',()=>{
   els[4].style.opacity = showBottom ? 1:0
   els[5].style.opacity = showBottom ? 1:0
 })
-
-/* AJUSTE PERFECTO DE ANCHO */
-function ajustarTexto() {
-  const grapa = document.getElementById('overlay-top')
-  const graWidth = grapa.offsetWidth * 0.6 // aprox ancho de "GRA"
-
-  const targets = ['museo','fia-superior','esceno','fia-inferior']
-
-  targets.forEach(id=>{
-    const el = document.getElementById(id)
-
-    el.style.transform = 'translateX(-50%) scaleX(1)' // reset
-    const actual = el.offsetWidth
-
-    const scale = graWidth / actual
-
-    el.style.transform = `translateX(-50%) scaleX(${scale})`
-  })
-}
-
-window.addEventListener('load', ajustarTexto)
-window.addEventListener('resize', ajustarTexto)
 </script>
 
 </body>
