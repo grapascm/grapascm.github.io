@@ -97,19 +97,29 @@ footer {
 /* alineados con G */
 .left-align {
   text-align:left;
-  font-size:clamp(65px,11vw,130px);
+  padding-left:0.06em; /* desplazamiento después de la G */
 }
 
-/* POSICIONES EXACTAS */
+/* tamaños */
+#museo,
+#esceno {
+  font-size:clamp(55px,9.5vw,110px);
+}
+
+#fia-superior,
+#fia-inferior {
+  font-size:clamp(70px,12vw,150px);
+}
+
+/* posiciones */
 #overlay-top { top:25%; }
 #overlay-bottom { top:75%; }
 
-/* AJUSTE FINO SOBRE GRA */
-#museo { top:22.5%; }       /* ligeramente encima */
-#fia-superior { top:30%; }  /* debajo con aire */
+#museo { top:21.5%; }
+#fia-superior { top:31.5%; }
 
-#esceno { top:72.5%; }
-#fia-inferior { top:80%; }
+#esceno { top:71.5%; }
+#fia-inferior { top:81.5%; }
 
 </style>
 </head>
