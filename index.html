@@ -12,7 +12,7 @@
   font-display: swap;
 }
 
-* { margin: 0; padding: 0; box-sizing: border-box; }
+* { margin:0; padding:0; box-sizing:border-box; }
 
 body {
   font-family: 'GRAPA', sans-serif;
@@ -21,7 +21,7 @@ body {
   color: #BFC6CF;
   overflow-x: hidden;
   position: relative;
-  min-height: 300vh; /* suficiente para scroll */
+  min-height: 300vh;
 }
 
 /* HERO */
@@ -36,114 +36,172 @@ body {
   padding-top: 20vh;
   padding-left: 5vw;
   padding-right: 5vw;
-  z-index: 2;
+  z-index:2;
 }
 
 h1.hero-text {
   font-size: clamp(80px, 15vw, 200px);
-  letter-spacing: 0.04em;
-  color: #E4E8ED;
-  line-height: 0.9;
+  letter-spacing:0.04em;
+  color:#E4E8ED;
+  line-height:0.9;
 }
 
 .subtitle {
-  margin-top: 8vh;
-  font-size: clamp(14px, 2vw, 20px);
-  letter-spacing: 0.35em;
-  opacity: 0.8;
+  margin-top:8vh;
+  font-size:clamp(14px,2vw,20px);
+  letter-spacing:0.35em;
+  opacity:0.8;
 }
 
 .email-button {
-  display: inline-block;
-  margin-top: 18vh;
-  font-size: clamp(10px, 1.2vw, 14px);
-  letter-spacing: 0.3em;
-  text-decoration: none;
-  color: #E4E8ED;
-  border: 1px solid rgba(228, 232, 237, 0.2);
-  padding: 1vh 2vw;
-  transition: all 0.3s ease;
-  opacity: 0.7;
+  display:inline-block;
+  margin-top:18vh;
+  font-size:clamp(10px,1.2vw,14px);
+  letter-spacing:0.3em;
+  text-decoration:none;
+  color:#E4E8ED;
+  border:1px solid rgba(228,232,237,0.2);
+  padding:1vh 2vw;
+  transition:all 0.3s ease;
+  opacity:0.7;
 }
 
 .email-button:hover {
-  background-color: #E4E8ED;
-  color: #0A1A2A;
-  opacity: 1;
+  background-color:#E4E8ED;
+  color:#0A1A2A;
+  opacity:1;
 }
 
 /* Footer */
 footer {
-  position: fixed;
-  bottom: 60px;
-  width: 100%;
-  text-align: center;
-  font-size: clamp(10px, 1.1vw, 12px);
-  letter-spacing: 0.25em;
-  text-transform: uppercase;
-  opacity: 0.5;
-  color: #BFC6CF;
-  z-index: 2;
+  position:fixed;
+  bottom:60px;
+  width:100%;
+  text-align:center;
+  font-size:clamp(10px,1.1vw,12px);
+  letter-spacing:0.25em;
+  text-transform:uppercase;
+  opacity:0.5;
+  color:#BFC6CF;
+  z-index:2;
 }
 
 /* Imagen scrollable */
 .background-image-container {
-  position: relative;
-  width: 100%;
-  display: block;
+  position:relative;
+  width:100%;
+  display:block;
 }
 
 .background-image-container img {
-  width: 100%;
-  height: auto;
-  display: block;
-  max-width: 100%;
+  width:100%;
+  height:auto;
+  display:block;
+  max-width:100%;
 }
 
-/* Texto sobre la imagen */
+/* Texto GRAPA overlay */
 .overlay-text {
-  position: absolute;
-  left: 50%;
-  transform: translateX(-50%);
-  font-size: clamp(60px, 10vw, 150px);
-  color: #E4E8ED;
-  line-height: 0.9;
-  opacity: 0;
-  transition: opacity 0.5s ease, top 0.5s ease;
-  pointer-events: none;
-  white-space: nowrap;
+  position:absolute;
+  left:50%;
+  transform:translateX(-50%);
+  font-size:clamp(60px,10vw,150px);
+  color:#E4E8ED;
+  line-height:0.9;
+  opacity:0;
+  transition:opacity 0.5s ease, top 0.5s ease;
+  pointer-events:none;
+  white-space:nowrap;
 }
+
+/* Sección Museografía */
+.section-museografia, .section-escenografia {
+  position:absolute;
+  left:50%;
+  transform:translateX(-50%);
+  text-align:center;
+  line-height:0.9;
+  z-index:3;
+  opacity:0;
+  transition:opacity 0.5s ease;
+}
+
+.section-museografia .line,
+.section-escenografia .line {
+  font-family:'GRAPA', sans-serif;
+  text-transform:uppercase;
+  color:#E4E8ED;
+  display:block;
+}
+
+/* Museografía */
+.section-museografia .line:nth-child(1) { font-size:clamp(60px,10vw,150px); margin-bottom:-0.1em; } /* MUSEO */
+.section-museografia .line:nth-child(2) { font-size:clamp(100px,15vw,200px); } /* GRA */
+.section-museografia .line:nth-child(3) { font-size:clamp(60px,10vw,150px); margin-top:-0.1em; } /* FÍA */
+
+/* Escenografía */
+.section-escenografia { top:75%; } /* mitad inferior de la imagen */
+.section-escenografia .line:nth-child(1) { font-size:clamp(60px,10vw,150px); margin-bottom:-0.1em; } /* ESCENO */
+.section-escenografia .line:nth-child(2) { font-size:clamp(100px,15vw,200px); } /* GRA */
+.section-escenografia .line:nth-child(3) { font-size:clamp(60px,10vw,150px); margin-top:-0.1em; } /* FÍA */
 
 /* Responsive */
-@media (max-width: 768px) {
-  h1.hero-text { font-size: clamp(50px, 12vw, 150px); }
-  .subtitle { margin-top: 6vh; }
-  .email-button { margin-top: 14vh; padding: 1vh 3vw; }
-  .overlay-text { font-size: clamp(40px, 12vw, 120px); }
-  footer { bottom: 50px; }
+@media(max-width:768px){
+  h1.hero-text { font-size:clamp(50px,12vw,150px); }
+  .subtitle { margin-top:6vh; }
+  .email-button { margin-top:14vh; padding:1vh 3vw; }
+  .overlay-text { font-size:clamp(40px,12vw,120px); }
+  .section-museografia .line:nth-child(1), .section-museografia .line:nth-child(3),
+  .section-escenografia .line:nth-child(1), .section-escenografia .line:nth-child(3){ font-size:clamp(40px,10vw,120px); }
+  .section-museografia .line:nth-child(2),
+  .section-escenografia .line:nth-child(2){ font-size:clamp(80px,12vw,150px); }
+  footer { bottom:50px; }
 }
 
-@media (max-width: 480px) {
-  h1.hero-text { font-size: clamp(40px, 10vw, 100px); }
-  .subtitle { margin-top: 4vh; letter-spacing: 0.2em; }
-  .email-button { margin-top: 10vh; padding: 1vh 4vw; }
-  .overlay-text { font-size: clamp(30px, 12vw, 90px); }
-  footer { bottom: 40px; }
+@media(max-width:480px){
+  h1.hero-text { font-size:clamp(40px,10vw,100px); }
+  .subtitle { margin-top:4vh; letter-spacing:0.2em; }
+  .email-button { margin-top:10vh; padding:1vh 4vw; }
+  .overlay-text { font-size:clamp(30px,12vw,90px); }
+  .section-museografia .line:nth-child(1), .section-museografia .line:nth-child(3),
+  .section-escenografia .line:nth-child(1), .section-escenografia .line:nth-child(3){ font-size:clamp(30px,10vw,90px); }
+  .section-museografia .line:nth-child(2),
+  .section-escenografia .line:nth-child(2){ font-size:clamp(60px,12vw,120px); }
+  footer { bottom:40px; }
 }
+
 </style>
 </head>
 <body>
 
+<!-- Hero -->
 <div class="hero">
   <h1 class="hero-text">GRAPA</h1>
   <div class="subtitle">5ociedad Cooperativa Madrileña</div>
-  <a href="mailto:grapa@grapa.es" class="email-button">grapa@grapa.e5</a>
+  <a href="mailto:grapa@grapa.es" class="email-button">grapa@grapa.es</a>
 </div>
 
+<!-- Imagen y overlays -->
 <div class="background-image-container">
   <img src="images/grapas.jpg" alt="GRAPA">
+
+  <!-- GRAPA mitad superior e inferior -->
   <div class="overlay-text" id="overlay-top">GRAPA</div>
   <div class="overlay-text" id="overlay-bottom">GRAPA</div>
+
+  <!-- Museografía -->
+  <div class="section-museografia" id="museografia-text">
+    <div class="line">MUSEO</div>
+    <div class="line">GRA</div>
+    <div class="line">FÍA</div>
+  </div>
+
+  <!-- Escenografía -->
+  <div class="section-escenografia" id="escenografia-text">
+    <div class="line">ESCENO</div>
+    <div class="line">GRA</div>
+    <div class="line">FÍA</div>
+  </div>
 </div>
 
 <footer>&copy; 2025 GRAPA</footer>
@@ -151,36 +209,35 @@ footer {
 <script>
 const overlayTop = document.getElementById('overlay-top');
 const overlayBottom = document.getElementById('overlay-bottom');
+const museoText = document.getElementById('museografia-text');
+const escenaText = document.getElementById('escenografia-text');
 const bgContainer = document.querySelector('.background-image-container');
-const heroHeight = document.querySelector('.hero').offsetHeight;
+const viewportHeight = window.innerHeight;
 
-window.addEventListener('scroll', () => {
+window.addEventListener('scroll',()=>{
   const scrollY = window.scrollY;
   const bgTop = bgContainer.offsetTop;
   const bgHeight = bgContainer.offsetHeight;
-  const viewportHeight = window.innerHeight;
 
-  // Aparición en mitad superior de la imagen
-  const topTriggerStart = bgTop - viewportHeight / 2;
-  const topTriggerEnd = bgTop + bgHeight / 2 - viewportHeight;
-
-  if(scrollY >= topTriggerStart && scrollY < topTriggerEnd) {
-    overlayTop.style.top = '25%';
+  // GRAPA mitad superior
+  if(scrollY >= bgTop - viewportHeight/2 && scrollY < bgTop + bgHeight/2 - viewportHeight){
     overlayTop.style.opacity = 1;
-  } else {
-    overlayTop.style.opacity = 0;
-  }
+  }else overlayTop.style.opacity=0;
 
-  // Aparición en mitad inferior de la imagen
-  const bottomTriggerStart = bgTop + bgHeight / 2 - viewportHeight / 2;
-  const bottomTriggerEnd = bgTop + bgHeight - viewportHeight / 4;
-
-  if(scrollY >= bottomTriggerStart && scrollY < bottomTriggerEnd) {
-    overlayBottom.style.top = '75%';
+  // GRAPA mitad inferior
+  if(scrollY >= bgTop + bgHeight/2 - viewportHeight/2 && scrollY < bgTop + bgHeight - viewportHeight/4){
     overlayBottom.style.opacity = 1;
-  } else {
-    overlayBottom.style.opacity = 0;
-  }
+  }else overlayBottom.style.opacity=0;
+
+  // Museografía sobre GRAPA superior
+  if(scrollY >= bgTop - viewportHeight/2 && scrollY < bgTop + bgHeight/2){
+    museoText.style.opacity=1;
+  }else museoText.style.opacity=0;
+
+  // Escenografía sobre GRAPA inferior
+  if(scrollY >= bgTop + bgHeight/2 - viewportHeight/2 && scrollY < bgTop + bgHeight){
+    escenaText.style.opacity=1;
+  }else escenaText.style.opacity=0;
 });
 </script>
 
