@@ -18,14 +18,13 @@ body {
   font-family: 'GRAPA', sans-serif;
   text-transform: uppercase;
   background-color: #0A1A2A;
-  color: #BFC6CF;
-  overflow-x: hidden;
-  min-height: 300vh;
+  color:#BFC6CF;
+  min-height:300vh;
 }
 
 /* HERO */
 .hero {
-  min-height: 100svh;
+  min-height:100svh;
   display:flex;
   flex-direction:column;
   align-items:center;
@@ -74,58 +73,48 @@ footer {
 .background-image-container img {
   width:100%;
   height:auto;
-}
-
-/* GRUPOS */
-.group {
-  position:absolute;
-  left:50%;
-  transform:translateX(-50%);
-  width:clamp(300px,70vw,1200px);
-  transition: transform 0.5s;
-}
-
-/* TEXTOS */
-.overlay-line {
-  position:relative;
-  color:#E4E8ED;
-  opacity:0;
-  transition:0.5s;
-  white-space:nowrap;
   display:block;
 }
 
+/* CONJUNTOS */
+.group {
+  position:absolute;
+  left:50%;
+  transform:translateX(-50%) translateY(20px);
+  transition: transform 0.6s ease, opacity 0.6s ease;
+  white-space:nowrap;
+  opacity:0;
+}
+
 /* GRAPA */
-.gra { font-size:clamp(100px,15vw,200px); }
-.pa { font-size:clamp(100px,15vw,200px); display:inline-block; transition: transform 0.5s, opacity 0.5s; }
+.gra { font-size:clamp(100px,15vw,200px); display:inline-block; transition: transform 0.6s ease, opacity 0.4s ease; }
+.pa { font-size:clamp(100px,15vw,200px); display:inline-block; transition: transform 0.6s ease, opacity 0.4s ease; }
 
-/* alineados con G */
-.left-align { font-size:clamp(50px,9vw,100px); margin-left:0.08em; }
+/* textos de conjunto */
+.left-align { font-size:clamp(55px,9.5vw,110px); display:block; text-align:left; padding-left:0.09em; }
 
-/* posiciones */
+/* fade visible */
+.visible { opacity:1; transform:translateX(-50%) translateY(0); }
+
+/* PA desplazamiento y fade */
+.shift .pa { transform:translateX(0.35em); }
+.fade-pa .pa { opacity:0; }
+
+/* Recentrado del grupo */
+.recenter { transform: translateX(-50%) translateY(0); left:50%; }
+
+/* Posiciones verticales */
 #group-top { top:25%; }
 #group-bottom { top:75%; }
 
-/* textos superiores */
-#museo { margin-top:-10px; }
-#fia-superior { margin-top:5px; }
+#museo { top:21.5%; }
+#fia-superior { top:31.5%; }
 
-/* textos inferiores */
-#esceno { margin-top:-10px; }
-#fia-inferior { margin-top:5px; }
+#esceno { top:71.5%; }
+#fia-inferior { top:81.5%; }
 
-/* responsive */
-@media(max-width:768px){
-  .gra,.pa { font-size:clamp(60px,12vw,150px); }
-  .left-align { font-size:clamp(40px,10vw,90px); }
-}
-@media(max-width:480px){
-  .gra,.pa { font-size:clamp(50px,10vw,120px); }
-  .left-align { font-size:clamp(30px,8vw,80px); }
-}
 </style>
 </head>
-
 <body>
 
 <div class="hero">
@@ -137,22 +126,18 @@ footer {
 <div class="background-image-container">
   <img src="images/grapas.jpg">
 
-  <!-- GRUPOS SUPERIOR -->
+  <!-- SUPERIOR -->
   <div class="group" id="group-top">
-    <div class="overlay-line">
-      <span class="gra">GRA</span><span class="pa">PA</span>
-    </div>
-    <div class="overlay-line left-align" id="museo">MU5EO</div>
-    <div class="overlay-line left-align" id="fia-superior">FIA</div>
+    <span class="gra">GRA</span><span class="pa">PA</span>
+    <div class="left-align" id="museo">MU5EO</div>
+    <div class="left-align" id="fia-superior">FIA</div>
   </div>
 
-  <!-- GRUPOS INFERIOR -->
+  <!-- INFERIOR -->
   <div class="group" id="group-bottom">
-    <div class="overlay-line">
-      <span class="gra">GRA</span><span class="pa">PA</span>
-    </div>
-    <div class="overlay-line left-align" id="esceno">E5CENO</div>
-    <div class="overlay-line left-align" id="fia-inferior">FIA</div>
+    <span class="gra">GRA</span><span class="pa">PA</span>
+    <div class="left-align" id="esceno">E5CENO</div>
+    <div class="left-align" id="fia-inferior">FIA</div>
   </div>
 
 </div>
@@ -160,55 +145,41 @@ footer {
 <footer>&copy; 2025 GRAPA</footer>
 
 <script>
-const topGroup = document.getElementById('group-top')
-const bottomGroup = document.getElementById('group-bottom')
+const groups = [
+  {groupId:'group-top', pa: true},
+  {groupId:'group-bottom', pa: true}
+];
 
-const topPA = topGroup.querySelector('.pa')
-const bottomPA = bottomGroup.querySelector('.pa')
+groups.forEach(item => {
+  const group = document.getElementById(item.groupId);
+  const pa = group.querySelector('.pa');
 
-const topLines = topGroup.querySelectorAll('.overlay-line')
-const bottomLines = bottomGroup.querySelectorAll('.overlay-line')
+  const observer = new IntersectionObserver(entries=>{
+    entries.forEach(entry=>{
+      if(entry.isIntersecting){
+        // Aparece todo
+        group.classList.add('visible');
 
-const bg = document.querySelector('.background-image-container')
-const vh = window.innerHeight
+        // Después de un tiempo PA se mueve
+        setTimeout(()=>{
+          group.classList.add('shift');
+          // Luego PA desaparece y el grupo se centra
+          setTimeout(()=>{
+            group.classList.add('fade-pa','recenter');
+          }, 400);
+        },400);
 
-window.addEventListener('scroll',()=>{
-  const y = window.scrollY
-  const topOffset = bg.offsetTop
-  const h = bg.offsetHeight
+      } else {
+        // Reset al salir del viewport
+        group.classList.remove('visible','shift','fade-pa','recenter');
+      }
+    });
+  },{
+    threshold:0.3
+  });
 
-  // SUPERIOR
-  if(y >= topOffset - vh/2 && y < topOffset + h/2 - vh/4){
-    topLines.forEach(el=>el.style.opacity = 1)
-
-    // PA se mueve a la derecha
-    topPA.style.transform = 'translateX(25%)'
-    // Tras desplazamiento PA, desaparecer y centrar el grupo
-    setTimeout(()=>{
-      topPA.style.opacity = 0
-      topGroup.querySelectorAll('.left-align, .gra').forEach(el=>{
-        el.style.textAlign = 'center'
-        el.style.marginLeft = '0'
-      })
-      topGroup.style.transform = 'translateX(-50%)'
-    }, 500)
-  }
-
-  // INFERIOR
-  if(y >= topOffset + h/2 - vh/2){
-    bottomLines.forEach(el=>el.style.opacity = 1)
-
-    bottomPA.style.transform = 'translateX(25%)'
-    setTimeout(()=>{
-      bottomPA.style.opacity = 0
-      bottomGroup.querySelectorAll('.left-align, .gra').forEach(el=>{
-        el.style.textAlign = 'center'
-        el.style.marginLeft = '0'
-      })
-      bottomGroup.style.transform = 'translateX(-50%)'
-    },500)
-  }
-})
+  observer.observe(group);
+});
 </script>
 
 </body>
