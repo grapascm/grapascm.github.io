@@ -3,7 +3,7 @@
 <head>
 <meta charset="UTF-8">
 <meta name="viewport" content="width=device-width, initial-scale=1.0">
-<title>GRAPA</title>
+<title>GRAPA 2.1</title>
 
 <style>
 @font-face {
@@ -29,81 +29,81 @@ body {
   flex-direction:column;
   align-items:center;
   text-align:center;
-  padding: 20vh 20px 0 20px; /* Padding para que el subtítulo no toque bordes */
+  padding: 20vh 20px 0 20px;
 }
 
 h1.hero-text {
-  font-size: clamp(45px, 15vw, 200px);
-  letter-spacing:0.04em;
-  color:#E4E8ED;
-  line-height:0.9;
-  max-width: 100%;
+  font-size: clamp(45px, 14vw, 200px);
+  /* Compensamos el letter-spacing para centrado perfecto */
+  letter-spacing: 0.04em;
+  margin-right: -0.04em; 
+  color: #E4E8ED;
+  line-height: 0.9;
 }
 
 .subtitle {
-  margin-top:8vh;
+  margin-top: 8vh;
   font-size: clamp(10px, 2.2vw, 20px);
-  letter-spacing:0.35em;
-  max-width: 80vw; /* Margen para el subtítulo */
-  line-height: 1.5;
+  letter-spacing: 0.35em;
+  margin-right: -0.35em; /* Compensación centrado */
+  max-width: 85vw;
 }
 
 .email-button {
-  margin-top:15vh;
-  font-size:clamp(10px, 1.2vw, 14px);
-  letter-spacing:0.3em;
-  text-decoration:none;
-  color:#E4E8ED;
-  border:1px solid rgba(228,232,237,0.2);
-  padding:15px 30px;
+  margin-top: 15vh;
+  font-size: clamp(10px, 1.2vw, 14px);
+  letter-spacing: 0.3em;
+  margin-right: -0.3em; /* Compensación centrado */
+  text-decoration: none;
+  color: #E4E8ED;
+  border: 1px solid rgba(228,232,237,0.2);
+  padding: 15px 30px;
 }
 
 /* --- FOOTER FIXED --- */
 footer {
-  position:fixed;
-  bottom:60px;
-  width:100%;
-  text-align:center;
+  position: fixed;
+  bottom: 60px;
+  width: 100%;
+  text-align: center;
   font-size: clamp(10px, 1vw, 12px);
-  opacity:0.5;
+  opacity: 0.5;
   pointer-events: none;
   z-index: 10;
 }
 
 /* --- CONTENEDOR IMAGEN --- */
 .background-image-container {
-  position:relative;
+  position: relative;
   width: 100%;
 }
 
 .background-image-container img {
-  width:100%;
-  height:auto;
-  display:block;
+  width: 100%;
+  height: auto;
+  display: block;
 }
 
-/* --- TEXTOS OVERLAY (ALINEADOS A LA G) --- */
+/* --- TEXTOS OVERLAY --- */
 .overlay-line {
-  position:absolute;
-  left:50%;
-  /* Este transform centra el 'bloque', pero el texto dentro va a la izquierda */
-  transform:translateX(-50%) translateY(20px);
-  /* El ancho debe ser similar al de la palabra GRAPA para que parezca centrado */
-  width: clamp(280px, 65vw, 1000px); 
-  text-align: left; /* ALINEACIÓN A LA G */
-  color:#E4E8ED;
-  opacity:0;
+  position: absolute;
+  left: 50%;
+  transform: translateX(-50%) translateY(20px);
+  /* Bajamos un poco el ancho en móvil para asegurar centrado óptico */
+  width: clamp(260px, 75vw, 1000px); 
+  text-align: left;
+  color: #E4E8ED;
+  opacity: 0;
   transition: opacity 0.6s ease, transform 0.6s ease;
-  white-space:nowrap;
+  white-space: nowrap;
 }
 
-/* Tamaños Desktop */
 .center { font-size: clamp(40px, 15vw, 200px); }
 #museo { font-size: clamp(25px, 9.5vw, 110px); }
 #fia-superior, #fia-inferior { font-size: clamp(35px, 12vw, 150px); }
 #esceno { font-size: clamp(22px, 9vw, 100px); }
 
-/* --- POSICIONES DESKTOP 1.0 --- */
+/* POSICIONES 1.0 */
 #overlay-top { top: 25%; }
 #museo { top: 21.5%; }
 #fia-superior { top: 31.5%; }
@@ -112,11 +112,8 @@ footer {
 #esceno { top: 71.5%; }
 #fia-inferior { top: 81.5%; }
 
-/* --- AJUSTE MÓVIL: Evitar que se pisen --- */
+/* --- AJUSTE MÓVIL (Separación vertical) --- */
 @media (max-width: 600px) {
-  .overlay-line { width: 85vw; } /* Más ancho en móvil */
-  
-  /* En móvil, aumentamos el espacio entre los tops para que no se pisen */
   #museo { top: 19%; }
   #overlay-top { top: 25%; }
   #fia-superior { top: 33%; }
@@ -126,32 +123,37 @@ footer {
   #fia-inferior { top: 83%; }
 }
 
-/* --- ANIMACIONES RITMO 1.0 --- */
+/* --- ANIMACIONES --- */
 .overlay-line span {
-  display:inline-block;
+  display: inline-block;
   transition: transform 0.6s ease, opacity 0.4s ease;
 }
 
+/* Movimiento PA */
 .shift .pa {
   transform: translateX(0.35em);
   transition-delay: 0.5s;
 }
 
-.fade-pa .pa { opacity:0; }
+/* Desaparición PA (Forzada con !important para que no falle) */
+.fade-pa .pa {
+  opacity: 0 !important;
+  visibility: hidden;
+}
 
+/* Recenter final */
 .recenter {
-  /* Recenter original con el -8% */
-  transform:translateX(-50%) translateY(0) translateX(-8%);
+  transform: translateX(-50%) translateY(0) translateX(-8%);
 }
 
 .visible {
-  opacity:1;
-  transform:translateX(-50%) translateY(0);
+  opacity: 1;
+  transform: translateX(-50%) translateY(0);
 }
 
-.delay-1 { transition-delay:0.1s; }
-.delay-2 { transition-delay:0.4s; }
-.delay-3 { transition-delay:0.7s; }
+.delay-1 { transition-delay: 0.1s; }
+.delay-2 { transition-delay: 0.4s; }
+.delay-3 { transition-delay: 0.7s; }
 
 </style>
 </head>
@@ -214,7 +216,7 @@ sections.forEach(group => {
         });
       }
     });
-  }, { threshold: 0.2 });
+  }, { threshold: 0.15 }); // Sensibilidad ajustada para iPhone
 
   observer.observe(document.getElementById(group[0]));
 });
