@@ -22,7 +22,7 @@ body {
   overflow-x: hidden;
 }
 
-/* HERO ORIGINAL 1.0 */
+/* --- HERO --- */
 .hero {
   min-height: 100svh;
   display:flex;
@@ -33,30 +33,13 @@ body {
 }
 
 h1.hero-text {
-  /* Ajuste mínimo para iPhone SE sin perder el impacto */
   font-size: clamp(55px, 15vw, 200px);
   letter-spacing:0.04em;
   color:#E4E8ED;
   line-height:0.9;
 }
 
-.subtitle {
-  margin-top:8vh;
-  font-size:clamp(12px, 2vw, 20px);
-  letter-spacing:0.35em;
-}
-
-.email-button {
-  margin-top:18vh;
-  font-size:clamp(10px, 1.2vw, 14px);
-  letter-spacing:0.3em;
-  text-decoration:none;
-  color:#E4E8ED;
-  border:1px solid rgba(228,232,237,0.2);
-  padding:1vh 2vw;
-}
-
-/* FOOTER FIXED ORIGINAL */
+/* --- FOOTER FIXED --- */
 footer {
   position:fixed;
   bottom:60px;
@@ -68,7 +51,7 @@ footer {
   z-index: 10;
 }
 
-/* CONTENEDOR IMAGEN */
+/* --- CONTENEDOR IMAGEN --- */
 .background-image-container {
   position:relative;
   width: 100%;
@@ -80,7 +63,7 @@ footer {
   display:block;
 }
 
-/* TEXTOS OVERLAY 1.0 */
+/* --- TEXTOS ANIMADOS (BASE) --- */
 .overlay-line {
   position:absolute;
   left:50%;
@@ -102,43 +85,47 @@ footer {
   transition: transform 0.6s ease, opacity 0.4s ease;
 }
 
-/* ANIMACIONES 1.0 */
-.shift .pa {
-  transform: translateX(0.35em);
-  transition-delay: 0.5s;
-}
+/* ANIMACIONES */
+.shift .pa { transform: translateX(0.35em); transition-delay: 0.5s; }
+.fade-pa .pa { opacity:0; }
+.recenter { transform:translateX(-50%) translateY(0) translateX(-8%); }
+.left-align { text-align:left; padding-left:0.09em; }
 
-.fade-pa .pa {
-  opacity:0;
-}
-
-.recenter {
-  transform:translateX(-50%) translateY(0) translateX(-8%);
-}
-
-.left-align {
-  text-align:left;
-  padding-left:0.09em;
-}
-
-/* PROPORCIONES Y TAMAÑOS EXACTOS 1.0 */
-#museo { font-size:clamp(30px, 9.5vw, 110px); top:21.5%; }
-#fia-superior { font-size:clamp(40px, 12vw, 150px); top:31.5%; }
-#overlay-top { top:25%; }
-
-#esceno { font-size:clamp(28px, 9vw, 100px); top:71.5%; }
-#fia-inferior { font-size:clamp(40px, 12vw, 150px); top:81.5%; }
-#overlay-bottom { top:75%; }
-
-/* VISIBILIDAD */
-.visible {
-  opacity:1;
-  transform:translateX(-50%) translateY(0);
-}
-
+.visible { opacity:1; transform:translateX(-50%) translateY(0); }
 .delay-1 { transition-delay:0.1s; }
 .delay-2 { transition-delay:0.4s; }
 .delay-3 { transition-delay:0.7s; }
+
+/* --- POSICIONES DESKTOP (TU 1.0) --- */
+#overlay-top { top:25%; }
+#museo { font-size:clamp(30px, 9.5vw, 110px); top:21.5%; }
+#fia-superior { font-size:clamp(40px, 12vw, 150px); top:31.5%; }
+
+#overlay-bottom { top:75%; }
+#esceno { font-size:clamp(28px, 9vw, 100px); top:71.5%; }
+#fia-inferior { font-size:clamp(40px, 12vw, 150px); top:81.5%; }
+
+
+/* --- AJUSTES ESPECÍFICOS PARA MÓVIL --- */
+@media (max-width: 600px) {
+  h1.hero-text {
+    font-size: 12vw; /* Más margen lateral en el header */
+  }
+
+  /* Compactamos los grupos para que no se pisen entre sí */
+  /* GRUPO 1 */
+  #museo { top: 22%; font-size: 8.5vw; }
+  #overlay-top { top: 25%; }
+  #fia-superior { top: 30.5%; font-size: 11vw; }
+
+  /* GRUPO 2 */
+  #esceno { top: 72%; font-size: 8vw; }
+  #overlay-bottom { top: 75%; }
+  #fia-inferior { top: 80.5%; font-size: 11vw; }
+}
+
+.subtitle { margin-top:8vh; font-size:clamp(12px, 2vw, 20px); letter-spacing:0.35em; }
+.email-button { margin-top:18vh; font-size:clamp(10px, 1.2vw, 14px); letter-spacing:0.3em; text-decoration:none; color:#E4E8ED; border:1px solid rgba(228,232,237,0.2); padding:1vh 2vw; }
 
 </style>
 </head>
@@ -183,12 +170,10 @@ sections.forEach(group => {
       const s2 = document.getElementById(group.extras[1]);
 
       if (entry.isIntersecting) {
-        // Ejecución limpia del ritmo 1.0
         main.classList.add('visible', 'shift');
         s1.classList.add('visible');
         s2.classList.add('visible');
 
-        // El recenter ocurre después de que el shift de 0.5s haya terminado su movimiento
         setTimeout(() => {
           if (main.classList.contains('visible')) {
             main.classList.add('fade-pa', 'recenter');
@@ -198,7 +183,6 @@ sections.forEach(group => {
         }, 1100); 
 
       } else {
-        // Reset total al salir de vista
         [main, s1, s2].forEach(el => {
           el.classList.remove('visible', 'shift', 'fade-pa', 'recenter');
         });
