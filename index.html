@@ -2,7 +2,7 @@
 <html lang="es">
 <head>
 <meta charset="UTF-8">
-<meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
 <title>GRAPA</title>
 
 <style>
@@ -14,65 +14,64 @@
 
 * { margin:0; padding:0; box-sizing:border-box; }
 
-/* Evita fugas y scroll fantasma */
-html, body {
-  overflow-x: hidden;
-  width: 100%;
-  background-color: #0A1A2A;
-}
-
 body {
   font-family: 'GRAPA', sans-serif;
   text-transform: uppercase;
+  background-color: #0A1A2A;
   color: #BFC6CF;
-  /* Eliminado el 300vh para que el scroll sea natural */
+  overflow-x: hidden;
 }
 
-/* --- HERO --- */
+/* HERO ORIGINAL 1.0 */
 .hero {
   min-height: 100svh;
   display:flex;
   flex-direction:column;
   align-items:center;
-  justify-content: center;
   text-align:center;
-  padding: 0 10px;
+  padding-top:20vh;
 }
 
 h1.hero-text {
-  font-size: clamp(45px, 14vw, 200px); 
-  /* Compensación de centrado: el margin-right negativo anula el empuje del letter-spacing */
-  letter-spacing: 0.08em;
-  margin-right: -0.08em; 
+  /* Ajuste mínimo para iPhone SE sin perder el impacto */
+  font-size: clamp(55px, 15vw, 200px);
+  letter-spacing:0.04em;
   color:#E4E8ED;
   line-height:0.9;
-  width: 100%;
 }
 
 .subtitle {
-  margin-top:5vh;
-  font-size:clamp(10px, 2.5vw, 18px);
-  letter-spacing:0.3em;
-  margin-right: -0.3em; /* Compensación de centrado */
-  max-width: 90%;
+  margin-top:8vh;
+  font-size:clamp(12px, 2vw, 20px);
+  letter-spacing:0.35em;
 }
 
 .email-button {
-  margin-top:10vh;
-  font-size:clamp(10px, 1.5vw, 14px);
+  margin-top:18vh;
+  font-size:clamp(10px, 1.2vw, 14px);
   letter-spacing:0.3em;
-  margin-right: -0.3em; /* Compensación de centrado */
   text-decoration:none;
   color:#E4E8ED;
   border:1px solid rgba(228,232,237,0.2);
-  padding: 12px 24px;
+  padding:1vh 2vw;
 }
 
-/* --- CONTENEDOR IMAGEN --- */
+/* FOOTER FIXED ORIGINAL */
+footer {
+  position:fixed;
+  bottom:60px;
+  width:100%;
+  text-align:center;
+  font-size:clamp(10px,1vw,12px);
+  opacity:0.5;
+  pointer-events: none;
+  z-index: 10;
+}
+
+/* CONTENEDOR IMAGEN */
 .background-image-container {
   position:relative;
   width: 100%;
-  line-height: 0; /* Evita espacios vacíos debajo de la imagen */
 }
 
 .background-image-container img {
@@ -81,22 +80,21 @@ h1.hero-text {
   display:block;
 }
 
-/* --- TEXTOS ANIMADOS --- */
+/* TEXTOS OVERLAY 1.0 */
 .overlay-line {
   position:absolute;
   left:50%;
   transform:translateX(-50%) translateY(20px);
-  width: 95vw; /* Más aire para evitar scroll lateral en móvil */
+  width:clamp(280px, 85vw, 1200px);
   color:#E4E8ED;
   opacity:0;
   transition: opacity 0.6s ease, transform 0.6s ease;
   white-space:nowrap;
-  pointer-events: none;
 }
 
 .center {
   text-align:center;
-  font-size:clamp(40px, 15vw, 200px);
+  font-size:clamp(50px, 15vw, 200px);
 }
 
 .center span {
@@ -104,38 +102,35 @@ h1.hero-text {
   transition: transform 0.6s ease, opacity 0.4s ease;
 }
 
+/* ANIMACIONES 1.0 */
 .shift .pa {
-  transform: translateX(0.3em);
-  transition-delay:0.5s;
+  transform: translateX(0.35em);
+  transition-delay: 0.5s;
 }
 
 .fade-pa .pa {
   opacity:0;
 }
 
-/* Recenter original con el -8% que te gustaba */
 .recenter {
   transform:translateX(-50%) translateY(0) translateX(-8%);
 }
 
 .left-align {
   text-align:left;
-  padding-left: 2vw; /* Alineación relativa al ancho de pantalla */
+  padding-left:0.09em;
 }
 
-/* Tamaños ajustados para no pisarse */
-#museo { font-size:clamp(28px, 9.5vw, 110px); }
-#esceno { font-size:clamp(25px, 9vw, 100px); }
-#fia-superior, #fia-inferior { font-size:clamp(35px, 12vw, 150px); }
-
-/* Posiciones proporcionales */
+/* PROPORCIONES Y TAMAÑOS EXACTOS 1.0 */
+#museo { font-size:clamp(30px, 9.5vw, 110px); top:21.5%; }
+#fia-superior { font-size:clamp(40px, 12vw, 150px); top:31.5%; }
 #overlay-top { top:25%; }
-#overlay-bottom { top:75%; }
-#museo { top:21%; }
-#fia-superior { top:31%; }
-#esceno { top:71%; }
-#fia-inferior { top:81%; }
 
+#esceno { font-size:clamp(28px, 9vw, 100px); top:71.5%; }
+#fia-inferior { font-size:clamp(40px, 12vw, 150px); top:81.5%; }
+#overlay-bottom { top:75%; }
+
+/* VISIBILIDAD */
 .visible {
   opacity:1;
   transform:translateX(-50%) translateY(0);
@@ -145,14 +140,6 @@ h1.hero-text {
 .delay-2 { transition-delay:0.4s; }
 .delay-3 { transition-delay:0.7s; }
 
-/* --- FOOTER FINAL --- */
-footer {
-  text-align:center;
-  padding: 60px 0; /* Ahora el footer es parte del flujo, no fijo */
-  font-size: 10px;
-  opacity:0.5;
-  background-color: #0A1A2A;
-}
 </style>
 </head>
 
@@ -184,39 +171,42 @@ footer {
 
 <script>
 const sections = [
-  ['overlay-top', 'museo', 'fia-superior'],
-  ['overlay-bottom', 'esceno', 'fia-inferior']
+  { main: 'overlay-top', extras: ['museo', 'fia-superior'] },
+  { main: 'overlay-bottom', extras: ['esceno', 'fia-inferior'] }
 ];
 
 sections.forEach(group => {
   const observer = new IntersectionObserver((entries) => {
     entries.forEach(entry => {
-      const main = document.getElementById(group[0]); 
-      const s1 = document.getElementById(group[1]);   
-      const s2 = document.getElementById(group[2]);   
+      const main = document.getElementById(group.main);
+      const s1 = document.getElementById(group.extras[0]);
+      const s2 = document.getElementById(group.extras[1]);
 
       if (entry.isIntersecting) {
+        // Ejecución limpia del ritmo 1.0
         main.classList.add('visible', 'shift');
         s1.classList.add('visible');
         s2.classList.add('visible');
 
+        // El recenter ocurre después de que el shift de 0.5s haya terminado su movimiento
         setTimeout(() => {
           if (main.classList.contains('visible')) {
             main.classList.add('fade-pa', 'recenter');
             s1.classList.add('recenter');
             s2.classList.add('recenter');
           }
-        }, 1200);
+        }, 1100); 
 
       } else {
-        main.classList.remove('visible', 'shift', 'fade-pa', 'recenter');
-        s1.classList.remove('visible', 'recenter');
-        s2.classList.remove('visible', 'recenter');
+        // Reset total al salir de vista
+        [main, s1, s2].forEach(el => {
+          el.classList.remove('visible', 'shift', 'fade-pa', 'recenter');
+        });
       }
     });
-  }, { threshold: 0.1 }); 
+  }, { threshold: 0.2 });
 
-  observer.observe(document.getElementById(group[0]));
+  observer.observe(document.getElementById(group.main));
 });
 </script>
 
