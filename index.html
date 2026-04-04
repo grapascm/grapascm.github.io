@@ -108,16 +108,16 @@ footer {
 ──────────────────────────────────────── */
 .overlay-line {
   position: absolute;
-  left: 50%;
-  transform: translateX(-50%) translateY(20px);
   color: #E4E8ED;
   opacity: 0;
-  transition: opacity 0.6s ease, transform 0.6s ease;
   white-space: nowrap;
 }
 
-/* GRAPA */
+/* GRAPA se centra con CSS */
 .center {
+  left: 50%;
+  transform: translateX(-50%) translateY(20px);
+  transition: opacity 0.6s ease, transform 0.6s ease;
   text-align: center;
   font-size: clamp(80px, 15vw, 200px);
 }
@@ -155,7 +155,7 @@ footer {
 #esceno         { top: 71.5%; }
 #fia-inferior   { top: 81.5%; }
 
-.visible {
+.center.visible {
   opacity: 1;
   transform: translateX(-50%) translateY(0);
 }
@@ -197,104 +197,112 @@ footer {
 <script>
 const sections = [
   {
-    triggerId:  'overlay-top',
-    grapaId:    'overlay-top',
-    ids:        ['overlay-top', 'museo', 'fia-superior'],
-    shiftIds:   ['museo', 'fia-superior']
+    triggerId: 'overlay-top',
+    grapaId:   'overlay-top',
+    ids:       ['overlay-top', 'museo', 'fia-superior'],
+    sideIds:   ['museo', 'fia-superior']
   },
   {
-    triggerId:  'overlay-bottom',
-    grapaId:    'overlay-bottom',
-    ids:        ['overlay-bottom', 'esceno', 'fia-inferior'],
-    shiftIds:   ['esceno', 'fia-inferior']
+    triggerId: 'overlay-bottom',
+    grapaId:   'overlay-bottom',
+    ids:       ['overlay-bottom', 'esceno', 'fia-inferior'],
+    sideIds:   ['esceno', 'fia-inferior']
   }
 ];
 
-// Devuelve cuánto hay que desplazar el grupo para centrarlo.
-// Mide el elemento más ancho del conjunto y calcula el offset
-// necesario para que ese bloque quede centrado en el contenedor.
-function calcCenterOffset(ids) {
-  const container = document.getElementById('img-container');
-  const cw = container.offsetWidth;
+// Posiciona MU5EO y FIA alineados con el borde izquierdo de la G,
+// sin transición (posición inicial antes de aparecer).
+function alignToG(section) {
+  const container  = document.getElementById('img-container');
+  const cw         = container.offsetWidth;
+  const graEl      = document.getElementById(section.grapaId);
+  const graW       = graEl.getBoundingClientRect().width; // GRAPA completo
+  // Borde izquierdo de GRAPA centrado: cw/2 - graW/2
+  const graLeft    = cw / 2 - graW / 2;
 
-  // Ancho real de cada texto (sin el translateX del left:50%)
-  const maxW = Math.max(...ids.map(id => {
+  section.sideIds.forEach(id => {
     const el = document.getElementById(id);
-    return el.getBoundingClientRect().width;
-  }));
+    // Quitamos left:50% translateX(-50%) y ponemos left absoluto
+    el.style.transition = 'none';
+    el.style.left       = graLeft + 'px';
+    el.style.transform  = 'translateY(20px)'; // estado inicial (pre-visible)
+  });
+}
 
-  // Con left:50% + translateX(-50%), el centro del elemento
-  // ya está en el centro del contenedor.
-  // Lo que queremos es que el borde izquierdo del bloque más ancho
-  // quede alineado con la G de GRAPA, es decir, en el mismo left.
-  // En la estado inicial left:50% translateX(-50%) ya centra cada línea.
-  // Tras el recenter queremos que el conjunto comparta el mismo left edge.
-  // El left edge de cada elemento centrado es: cw/2 - width/2
-  // Para alinearlos todos al left edge del más ancho:
-  // offset = 0 (ya están centrados individualmente, solo igualamos el left)
-  // En realidad solo necesitamos mover el bloque 0 — cada línea ya tiene left:50%.
-  // El truco: forzamos el left de museo y fia al mismo valor que GRA tiene
-  // después de que PA desaparece, que es left:50% - graWidth/2.
+// Centra el bloque entero (GRA + MU5EO + FIA) suavemente.
+// El más ancho marca el ancho del bloque; lo centramos en el contenedor.
+function centerBlock(section) {
+  const container = document.getElementById('img-container');
+  const cw        = container.offsetWidth;
 
-  const graEl = document.getElementById(ids[0]);
-  const graW  = graEl.querySelector('.gra') 
-                ? graEl.querySelector('.gra').getBoundingClientRect().width 
-                : graEl.getBoundingClientRect().width;
+  // Medimos el ancho real de cada elemento
+  const widths = section.ids.map(id =>
+    document.getElementById(id).getBoundingClientRect().width
+  );
+  const blockW = Math.max(...widths);
+  // Left edge para centrar el bloque
+  const blockLeft = (cw - blockW) / 2;
 
-  // Queremos que el left edge de museo y fia sea: cw/2 - graW/2
-  // Su posición actual (centrados): left edge = cw/2 - propioAncho/2
-  // Offset necesario para museo: (cw/2 - graW/2) - (cw/2 - museoW/2) = (museoW - graW) / 2
-  return ids.slice(1).map(id => {
+  section.ids.forEach(id => {
     const el = document.getElementById(id);
     const w  = el.getBoundingClientRect().width;
-    return (w - graW) / 2;
+    el.style.transition = 'left 0.9s cubic-bezier(0.4, 0, 0.2, 1), transform 0.9s cubic-bezier(0.4, 0, 0.2, 1)';
+    el.style.left       = blockLeft + 'px';
+    el.style.transform  = 'translateY(0)';
   });
 }
 
 sections.forEach(section => {
+  // Alineamos a la G antes de que sean visibles
+  alignToG(section);
+
   const observer = new IntersectionObserver((entries) => {
     entries.forEach(entry => {
 
       if (entry.isIntersecting) {
-        // 1. Aparecen todos
-        section.ids.forEach(id =>
-          document.getElementById(id).classList.add('visible')
-        );
+
+        // 1. Aparecen todos en su posición inicial (alineados a la G)
+        section.ids.forEach(id => {
+          const el = document.getElementById(id);
+          el.style.transition = 'opacity 0.6s ease, transform 0.6s ease';
+          el.style.transform  = 'translateY(0)';
+          el.style.opacity    = '1';
+        });
 
         // 2. PA se desplaza
         setTimeout(() => {
-          const grapa = document.getElementById(section.grapaId);
-          grapa.classList.add('shift');
+          document.getElementById(section.grapaId).classList.add('shift');
 
-          // 3. PA desaparece y el bloque se centra suavemente
+          // 3. PA desaparece + bloque se centra suavemente
           setTimeout(() => {
-            grapa.classList.add('fade-pa');
-
-            // Calculamos el offset para alinear museo/fia con la G
-            const offsets = calcCenterOffset(section.ids);
-
-            section.shiftIds.forEach((id, i) => {
-              const el = document.getElementById(id);
-              // Movemos hacia la izquierda para alinear al borde de GRA
-              el.style.transform = `translateX(calc(-50% + ${offsets[i]}px)) translateY(0)`;
-              el.style.transition = 'transform 0.9s cubic-bezier(0.4, 0, 0.2, 1)';
-            });
-
+            document.getElementById(section.grapaId).classList.add('fade-pa');
+            // Pequeña pausa para que fade-pa arranque antes de mover
+            setTimeout(() => centerBlock(section), 80);
           }, 400);
+
         }, 400);
 
       } else {
+        // Reset completo
         section.ids.forEach(id => {
           const el = document.getElementById(id);
-          el.classList.remove('visible', 'shift', 'fade-pa');
-          el.style.transform = '';
-          el.style.transition = '';
+          el.classList.remove('shift', 'fade-pa');
+          el.style.transition = 'none';
+          el.style.opacity    = '0';
+          el.style.transform  = 'translateY(20px)';
         });
+        // Volvemos a alinear a la G para la próxima vez
+        setTimeout(() => alignToG(section), 50);
       }
     });
   }, { threshold: 0.3 });
 
   observer.observe(document.getElementById(section.triggerId));
+});
+
+// Recalcular posiciones si cambia el tamaño de ventana
+window.addEventListener('resize', () => {
+  sections.forEach(section => alignToG(section));
 });
 </script>
 
