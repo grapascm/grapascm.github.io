@@ -29,23 +29,41 @@ body {
   flex-direction:column;
   align-items:center;
   text-align:center;
-  padding-top:20vh;
+  padding: 20vh 20px 0 20px; /* Añadido margen lateral */
 }
 
 h1.hero-text {
-  font-size: clamp(55px, 15vw, 200px);
+  font-size: clamp(50px, 14vw, 200px);
   letter-spacing:0.04em;
   color:#E4E8ED;
   line-height:0.9;
 }
 
-/* --- FOOTER FIXED --- */
+.subtitle {
+  margin-top:8vh;
+  font-size: clamp(10px, 3vw, 18px); /* Ajustado para móvil */
+  letter-spacing:0.35em;
+  max-width: 90%;
+  line-height: 1.4;
+}
+
+.email-button {
+  margin-top:10vh;
+  font-size:clamp(10px, 1.2vw, 14px);
+  letter-spacing:0.3em;
+  text-decoration:none;
+  color:#E4E8ED;
+  border:1px solid rgba(228,232,237,0.2);
+  padding: 15px 30px;
+}
+
+/* --- FOOTER --- */
 footer {
   position:fixed;
-  bottom:60px;
+  bottom:40px;
   width:100%;
   text-align:center;
-  font-size:clamp(10px,1vw,12px);
+  font-size: 10px;
   opacity:0.5;
   pointer-events: none;
   z-index: 10;
@@ -63,69 +81,65 @@ footer {
   display:block;
 }
 
-/* --- TEXTOS ANIMADOS (BASE) --- */
-.overlay-line {
-  position:absolute;
-  left:50%;
-  transform:translateX(-50%) translateY(20px);
-  width:clamp(280px, 85vw, 1200px);
-  color:#E4E8ED;
-  opacity:0;
-  transition: opacity 0.6s ease, transform 0.6s ease;
-  white-space:nowrap;
+/* --- EL TRUCO: CONTENEDORES DE BLOQUE --- */
+/* Esto evita que las letras se pisen porque el bloque es una unidad */
+.text-group {
+  position: absolute;
+  left: 50%;
+  transform: translateX(-50%) translateY(20px);
+  width: 100%;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  opacity: 0;
+  transition: opacity 0.8s ease, transform 0.8s ease;
+  pointer-events: none;
 }
 
-.center {
-  text-align:center;
-  font-size:clamp(50px, 15vw, 200px);
+.text-group.visible {
+  opacity: 1;
+  transform: translateX(-50%) translateY(0);
 }
 
-.center span {
-  display:inline-block;
+/* Posiciones de los bloques */
+.group-top { top: 25%; }
+.group-bottom { top: 75%; }
+
+/* Estilos de línea dentro del grupo */
+.line {
+  width: clamp(300px, 90vw, 1200px);
+  white-space: nowrap;
+  color: #E4E8ED;
+}
+
+.line.grapa-main {
+  font-size: clamp(45px, 15vw, 180px);
+  text-align: center;
+}
+
+.line.sub-text {
+  text-align: left;
+  padding-left: 3vw; /* Ajuste fino para la alineación */
+  margin-bottom: -0.2em; /* Control de espacio vertical */
+  margin-top: -0.2em;
+}
+
+#museo, #esceno { font-size: clamp(25px, 9vw, 100px); }
+#fia-1, #fia-2 { font-size: clamp(35px, 12vw, 140px); }
+
+/* --- ANIMACIONES --- */
+.grapa-main span {
+  display: inline-block;
   transition: transform 0.6s ease, opacity 0.4s ease;
 }
 
-/* ANIMACIONES */
-.shift .pa { transform: translateX(0.35em); transition-delay: 0.5s; }
-.fade-pa .pa { opacity:0; }
-.recenter { transform:translateX(-50%) translateY(0) translateX(-8%); }
-.left-align { text-align:left; padding-left:0.09em; }
+.shift .pa { transform: translateX(0.35em); transition-delay: 0.4s; }
+.fade-pa .pa { opacity: 0; }
 
-.visible { opacity:1; transform:translateX(-50%) translateY(0); }
-.delay-1 { transition-delay:0.1s; }
-.delay-2 { transition-delay:0.4s; }
-.delay-3 { transition-delay:0.7s; }
-
-/* --- POSICIONES DESKTOP (TU 1.0) --- */
-#overlay-top { top:25%; }
-#museo { font-size:clamp(30px, 9.5vw, 110px); top:21.5%; }
-#fia-superior { font-size:clamp(40px, 12vw, 150px); top:31.5%; }
-
-#overlay-bottom { top:75%; }
-#esceno { font-size:clamp(28px, 9vw, 100px); top:71.5%; }
-#fia-inferior { font-size:clamp(40px, 12vw, 150px); top:81.5%; }
-
-
-/* --- AJUSTES ESPECÍFICOS PARA MÓVIL --- */
-@media (max-width: 600px) {
-  h1.hero-text {
-    font-size: 12vw; /* Más margen lateral en el header */
-  }
-
-  /* Compactamos los grupos para que no se pisen entre sí */
-  /* GRUPO 1 */
-  #museo { top: 22%; font-size: 8.5vw; }
-  #overlay-top { top: 25%; }
-  #fia-superior { top: 30.5%; font-size: 11vw; }
-
-  /* GRUPO 2 */
-  #esceno { top: 72%; font-size: 8vw; }
-  #overlay-bottom { top: 75%; }
-  #fia-inferior { top: 80.5%; font-size: 11vw; }
+/* El desplazamiento lateral del bloque entero */
+.recenter {
+  transform: translateX(-50%) translateX(-8%);
 }
-
-.subtitle { margin-top:8vh; font-size:clamp(12px, 2vw, 20px); letter-spacing:0.35em; }
-.email-button { margin-top:18vh; font-size:clamp(10px, 1.2vw, 14px); letter-spacing:0.3em; text-decoration:none; color:#E4E8ED; border:1px solid rgba(228,232,237,0.2); padding:1vh 2vw; }
 
 </style>
 </head>
@@ -141,57 +155,51 @@ footer {
 <div class="background-image-container">
   <img src="images/grapas.jpg" alt="">
 
-  <div class="overlay-line center delay-1" id="overlay-top">
-    <span class="gra">GRA</span><span class="pa">PA</span>
+  <div class="text-group group-top" id="group-1">
+    <div class="line sub-text" id="museo">MU5EO</div>
+    <div class="line grapa-main">
+      <span class="gra">GRA</span><span class="pa">PA</span>
+    </div>
+    <div class="line sub-text" id="fia-1">FIA</div>
   </div>
-  <div class="overlay-line left-align delay-2" id="museo">MU5EO</div>
-  <div class="overlay-line left-align delay-3" id="fia-superior">FIA</div>
 
-  <div class="overlay-line center delay-1" id="overlay-bottom">
-    <span class="gra">GRA</span><span class="pa">PA</span>
+  <div class="text-group group-bottom" id="group-2">
+    <div class="line sub-text" id="esceno">E5CENO</div>
+    <div class="line grapa-main">
+      <span class="gra">GRA</span><span class="pa">PA</span>
+    </div>
+    <div class="line sub-text" id="fia-2">FIA</div>
   </div>
-  <div class="overlay-line left-align delay-2" id="esceno">E5CENO</div>
-  <div class="overlay-line left-align delay-3" id="fia-inferior">FIA</div>
 </div>
 
 <footer>&copy; 2025 GRAPA</footer>
 
 <script>
-const sections = [
-  { main: 'overlay-top', extras: ['museo', 'fia-superior'] },
-  { main: 'overlay-bottom', extras: ['esceno', 'fia-inferior'] }
-];
+const groups = document.querySelectorAll('.text-group');
 
-sections.forEach(group => {
-  const observer = new IntersectionObserver((entries) => {
-    entries.forEach(entry => {
-      const main = document.getElementById(group.main);
-      const s1 = document.getElementById(group.extras[0]);
-      const s2 = document.getElementById(group.extras[1]);
+const observer = new IntersectionObserver((entries) => {
+  entries.forEach(entry => {
+    const el = entry.target;
+    
+    if (entry.isIntersecting) {
+      // Inicia aparición y desplazamiento de "PA"
+      el.classList.add('visible', 'shift');
 
-      if (entry.isIntersecting) {
-        main.classList.add('visible', 'shift');
-        s1.classList.add('visible');
-        s2.classList.add('visible');
+      // Animación final de centrado y desaparición
+      setTimeout(() => {
+        if (el.classList.contains('visible')) {
+          el.classList.add('fade-pa', 'recenter');
+        }
+      }, 1200);
 
-        setTimeout(() => {
-          if (main.classList.contains('visible')) {
-            main.classList.add('fade-pa', 'recenter');
-            s1.classList.add('recenter');
-            s2.classList.add('recenter');
-          }
-        }, 1100); 
+    } else {
+      // Reset total
+      el.classList.remove('visible', 'shift', 'fade-pa', 'recenter');
+    }
+  });
+}, { threshold: 0.3 });
 
-      } else {
-        [main, s1, s2].forEach(el => {
-          el.classList.remove('visible', 'shift', 'fade-pa', 'recenter');
-        });
-      }
-    });
-  }, { threshold: 0.2 });
-
-  observer.observe(document.getElementById(group.main));
-});
+groups.forEach(g => observer.observe(g));
 </script>
 
 </body>
