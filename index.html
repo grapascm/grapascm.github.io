@@ -115,7 +115,6 @@ body{
 .show{
   opacity:1;
 }
-
 /* MOBILE FIX REAL */
 @media(max-width:768px){
 
@@ -132,15 +131,36 @@ body{
     padding:1vh 4vw;
   }
 
-  /* imagen más larga para scroll */
-  .bg img{
-    height:220vh;
-    object-fit:cover;
-  }
+ /* ===== FIX PRO CENTRADO ===== */
 
-  .overlay{
-    width:85vw;
-  }
+.bg{
+  height:200vh;
+  position:relative;
+}
+
+.bg img{
+  position:sticky;
+  top:0;
+  height:100vh;
+  width:100%;
+  object-fit:cover;
+}
+
+/* overlays centrados en viewport */
+.overlay{
+  position:fixed;
+  top:50%;
+  left:50%;
+  transform:translate(-50%,-50%);
+  width:85vw;
+}
+
+/* ajuste fino vertical */
+#museo{ transform:translate(-50%,-70%); }
+#fia-top{ transform:translate(-50%,-30%); }
+
+#esceno{ transform:translate(-50%,-70%); }
+#fia-bottom{ transform:translate(-50%,-30%); }
 
   .grapa{
     font-size:clamp(70px,18vw,130px);
