@@ -9,216 +9,146 @@
 @font-face {
   font-family: 'GRAPA';
   src: url('./fonts/GRAPA.woff2') format('woff2');
-  font-display: swap;
 }
 
-* { margin:0; padding:0; box-sizing:border-box; }
+*{margin:0;padding:0;box-sizing:border-box;}
 
-body {
-  font-family: 'GRAPA', sans-serif;
-  text-transform: uppercase;
-  background-color: #0A1A2A;
-  color: #BFC6CF;
-  min-height: 300vh;
+body{
+  font-family:'GRAPA',sans-serif;
+  text-transform:uppercase;
+  background:#0A1A2A;
+  color:#E4E8ED;
+  overflow-x:hidden;
 }
 
-/* HERO */
-.hero {
-  min-height: 100svh;
+/* ================= HERO ================= */
+
+.hero{
+  min-height:100svh;
   display:flex;
   flex-direction:column;
   align-items:center;
-  text-align:center;
+  justify-content:flex-start;
   padding-top:20vh;
+  text-align:center;
 }
 
-h1.hero-text {
-  font-size: clamp(80px,15vw,200px);
-  letter-spacing:0.04em;
-  color:#E4E8ED;
+.hero h1{
+  font-size:clamp(80px,15vw,200px);
   line-height:0.9;
 }
 
-.subtitle {
+.subtitle{
   margin-top:8vh;
-  font-size:clamp(14px,2vw,20px);
   letter-spacing:0.35em;
 }
 
-.email-button {
+.email{
   margin-top:18vh;
-  font-size:clamp(10px,1.2vw,14px);
-  letter-spacing:0.3em;
-  text-decoration:none;
-  color:#E4E8ED;
-  border:1px solid rgba(228,232,237,0.2);
+  border:1px solid rgba(255,255,255,0.2);
   padding:1vh 2vw;
+  text-decoration:none;
+  color:white;
 }
 
-/* Footer */
-footer {
-  position:fixed;
-  bottom:60px;
-  width:100%;
-  text-align:center;
-  font-size:clamp(10px,1vw,12px);
-  opacity:0.5;
-}
+/* ================= IMAGEN ================= */
 
-/* DESKTOP IMAGE */
-.background-image-container {
+.bg{
   position:relative;
+  width:100%;
 }
 
-.background-image-container img {
+.bg img{
   width:100%;
   height:auto;
   display:block;
 }
 
-/* TEXTOS DESKTOP */
-.overlay-line {
+/* ================= OVERLAYS ================= */
+
+.overlay{
   position:absolute;
   left:50%;
-  transform:translateX(-50%) translateY(20px);
+  transform:translateX(-50%);
   width:clamp(300px,70vw,1200px);
-  color:#E4E8ED;
   opacity:0;
-  transition: opacity 0.6s ease, transform 0.6s ease;
-  white-space:nowrap;
+  transition:opacity 0.6s ease;
+  pointer-events:none;
 }
 
-.center {
+/* GRAPA */
+.grapa{
   text-align:center;
   font-size:clamp(100px,15vw,200px);
 }
 
-.center span {
-  display:inline-block;
-  transition: transform 0.6s ease, opacity 0.4s ease;
-}
-
-.shift .pa {
-  transform: translateX(0.35em);
-  transition-delay:0.5s;
-}
-
-.fade-pa .pa {
-  opacity:0;
-}
-
-.recenter {
-  transform:translateX(-50%) translateY(0) translateX(-8%);
-}
-
-.left-align {
+/* BLOQUES IZQUIERDA */
+.left{
   text-align:left;
-  padding-left:0.09em;
+  padding-left:0.08em;
 }
 
-#museo { font-size:clamp(55px,9.5vw,110px); }
-#esceno { font-size:clamp(50px,9vw,100px); }
-#fia-superior, #fia-inferior { font-size:clamp(70px,12vw,150px); }
+/* tamaños */
+.museo{ font-size:clamp(55px,9.5vw,110px); }
+.esceno{ font-size:clamp(50px,9vw,100px); }
+.fia{ font-size:clamp(65px,11vw,140px); }
 
-#overlay-top { top:25%; }
-#overlay-bottom { top:75%; }
+/* posiciones (desktop base) */
+#grapa-top{ top:25%; }
+#grapa-bottom{ top:75%; }
 
-#museo { top:21.5%; }
-#fia-superior { top:31.5%; }
+#museo{ top:21.5%; }
+#fia-top{ top:31.5%; }
 
-#esceno { top:71.5%; }
-#fia-inferior { top:81.5%; }
+#esceno{ top:71.5%; }
+#fia-bottom{ top:81.5%; }
 
-.visible {
-  opacity:1;
-  transform:translateX(-50%) translateY(0);
-}
-
-.delay-1 { transition-delay:0.1s; }
-.delay-2 { transition-delay:0.4s; }
-.delay-3 { transition-delay:0.7s; }
-
-/* ================= MOBILE ================= */
-
-.mobile-section {
-  display:none;
-}
+/* ================= MOBILE FIX REAL ================= */
 
 @media(max-width:768px){
 
-  body {
-    min-height:auto;
+  .hero{
+    padding-top:15vh;
   }
 
-  /* HERO FIX */
-  .hero {
-    padding-top:12vh;
-    padding-left:8vw;
-    padding-right:8vw;
-  }
-
-  h1.hero-text {
+  .hero h1{
     font-size:clamp(60px,18vw,120px);
   }
 
-  .subtitle {
-    margin-top:4vh;
-    font-size:clamp(12px,3vw,16px);
-    letter-spacing:0.25em;
+  .subtitle{
+    margin-top:6vh;
   }
 
-  .email-button {
-    margin-top:10vh;
-    font-size:clamp(10px,3vw,14px);
-    padding:1.2vh 4vw;
+  .email{
+    margin-top:12vh;
+    padding:1vh 4vw;
   }
 
-  /* OCULTAR DESKTOP */
-  .overlay-line {
-    display:none;
-  }
-
-  .background-image-container {
-    display:none !important;
-  }
-
-  /* MOBILE SECTIONS */
-  .mobile-section {
-    display:flex;
-    position:relative;
-    height:100svh;
-    align-items:center;
-    justify-content:center;
-    text-align:center;
-  }
-
-  .mobile-section img {
-    position:absolute;
-    width:100%;
-    height:100%;
+  /* clave: imagen ocupa bien pantalla */
+  .bg img{
+    height:200vh; /* asegura recorrido */
     object-fit:cover;
-    object-position:center;
-    top:0;
-    left:0;
   }
 
-  .mobile-text {
-    position:relative;
-    z-index:1;
-    color:#E4E8ED;
+  /* overlays más legibles */
+  .overlay{
+    width:85vw;
   }
 
-  .mobile-text .big {
-    font-size:clamp(60px,14vw,120px);
-    line-height:0.9;
+  .grapa{
+    font-size:clamp(70px,18vw,130px);
   }
 
-  .mobile-text .small {
-    font-size:clamp(40px,10vw,80px);
-    margin-top:2vh;
+  .museo,.esceno{
+    font-size:clamp(45px,12vw,90px);
+  }
+
+  .fia{
+    font-size:clamp(50px,14vw,100px);
   }
 
 }
+
 </style>
 </head>
 
@@ -226,120 +156,72 @@ footer {
 
 <!-- HERO -->
 <div class="hero">
-  <h1 class="hero-text">GRAPA</h1>
+  <h1>GRAPA</h1>
   <div class="subtitle">5ociedad Cooperativa Madrileña</div>
-  <a href="mailto:grapa@grapa.e5" class="email-button">grapa@grapa.e5</a>
+  <a href="mailto:grapa@grapa.e5" class="email">grapa@grapa.e5</a>
 </div>
 
-<!-- DESKTOP -->
-<div class="background-image-container">
+<!-- IMAGEN -->
+<div class="bg">
   <img src="images/grapas.jpg">
 
-  <div class="overlay-line center delay-1" id="overlay-top">
-    <span class="gra">GRA</span><span class="pa">PA</span>
-  </div>
-  <div class="overlay-line left-align delay-2" id="museo">MU5EO</div>
-  <div class="overlay-line left-align delay-3" id="fia-superior">FIA</div>
+  <!-- GRAPA -->
+  <div class="overlay grapa" id="grapa-top">GRAPA</div>
+  <div class="overlay grapa" id="grapa-bottom">GRAPA</div>
 
-  <div class="overlay-line center delay-1" id="overlay-bottom">
-    <span class="gra">GRA</span><span class="pa">PA</span>
-  </div>
-  <div class="overlay-line left-align delay-2" id="esceno">E5CENO</div>
-  <div class="overlay-line left-align delay-3" id="fia-inferior">FIA</div>
+  <!-- MUSEO -->
+  <div class="overlay left museo" id="museo">MU5EO</div>
+  <div class="overlay left fia" id="fia-top">FIA</div>
+
+  <!-- ESCENO -->
+  <div class="overlay left esceno" id="esceno">E5CENO</div>
+  <div class="overlay left fia" id="fia-bottom">FIA</div>
+
 </div>
-
-<!-- MOBILE -->
-<div class="mobile-section">
-  <img src="images/grapas.jpg">
-  <div class="mobile-text">
-    <div class="big">GRAPA</div>
-  </div>
-</div>
-
-<div class="mobile-section">
-  <img src="images/grapas.jpg">
-  <div class="mobile-text">
-    <div class="big">MU5EO</div>
-    <div class="small">FIA</div>
-  </div>
-</div>
-
-<div class="mobile-section">
-  <img src="images/grapas.jpg">
-  <div class="mobile-text">
-    <div class="big">E5CENO</div>
-    <div class="small">FIA</div>
-  </div>
-</div>
-
-<footer>&copy; 2025 GRAPA</footer>
 
 <script>
-const sections = [
-  ['overlay-top','museo','fia-superior'],
-  ['overlay-bottom','esceno','fia-inferior']
-];
+const el = id => document.getElementById(id)
 
-sections.forEach(group => {
-  const observer = new IntersectionObserver((entries)=>{
-    entries.forEach(entry=>{
-      group.forEach(id=>{
-        const el = document.getElementById(id);
+const grapaTop = el('grapa-top')
+const grapaBottom = el('grapa-bottom')
+const museo = el('museo')
+const fiaTop = el('fia-top')
+const esceno = el('esceno')
+const fiaBottom = el('fia-bottom')
 
-        if(entry.isIntersecting){
-          el.classList.add('visible');
+const bg = document.querySelector('.bg')
 
-          if(id === 'museo'){
-            setTimeout(()=>{
-              const top = document.getElementById('overlay-top');
-              top.classList.add('shift');
+window.addEventListener('scroll',()=>{
 
-              setTimeout(()=>{
-                top.classList.add('fade-pa','recenter');
-                document.getElementById('museo').classList.add('recenter');
-                document.getElementById('fia-superior').classList.add('recenter');
-              }, 400);
-            }, 400);
-          }
+  const y = window.scrollY
+  const vh = window.innerHeight
+  const top = bg.offsetTop
+  const h = bg.offsetHeight
 
-          if(id === 'esceno'){
-            setTimeout(()=>{
-              const bottom = document.getElementById('overlay-bottom');
-              bottom.classList.add('shift');
+  /* -------- SUPERIOR -------- */
 
-              setTimeout(()=>{
-                bottom.classList.add('fade-pa','recenter');
-                document.getElementById('esceno').classList.add('recenter');
-                document.getElementById('fia-inferior').classList.add('recenter');
-              }, 400);
-            }, 400);
-          }
+  const showTop = (y >= top - vh/2 && y < top + h/2 - vh)
 
-        } else {
-          el.classList.remove('visible');
+  grapaTop.style.opacity = showTop ? 1 : 0
 
-          if(id === 'museo'){
-            const top = document.getElementById('overlay-top');
-            top.classList.remove('shift','fade-pa','recenter');
-            document.getElementById('museo').classList.remove('recenter');
-            document.getElementById('fia-superior').classList.remove('recenter');
-          }
+  // delay natural
+  setTimeout(()=>{
+    museo.style.opacity = showTop ? 1 : 0
+    fiaTop.style.opacity = showTop ? 1 : 0
+  },150)
 
-          if(id === 'esceno'){
-            const bottom = document.getElementById('overlay-bottom');
-            bottom.classList.remove('shift','fade-pa','recenter');
-            document.getElementById('esceno').classList.remove('recenter');
-            document.getElementById('fia-inferior').classList.remove('recenter');
-          }
-        }
-      });
-    });
-  },{
-    threshold:0.3
-  });
+  /* -------- INFERIOR -------- */
 
-  observer.observe(document.getElementById(group[0]));
-});
+  const showBottom = (y >= top + h/2 - vh/2)
+
+  grapaBottom.style.opacity = showBottom ? 1 : 0
+
+  setTimeout(()=>{
+    esceno.style.opacity = showBottom ? 1 : 0
+    fiaBottom.style.opacity = showBottom ? 1 : 0
+  },150)
+
+})
 </script>
 
 </body>
