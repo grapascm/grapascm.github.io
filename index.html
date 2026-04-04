@@ -30,8 +30,6 @@ body {
   align-items:center;
   text-align:center;
   padding-top:20vh;
-  padding-left:8vw;
-  padding-right:8vw;
 }
 
 h1.hero-text {
@@ -57,16 +55,6 @@ h1.hero-text {
   padding:1vh 2vw;
 }
 
-footer {
-  position:fixed;
-  bottom:60px;
-  width:100%;
-  text-align:center;
-  font-size:clamp(10px,1vw,12px);
-  opacity:0.5;
-  pointer-events:none;
-}
-
 /* CONTENEDOR DE IMAGEN */
 .background-image-container {
   position:relative;
@@ -87,7 +75,8 @@ footer {
   width:clamp(300px,70vw,1200px);
   color:#E4E8ED;
   opacity:0;
-  transition: opacity 0.6s ease, transform 0.6s ease;
+  /* Transición suave para posición y opacidad */
+  transition: opacity 0.6s ease, transform 0.8s cubic-bezier(0.4, 0, 0.2, 1);
   white-space:nowrap;
 }
 
@@ -101,39 +90,48 @@ footer {
   transition: transform 0.6s ease, opacity 0.4s ease;
 }
 
-/* COREOGRAFÍA: PASO 2 - SHIFT */
+/* PASO 2: SHIFT PA */
 .shift .pa {
   transform: translateX(0.35em);
-  transition-delay:0.1s;
 }
 
-/* COREOGRAFÍA: PASO 3 - FADE */
+/* PASO 3: FADE PA */
 .fade-pa .pa {
   opacity:0;
 }
 
 .left-align {
   text-align:left;
-  padding-left:0.09em;
 }
 
-/* TAMAÑOS Y POSICIONES */
+/* POSICIONES ORIGINALES */
 #museo          { font-size:clamp(55px,9.5vw,110px); top:21.5%; }
-#esceno         { font-size:clamp(50px,9vw,100px); top:71.5%; }
 #fia-superior   { font-size:clamp(70px,12vw,150px); top:31.5%; }
-#fia-inferior   { font-size:clamp(70px,12vw,150px); top:81.5%; }
 #overlay-top    { top:25%; }
+
+#esceno         { font-size:clamp(50px,9vw,100px); top:71.5%; }
+#fia-inferior   { font-size:clamp(70px,12vw,150px); top:81.5%; }
 #overlay-bottom { top:75%; }
 
-/* ESTADO VISIBLE INICIAL */
+/* ESTADO VISIBLE */
 .visible {
   opacity:1;
   transform:translateX(-50%) translateY(0);
 }
 
+/* DELAYS DE APARICIÓN 1.0 */
 .delay-1 { transition-delay: 0.1s; }
 .delay-2 { transition-delay: 0.4s; }
 .delay-3 { transition-delay: 0.7s; }
+
+footer {
+  position:fixed;
+  bottom:60px;
+  width:100%;
+  text-align:center;
+  font-size:clamp(10px,1vw,12px);
+  opacity:0.5;
+}
 </style>
 </head>
 
@@ -164,77 +162,81 @@ footer {
 <footer>&copy; 2025 GRAPA</footer>
 
 <script>
-// Función matemática de centrado corregida para mantener la coreografía
-function centerBlock(grapaId, sideIds) {
+/**
+ * RECENTER DINÁMICO
+ * En lugar de mover GRA a la izquierda, calculamos el centro visual 
+ * del conjunto (GRA + Palabra Secundaria) y movemos todo el bloque.
+ */
+function recenterGroup(mainId, secondaryIds) {
   const containerW = document.getElementById('img-container').offsetWidth;
-  const grapaEl = document.getElementById(grapaId);
-  const sideEls = sideIds.map(id => document.getElementById(id));
-
-  // Medimos el ancho de GRA (sin el PA que ya está en opacity 0)
-  const graW = grapaEl.querySelector('.gra').getBoundingClientRect().width;
-  const sideWs = sideEls.map(el => el.getBoundingClientRect().width);
+  const mainEl = document.getElementById(mainId);
+  const secondaryEls = secondaryIds.map(id => document.getElementById(id));
   
-  // El ancho real del bloque ahora es el máximo entre GRA solo y las palabras secundarias
+  // 1. Obtener el ancho de "GRA" (sin la PA)
+  const graW = mainEl.querySelector('.gra').getBoundingClientRect().width;
+  
+  // 2. Obtener el ancho de las palabras secundarias (MU5EO, FIA...)
+  const sideWs = secondaryEls.map(el => el.getBoundingClientRect().width);
+  
+  // 3. El ancho del "bloque visual" es el máximo de ellos
   const blockW = Math.max(graW, ...sideWs);
-  const blockLeft = (containerW - blockW) / 2;
-
-  // Calculamos el offset necesario para que el borde izquierdo de cada elemento
-  // se alinee con el borde izquierdo del bloque imaginario centrado.
   
-  // Para GRAPA (que está en text-align center)
-  const graOffset = blockLeft - (containerW/2 - graW/2);
-  grapaEl.style.transition = 'opacity 0.6s ease, transform 0.9s cubic-bezier(0.4, 0, 0.2, 1)';
-  grapaEl.style.transform = `translateX(calc(-50% + ${graOffset}px)) translateY(0)`;
+  // 4. Calcular cuánto hay que desplazar TODO el grupo para que ese 
+  // bloque de ancho 'blockW' quede centrado en pantalla.
+  // Como todos tienen left:50% y transform:translateX(-50%), 
+  // su centro está en containerW/2. Queremos que su borde izquierdo esté en:
+  const targetLeft = (containerW - blockW) / 2;
+  
+  // El offset para GRA (que estaba centrado)
+  const mainOffset = targetLeft - (containerW/2 - graW/2);
+  mainEl.style.transform = `translateX(calc(-50% + ${mainOffset}px)) translateY(0)`;
 
-  // Para los secundarios (MU5EO, FIA, etc)
-  sideEls.forEach((el, i) => {
-    const offset = blockLeft - (containerW/2 - sideWs[i]/2);
-    el.style.transition = 'opacity 0.6s ease, transform 0.9s cubic-bezier(0.4, 0, 0.2, 1)';
-    el.style.transform = `translateX(calc(-50% + ${offset}px)) translateY(0)`;
+  // El offset para los secundarios (que estaban centrados)
+  secondaryEls.forEach((el, i) => {
+    const secOffset = targetLeft - (containerW/2 - sideWs[i]/2);
+    el.style.transform = `translateX(calc(-50% + ${secOffset}px)) translateY(0)`;
   });
 }
 
-const groups = [
+const sections = [
   { trigger: 'museo', main: 'overlay-top', secondary: ['museo', 'fia-superior'] },
   { trigger: 'esceno', main: 'overlay-bottom', secondary: ['esceno', 'fia-inferior'] }
 ];
 
-groups.forEach(group => {
+sections.forEach(group => {
   const observer = new IntersectionObserver((entries) => {
     entries.forEach(entry => {
-      const mainEl = document.getElementById(group.main);
-      const secEls = group.secondary.map(id => document.getElementById(id));
+      const main = document.getElementById(group.main);
+      const side1 = document.getElementById(group.secondary[0]);
+      const side2 = document.getElementById(group.secondary[1]);
 
       if (entry.isIntersecting) {
-        // PASO 1: Aparecen con sus delays de CSS
-        mainEl.classList.add('visible');
-        secEls.forEach(el => el.classList.add('visible'));
+        // PASO 1: Aparecer (Ritmo 1.0)
+        main.classList.add('visible');
+        side1.classList.add('visible');
+        side2.classList.add('visible');
 
-        // PASO 2: El ritmo de la 1.0 (400ms después de aparecer el secundario)
+        // PASO 2: Movimiento PA (400ms después de que aparezca MU5EO/E5CENO)
         setTimeout(() => {
-          if (!entry.isIntersecting) return;
-          mainEl.classList.add('shift');
+          if(!entry.isIntersecting) return;
+          main.classList.add('shift');
 
-          // PASO 3: Desaparece PA y Centra (400ms después del shift)
+          // PASO 3: Desaparecer PA y RE-CENTRAR TODO (400ms después del shift)
           setTimeout(() => {
-            if (!entry.isIntersecting) return;
-            mainEl.classList.add('fade-pa');
+            if(!entry.isIntersecting) return;
+            main.classList.add('fade-pa');
             
-            // Pequeño margen para que el navegador asimile el cambio de layout antes de centrar
-            setTimeout(() => {
-              centerBlock(group.main, group.secondary);
-            }, 50);
+            // Recalculamos posición para que el conjunto se vea centrado
+            recenterGroup(group.main, group.secondary);
             
           }, 400);
         }, 400);
 
       } else {
-        // RESET: Limpiamos todo al salir de vista
-        mainEl.classList.remove('visible', 'shift', 'fade-pa');
-        mainEl.style.transform = '';
-        secEls.forEach(el => {
-          el.classList.remove('visible');
-          el.style.transform = '';
+        // RESET TOTAL
+        [main, side1, side2].forEach(el => {
+          el.classList.remove('visible', 'shift', 'fade-pa');
+          el.style.transform = ''; // Limpia el centrado dinámico
         });
       }
     });
@@ -243,12 +245,12 @@ groups.forEach(group => {
   observer.observe(document.getElementById(group.trigger));
 });
 
-// Recalcular en caso de cambio de tamaño de ventana
+// Ajuste si cambia el tamaño de la pantalla
 window.addEventListener('resize', () => {
-  groups.forEach(group => {
-    const mainEl = document.getElementById(group.main);
-    if (mainEl.classList.contains('fade-pa')) {
-      centerBlock(group.main, group.secondary);
+  sections.forEach(group => {
+    const main = document.getElementById(group.main);
+    if(main.classList.contains('fade-pa')) {
+      recenterGroup(group.main, group.secondary);
     }
   });
 });
