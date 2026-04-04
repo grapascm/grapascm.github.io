@@ -22,30 +22,31 @@ body {
   overflow-x: hidden;
 }
 
-/* --- HERO --- */
+/* --- HERO (Estructura 1.0) --- */
 .hero {
   min-height: 100svh;
   display:flex;
   flex-direction:column;
   align-items:center;
   text-align:center;
-  padding: 20vh 20px 0 20px;
+  padding-top:20vh;
 }
 
 h1.hero-text {
-  /* El 14vw asegura que nunca toque los bordes laterales */
-  font-size: clamp(45px, 14vw, 200px);
+  font-size: clamp(40px, 15vw, 200px);
   letter-spacing:0.04em;
   color:#E4E8ED;
   line-height:0.9;
+  /* Evita desborde en móvil */
+  max-width: 95vw; 
+  word-wrap: break-word;
 }
 
 .subtitle {
   margin-top:8vh;
-  /* Reducimos un poco el vw para que el subtítulo no desborde en iPhone */
-  font-size: clamp(10px, 2.5vw, 20px);
+  font-size:clamp(10px, 2vw, 20px);
   letter-spacing:0.35em;
-  max-width: 85%;
+  padding: 0 10px; /* Aire para el móvil */
 }
 
 .email-button {
@@ -58,7 +59,7 @@ h1.hero-text {
   padding:1vh 2vw;
 }
 
-/* --- FOOTER FIXED (Tu 1.0) --- */
+/* --- FOOTER FIXED 1.0 --- */
 footer {
   position:fixed;
   bottom:60px;
@@ -82,50 +83,60 @@ footer {
   display:block;
 }
 
-/* --- TEXTOS OVERLAY (POSICIONES 1.0 EXACTAS) --- */
+/* --- TEXTOS OVERLAY (TU LÓGICA 1.0) --- */
 .overlay-line {
   position:absolute;
   left:50%;
   transform:translateX(-50%) translateY(20px);
-  width: 90vw; /* Asegura que el contenedor no empuje el scroll lateral */
+  width: 100%;
   color:#E4E8ED;
   opacity:0;
   transition: opacity 0.6s ease, transform 0.6s ease;
   white-space:nowrap;
 }
 
-/* CLAVE DEL RESPONSIVE: 
-   Bajamos los mínimos de clamp para que en móvil el texto 
-   encoja lo suficiente para no pisar a la línea de arriba/abajo.
-*/
-
 .center {
   text-align:center;
-  font-size: clamp(35px, 15vw, 200px);
+  font-size: clamp(40px, 15vw, 200px);
 }
 
-#museo { top: 21.5%; font-size: clamp(22px, 8.5vw, 110px); }
-#overlay-top { top: 25%; }
-#fia-superior { top: 31.5%; font-size: clamp(28px, 11vw, 150px); }
-
-#esceno { top: 71.5%; font-size: clamp(20px, 8vw, 100px); }
-#overlay-bottom { top: 75%; }
-#fia-inferior { top: 81.5%; font-size: clamp(28px, 11vw, 150px); }
-
-/* --- ANIMACIONES --- */
 .center span {
   display:inline-block;
   transition: transform 0.6s ease, opacity 0.4s ease;
 }
 
-.shift .pa {
-  transform: translateX(0.35em);
-  transition-delay: 0.5s;
+/* --- LAS POSICIONES QUE FUNCIONAN --- */
+#overlay-top { top: 25%; }
+#museo { top: 21.5%; font-size: clamp(25px, 9.5vw, 110px); }
+#fia-superior { top: 31.5%; font-size: clamp(35px, 12vw, 150px); }
+
+#overlay-bottom { top: 75%; }
+#esceno { top: 71.5%; font-size: clamp(25px, 9vw, 100px); }
+#fia-inferior { top: 81.5%; font-size: clamp(35px, 12vw, 150px); }
+
+/* --- AJUSTE PARA QUE NO SE PISEN EN MÓVIL --- */
+@media (max-width: 600px) {
+  /* Al reducir el font-size un poco, el hueco entre los top% es suficiente */
+  .center { font-size: 13vw; }
+  #museo { font-size: 8vw; }
+  #fia-superior, #fia-inferior { font-size: 10vw; }
+  #esceno { font-size: 7.5vw; }
+  
+  h1.hero-text { font-size: 13vw; } /* Header respira */
 }
 
-.fade-pa .pa { opacity:0; }
+/* --- ANIMACIONES RITMO 1.0 --- */
+.shift .pa {
+  transform: translateX(0.35em);
+  transition-delay: 0.5s; /* El retraso de la PA */
+}
+
+.fade-pa .pa {
+  opacity:0;
+}
 
 .recenter {
+  /* El recenter que tanto nos costó clavando el -8% */
   transform:translateX(-50%) translateY(0) translateX(-8%);
 }
 
@@ -173,32 +184,36 @@ footer {
 <footer>&copy; 2025 GRAPA</footer>
 
 <script>
+// Volvemos a la lógica de IDs original para asegurar el ritmo
 const sections = [
-  { main: 'overlay-top', extras: ['museo', 'fia-superior'] },
-  { main: 'overlay-bottom', extras: ['esceno', 'fia-inferior'] }
+  ['overlay-top', 'museo', 'fia-superior'],
+  ['overlay-bottom', 'esceno', 'fia-inferior']
 ];
 
 sections.forEach(group => {
   const observer = new IntersectionObserver((entries) => {
     entries.forEach(entry => {
-      const main = document.getElementById(group.main);
-      const s1 = document.getElementById(group.extras[0]);
-      const s2 = document.getElementById(group.extras[1]);
+      const main = document.getElementById(group[0]); 
+      const s1 = document.getElementById(group[1]);   
+      const s2 = document.getElementById(group[2]);   
 
       if (entry.isIntersecting) {
+        // PASO 1: Aparecen y la PA se mueve (ritmo 1.0)
         main.classList.add('visible', 'shift');
         s1.classList.add('visible');
         s2.classList.add('visible');
 
+        // PASO 2: Desvanecer PA y recentrar el bloque (-8%)
         setTimeout(() => {
           if (main.classList.contains('visible')) {
             main.classList.add('fade-pa', 'recenter');
             s1.classList.add('recenter');
             s2.classList.add('recenter');
           }
-        }, 1100); 
+        }, 1200); // El tiempo exacto que funcionaba
 
       } else {
+        // Reset al salir de scroll
         [main, s1, s2].forEach(el => {
           el.classList.remove('visible', 'shift', 'fade-pa', 'recenter');
         });
@@ -206,7 +221,7 @@ sections.forEach(group => {
     });
   }, { threshold: 0.2 });
 
-  observer.observe(document.getElementById(group.main));
+  observer.observe(document.getElementById(group[0]));
 });
 </script>
 
