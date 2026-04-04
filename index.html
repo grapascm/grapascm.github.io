@@ -147,17 +147,76 @@ footer {
 .delay-2 { transition-delay:0.4s; }
 .delay-3 { transition-delay:0.7s; }
 
+/* ========================= */
+/* 📱 MOBILE VERSION */
+/* ========================= */
+
+.mobile-section {
+  display:none;
+}
+
+@media(max-width:768px){
+
+  body {
+    min-height:auto;
+  }
+
+  .overlay-line {
+    display:none;
+  }
+
+  .background-image-container {
+    display:none;
+  }
+
+  .mobile-section {
+    display:flex;
+    position:relative;
+    height:100svh;
+    align-items:center;
+    justify-content:center;
+    text-align:center;
+  }
+
+  .mobile-section img {
+    position:absolute;
+    width:100%;
+    height:100%;
+    object-fit:cover;
+    top:0;
+    left:0;
+  }
+
+  .mobile-text {
+    position:relative;
+    z-index:1;
+    color:#E4E8ED;
+  }
+
+  .mobile-text .big {
+    font-size:clamp(60px,14vw,120px);
+    line-height:0.9;
+  }
+
+  .mobile-text .small {
+    font-size:clamp(40px,10vw,80px);
+    margin-top:2vh;
+  }
+
+}
 </style>
 </head>
 
 <body>
 
+<!-- HERO -->
 <div class="hero">
   <h1 class="hero-text">GRAPA</h1>
   <div class="subtitle">5ociedad Cooperativa Madrileña</div>
   <a href="mailto:grapa@grapa.e5" class="email-button">grapa@grapa.e5</a>
 </div>
 
+<!-- DESKTOP IMAGE -->
 <div class="background-image-container">
   <img src="images/grapas.jpg">
 
@@ -174,6 +233,23 @@ footer {
   </div>
   <div class="overlay-line left-align delay-2" id="esceno">E5CENO</div>
   <div class="overlay-line left-align delay-3" id="fia-inferior">FIA</div>
+</div>
+
+<!-- MOBILE SECTIONS -->
+<div class="mobile-section">
+  <img src="images/grapas.jpg">
+  <div class="mobile-text">
+    <div class="big">MU5EO</div>
+    <div class="small">FIA</div>
+  </div>
+</div>
+
+<div class="mobile-section">
+  <img src="images/grapas.jpg">
+  <div class="mobile-text">
+    <div class="big">E5CENO</div>
+    <div class="small">FIA</div>
+  </div>
 </div>
 
 <footer>&copy; 2025 GRAPA</footer>
