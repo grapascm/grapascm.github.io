@@ -13,16 +13,16 @@
 }
 
 * { margin:0; padding:0; box-sizing:border-box; }
-html, body { overflow-x: hidden; }
 
 body {
   font-family: 'GRAPA', sans-serif;
   text-transform: uppercase;
   background-color: #0A1A2A;
   color: #BFC6CF;
+  overflow-x: hidden;
 }
 
-/* HERO */
+/* HERO - Fiel a 1.0 */
 .hero {
   min-height: 100svh;
   display:flex;
@@ -55,10 +55,10 @@ h1.hero-text {
   padding:1vh 2vw;
 }
 
-/* CONTENEDOR DE IMAGEN */
+/* IMAGEN Y CONTENEDOR */
 .background-image-container {
   position:relative;
-  width:100%;
+  width: 100%;
 }
 
 .background-image-container img {
@@ -67,17 +67,17 @@ h1.hero-text {
   display:block;
 }
 
-/* BASE TEXTO */
+/* TEXTOS OVERLAY - Lógica 1.0 */
 .overlay-line {
   position:absolute;
   left:50%;
   transform:translateX(-50%) translateY(20px);
-  width:clamp(300px,70vw,1200px);
+  width:clamp(300px,80vw,1200px);
   color:#E4E8ED;
   opacity:0;
-  /* Transición suave para posición y opacidad */
-  transition: opacity 0.6s ease, transform 0.8s cubic-bezier(0.4, 0, 0.2, 1);
+  transition: opacity 0.6s ease, transform 0.6s ease;
   white-space:nowrap;
+  pointer-events: none;
 }
 
 .center {
@@ -90,7 +90,7 @@ h1.hero-text {
   transition: transform 0.6s ease, opacity 0.4s ease;
 }
 
-/* PASO 2: SHIFT PA */
+/* PASO 2: SHIFT (Movimiento PA) */
 .shift .pa {
   transform: translateX(0.35em);
 }
@@ -100,11 +100,18 @@ h1.hero-text {
   opacity:0;
 }
 
-.left-align {
-  text-align:left;
+/* RECENTER ESTABLE: En lugar de un % fijo, usamos una variable calculada */
+.recenter {
+  transform: translateX(calc(-50% - var(--offset, 0px))) translateY(0) !important;
 }
 
-/* POSICIONES ORIGINALES */
+.left-align {
+  text-align:left;
+  /* Ajuste fino para alinear con la G de GRAPA */
+  padding-left: 0.1em; 
+}
+
+/* POSICIONES Y TAMAÑOS 1.0 */
 #museo          { font-size:clamp(55px,9.5vw,110px); top:21.5%; }
 #fia-superior   { font-size:clamp(70px,12vw,150px); top:31.5%; }
 #overlay-top    { top:25%; }
@@ -113,22 +120,19 @@ h1.hero-text {
 #fia-inferior   { font-size:clamp(70px,12vw,150px); top:81.5%; }
 #overlay-bottom { top:75%; }
 
-/* ESTADO VISIBLE */
+/* VISIBILIDAD */
 .visible {
   opacity:1;
   transform:translateX(-50%) translateY(0);
 }
 
-/* DELAYS DE APARICIÓN 1.0 */
-.delay-1 { transition-delay: 0.1s; }
-.delay-2 { transition-delay: 0.4s; }
-.delay-3 { transition-delay: 0.7s; }
+.delay-1 { transition-delay:0.1s; }
+.delay-2 { transition-delay:0.4s; }
+.delay-3 { transition-delay:0.7s; }
 
 footer {
-  position:fixed;
-  bottom:60px;
-  width:100%;
   text-align:center;
+  padding: 40px 0;
   font-size:clamp(10px,1vw,12px);
   opacity:0.5;
 }
@@ -143,7 +147,7 @@ footer {
   <a href="mailto:grapa@grapa.e5" class="email-button">grapa@grapa.e5</a>
 </div>
 
-<div class="background-image-container" id="img-container">
+<div class="background-image-container" id="main-container">
   <img src="images/grapas.jpg" alt="">
 
   <div class="overlay-line center delay-1" id="overlay-top">
@@ -163,39 +167,16 @@ footer {
 
 <script>
 /**
- * RECENTER DINÁMICO
- * En lugar de mover GRA a la izquierda, calculamos el centro visual 
- * del conjunto (GRA + Palabra Secundaria) y movemos todo el bloque.
+ * CALCULO DE OFFSET
+ * Para que el recenter sea estable, medimos cuánto mide 'PA'
+ * y desplazamos el bloque exactamente la mitad de ese ancho.
  */
-function recenterGroup(mainId, secondaryIds) {
-  const containerW = document.getElementById('img-container').offsetWidth;
+function setOffset(mainId) {
   const mainEl = document.getElementById(mainId);
-  const secondaryEls = secondaryIds.map(id => document.getElementById(id));
-  
-  // 1. Obtener el ancho de "GRA" (sin la PA)
-  const graW = mainEl.querySelector('.gra').getBoundingClientRect().width;
-  
-  // 2. Obtener el ancho de las palabras secundarias (MU5EO, FIA...)
-  const sideWs = secondaryEls.map(el => el.getBoundingClientRect().width);
-  
-  // 3. El ancho del "bloque visual" es el máximo de ellos
-  const blockW = Math.max(graW, ...sideWs);
-  
-  // 4. Calcular cuánto hay que desplazar TODO el grupo para que ese 
-  // bloque de ancho 'blockW' quede centrado en pantalla.
-  // Como todos tienen left:50% y transform:translateX(-50%), 
-  // su centro está en containerW/2. Queremos que su borde izquierdo esté en:
-  const targetLeft = (containerW - blockW) / 2;
-  
-  // El offset para GRA (que estaba centrado)
-  const mainOffset = targetLeft - (containerW/2 - graW/2);
-  mainEl.style.transform = `translateX(calc(-50% + ${mainOffset}px)) translateY(0)`;
-
-  // El offset para los secundarios (que estaban centrados)
-  secondaryEls.forEach((el, i) => {
-    const secOffset = targetLeft - (containerW/2 - sideWs[i]/2);
-    el.style.transform = `translateX(calc(-50% + ${secOffset}px)) translateY(0)`;
-  });
+  const pa = mainEl.querySelector('.pa');
+  const offset = pa.offsetWidth / 2;
+  // Aplicamos el offset al contenedor de la imagen para que afecte a sus hijos
+  document.documentElement.style.setProperty('--offset', `${offset}px`);
 }
 
 const sections = [
@@ -207,52 +188,48 @@ sections.forEach(group => {
   const observer = new IntersectionObserver((entries) => {
     entries.forEach(entry => {
       const main = document.getElementById(group.main);
-      const side1 = document.getElementById(group.secondary[0]);
-      const side2 = document.getElementById(group.secondary[1]);
+      const s1 = document.getElementById(group.secondary[0]);
+      const s2 = document.getElementById(group.secondary[1]);
 
       if (entry.isIntersecting) {
-        // PASO 1: Aparecer (Ritmo 1.0)
+        // COREOGRAFÍA 1.0
         main.classList.add('visible');
-        side1.classList.add('visible');
-        side2.classList.add('visible');
+        s1.classList.add('visible');
+        s2.classList.add('visible');
 
-        // PASO 2: Movimiento PA (400ms después de que aparezca MU5EO/E5CENO)
         setTimeout(() => {
           if(!entry.isIntersecting) return;
           main.classList.add('shift');
 
-          // PASO 3: Desaparecer PA y RE-CENTRAR TODO (400ms después del shift)
           setTimeout(() => {
             if(!entry.isIntersecting) return;
-            main.classList.add('fade-pa');
+            // Calculamos el offset justo antes de mover
+            const paWidth = main.querySelector('.pa').offsetWidth;
+            const offsetValue = paWidth / 2;
             
-            // Recalculamos posición para que el conjunto se vea centrado
-            recenterGroup(group.main, group.secondary);
+            // Aplicamos el movimiento
+            main.style.setProperty('--offset', `${offsetValue}px`);
+            main.classList.add('fade-pa', 'recenter');
             
+            s1.style.setProperty('--offset', `${offsetValue}px`);
+            s1.classList.add('recenter');
+            
+            s2.style.setProperty('--offset', `${offsetValue}px`);
+            s2.classList.add('recenter');
           }, 400);
         }, 400);
 
       } else {
-        // RESET TOTAL
-        [main, side1, side2].forEach(el => {
-          el.classList.remove('visible', 'shift', 'fade-pa');
-          el.style.transform = ''; // Limpia el centrado dinámico
+        // RESET
+        [main, s1, s2].forEach(el => {
+          el.classList.remove('visible', 'shift', 'fade-pa', 'recenter');
+          el.style.removeProperty('--offset');
         });
       }
     });
   }, { threshold: 0.3 });
 
   observer.observe(document.getElementById(group.trigger));
-});
-
-// Ajuste si cambia el tamaño de la pantalla
-window.addEventListener('resize', () => {
-  sections.forEach(group => {
-    const main = document.getElementById(group.main);
-    if(main.classList.contains('fade-pa')) {
-      recenterGroup(group.main, group.secondary);
-    }
-  });
 });
 </script>
 
