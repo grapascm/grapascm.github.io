@@ -2,7 +2,7 @@
 <html lang="es">
 <head>
 <meta charset="UTF-8">
-<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no">
 <title>GRAPA</title>
 
 <style>
@@ -14,36 +14,36 @@
 
 * { margin:0; padding:0; box-sizing:border-box; }
 
-/* Evita cualquier fuga lateral */
+/* Evita fugas y scroll fantasma */
 html, body {
   overflow-x: hidden;
   width: 100%;
-  position: relative;
+  background-color: #0A1A2A;
 }
 
 body {
   font-family: 'GRAPA', sans-serif;
   text-transform: uppercase;
-  background-color: #0A1A2A;
   color: #BFC6CF;
-  min-height: 300vh;
+  /* Eliminado el 300vh para que el scroll sea natural */
 }
 
-/* --- HERO CORREGIDO --- */
+/* --- HERO --- */
 .hero {
   min-height: 100svh;
   display:flex;
   flex-direction:column;
   align-items:center;
-  justify-content: center; /* Centrado vertical más estable */
+  justify-content: center;
   text-align:center;
-  padding: 0 20px; /* Margen de seguridad lateral */
+  padding: 0 10px;
 }
 
 h1.hero-text {
-  /* Bajamos de 18vw a 14vw para que no desborde en iPhone SE/14 */
-  font-size: clamp(40px, 14vw, 200px); 
-  letter-spacing:0.04em;
+  font-size: clamp(45px, 14vw, 200px); 
+  /* Compensación de centrado: el margin-right negativo anula el empuje del letter-spacing */
+  letter-spacing: 0.08em;
+  margin-right: -0.08em; 
   color:#E4E8ED;
   line-height:0.9;
   width: 100%;
@@ -53,23 +53,26 @@ h1.hero-text {
   margin-top:5vh;
   font-size:clamp(10px, 2.5vw, 18px);
   letter-spacing:0.3em;
-  max-width: 80%; /* Evita que las líneas sean infinitas */
+  margin-right: -0.3em; /* Compensación de centrado */
+  max-width: 90%;
 }
 
 .email-button {
   margin-top:10vh;
   font-size:clamp(10px, 1.5vw, 14px);
   letter-spacing:0.3em;
+  margin-right: -0.3em; /* Compensación de centrado */
   text-decoration:none;
   color:#E4E8ED;
   border:1px solid rgba(228,232,237,0.2);
   padding: 12px 24px;
 }
 
-/* --- OVERLAYS CORREGIDOS --- */
+/* --- CONTENEDOR IMAGEN --- */
 .background-image-container {
   position:relative;
   width: 100%;
+  line-height: 0; /* Evita espacios vacíos debajo de la imagen */
 }
 
 .background-image-container img {
@@ -78,22 +81,22 @@ h1.hero-text {
   display:block;
 }
 
+/* --- TEXTOS ANIMADOS --- */
 .overlay-line {
   position:absolute;
   left:50%;
   transform:translateX(-50%) translateY(20px);
-  /* Ajustamos el ancho para que el clamp no empuje hacia fuera */
-  width: 90vw; 
-  max-width: 1200px;
+  width: 95vw; /* Más aire para evitar scroll lateral en móvil */
   color:#E4E8ED;
   opacity:0;
   transition: opacity 0.6s ease, transform 0.6s ease;
   white-space:nowrap;
+  pointer-events: none;
 }
 
 .center {
   text-align:center;
-  font-size:clamp(35px, 15vw, 200px);
+  font-size:clamp(40px, 15vw, 200px);
 }
 
 .center span {
@@ -101,9 +104,8 @@ h1.hero-text {
   transition: transform 0.6s ease, opacity 0.4s ease;
 }
 
-/* El movimiento lateral de la PA */
 .shift .pa {
-  transform: translateX(0.3em); /* Un pelín menos para no forzar el borde */
+  transform: translateX(0.3em);
   transition-delay:0.5s;
 }
 
@@ -111,28 +113,28 @@ h1.hero-text {
   opacity:0;
 }
 
-/* El recenter final (-8%) */
+/* Recenter original con el -8% que te gustaba */
 .recenter {
   transform:translateX(-50%) translateY(0) translateX(-8%);
 }
 
 .left-align {
   text-align:left;
-  padding-left: 0.1em;
+  padding-left: 2vw; /* Alineación relativa al ancho de pantalla */
 }
 
-/* Ajuste fino de tamaños para móvil */
-#museo { font-size:clamp(25px, 9.5vw, 110px); }
-#esceno { font-size:clamp(22px, 9vw, 100px); }
-#fia-superior, #fia-inferior { font-size:clamp(30px, 12vw, 150px); }
+/* Tamaños ajustados para no pisarse */
+#museo { font-size:clamp(28px, 9.5vw, 110px); }
+#esceno { font-size:clamp(25px, 9vw, 100px); }
+#fia-superior, #fia-inferior { font-size:clamp(35px, 12vw, 150px); }
 
-/* Mantener tus posiciones top originales */
+/* Posiciones proporcionales */
 #overlay-top { top:25%; }
 #overlay-bottom { top:75%; }
-#museo { top:21.5%; }
-#fia-superior { top:31.5%; }
-#esceno { top:71.5%; }
-#fia-inferior { top:81.5%; }
+#museo { top:21%; }
+#fia-superior { top:31%; }
+#esceno { top:71%; }
+#fia-inferior { top:81%; }
 
 .visible {
   opacity:1;
@@ -143,14 +145,13 @@ h1.hero-text {
 .delay-2 { transition-delay:0.4s; }
 .delay-3 { transition-delay:0.7s; }
 
+/* --- FOOTER FINAL --- */
 footer {
-  position:fixed;
-  bottom:30px;
-  width:100%;
   text-align:center;
+  padding: 60px 0; /* Ahora el footer es parte del flujo, no fijo */
   font-size: 10px;
   opacity:0.5;
-  pointer-events: none;
+  background-color: #0A1A2A;
 }
 </style>
 </head>
@@ -213,7 +214,7 @@ sections.forEach(group => {
         s2.classList.remove('visible', 'recenter');
       }
     });
-  }, { threshold: 0.2 }); // Umbral un poco más bajo para móviles
+  }, { threshold: 0.1 }); 
 
   observer.observe(document.getElementById(group[0]));
 });
