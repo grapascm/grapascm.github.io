@@ -14,15 +14,19 @@
 
 * { margin:0; padding:0; box-sizing:border-box; }
 
+html, body {
+  overflow-x: hidden;
+}
+
 body {
   font-family: 'GRAPA', sans-serif;
   text-transform: uppercase;
   background-color: #0A1A2A;
   color: #BFC6CF;
-  overflow-x: hidden;
+  min-height: 300vh;
 }
 
-/* HERO - Fiel a 1.0 */
+/* HERO ORIGINAL */
 .hero {
   min-height: 100svh;
   display:flex;
@@ -55,10 +59,20 @@ h1.hero-text {
   padding:1vh 2vw;
 }
 
-/* IMAGEN Y CONTENEDOR */
+/* FOOTER ORIGINAL */
+footer {
+  position:fixed;
+  bottom:60px;
+  width:100%;
+  text-align:center;
+  font-size:clamp(10px,1vw,12px);
+  opacity:0.5;
+  pointer-events: none;
+}
+
+/* CONTENEDOR IMAGEN */
 .background-image-container {
   position:relative;
-  width: 100%;
 }
 
 .background-image-container img {
@@ -67,19 +81,19 @@ h1.hero-text {
   display:block;
 }
 
-/* TEXTOS OVERLAY - Lógica 1.0 */
+/* BASE TEXTO */
 .overlay-line {
   position:absolute;
   left:50%;
   transform:translateX(-50%) translateY(20px);
-  width:clamp(300px,80vw,1200px);
+  width:clamp(300px,70vw,1200px);
   color:#E4E8ED;
   opacity:0;
   transition: opacity 0.6s ease, transform 0.6s ease;
   white-space:nowrap;
-  pointer-events: none;
 }
 
+/* GRAPA */
 .center {
   text-align:center;
   font-size:clamp(100px,15vw,200px);
@@ -90,52 +104,52 @@ h1.hero-text {
   transition: transform 0.6s ease, opacity 0.4s ease;
 }
 
-/* PASO 2: SHIFT (Movimiento PA) */
+/* PA Movimiento */
 .shift .pa {
   transform: translateX(0.35em);
+  transition-delay:0.5s;
 }
 
-/* PASO 3: FADE PA */
+/* PA Desaparece */
 .fade-pa .pa {
   opacity:0;
 }
 
-/* RECENTER ESTABLE: En lugar de un % fijo, usamos una variable calculada */
+/* RECENTER GLOBAL ORIGINAL (-8%) */
 .recenter {
-  transform: translateX(calc(-50% - var(--offset, 0px))) translateY(0) !important;
+  transform:translateX(-50%) translateY(0) translateX(-8%);
 }
 
+/* ALINEACIÓN IZQUIERDA */
 .left-align {
   text-align:left;
-  /* Ajuste fino para alinear con la G de GRAPA */
-  padding-left: 0.1em; 
+  padding-left:0.09em;
 }
 
-/* POSICIONES Y TAMAÑOS 1.0 */
-#museo          { font-size:clamp(55px,9.5vw,110px); top:21.5%; }
-#fia-superior   { font-size:clamp(70px,12vw,150px); top:31.5%; }
-#overlay-top    { top:25%; }
+/* TAMAÑOS */
+#museo { font-size:clamp(55px,9.5vw,110px); }
+#esceno { font-size:clamp(50px,9vw,100px); }
+#fia-superior, #fia-inferior { font-size:clamp(70px,12vw,150px); }
 
-#esceno         { font-size:clamp(50px,9vw,100px); top:71.5%; }
-#fia-inferior   { font-size:clamp(70px,12vw,150px); top:81.5%; }
+/* POSICIONES */
+#overlay-top { top:25%; }
 #overlay-bottom { top:75%; }
+#museo { top:21.5%; }
+#fia-superior { top:31.5%; }
+#esceno { top:71.5%; }
+#fia-inferior { top:81.5%; }
 
-/* VISIBILIDAD */
+/* ESTADO VISIBLE */
 .visible {
   opacity:1;
   transform:translateX(-50%) translateY(0);
 }
 
+/* DELAYS DE APARICIÓN */
 .delay-1 { transition-delay:0.1s; }
 .delay-2 { transition-delay:0.4s; }
 .delay-3 { transition-delay:0.7s; }
 
-footer {
-  text-align:center;
-  padding: 40px 0;
-  font-size:clamp(10px,1vw,12px);
-  opacity:0.5;
-}
 </style>
 </head>
 
@@ -147,7 +161,7 @@ footer {
   <a href="mailto:grapa@grapa.e5" class="email-button">grapa@grapa.e5</a>
 </div>
 
-<div class="background-image-container" id="main-container">
+<div class="background-image-container">
   <img src="images/grapas.jpg" alt="">
 
   <div class="overlay-line center delay-1" id="overlay-top">
@@ -166,70 +180,48 @@ footer {
 <footer>&copy; 2025 GRAPA</footer>
 
 <script>
-/**
- * CALCULO DE OFFSET
- * Para que el recenter sea estable, medimos cuánto mide 'PA'
- * y desplazamos el bloque exactamente la mitad de ese ancho.
- */
-function setOffset(mainId) {
-  const mainEl = document.getElementById(mainId);
-  const pa = mainEl.querySelector('.pa');
-  const offset = pa.offsetWidth / 2;
-  // Aplicamos el offset al contenedor de la imagen para que afecte a sus hijos
-  document.documentElement.style.setProperty('--offset', `${offset}px`);
-}
-
 const sections = [
-  { trigger: 'museo', main: 'overlay-top', secondary: ['museo', 'fia-superior'] },
-  { trigger: 'esceno', main: 'overlay-bottom', secondary: ['esceno', 'fia-inferior'] }
+  ['overlay-top', 'museo', 'fia-superior'],
+  ['overlay-bottom', 'esceno', 'fia-inferior']
 ];
 
 sections.forEach(group => {
   const observer = new IntersectionObserver((entries) => {
     entries.forEach(entry => {
-      const main = document.getElementById(group.main);
-      const s1 = document.getElementById(group.secondary[0]);
-      const s2 = document.getElementById(group.secondary[1]);
+      const main = document.getElementById(group[0]); // overlay-top o bottom
+      const s1 = document.getElementById(group[1]);   // museo o esceno
+      const s2 = document.getElementById(group[2]);   // fia-superior o inferior
 
       if (entry.isIntersecting) {
-        // COREOGRAFÍA 1.0
-        main.classList.add('visible');
+        // 1. Aparecen con sus respectivos delays de CSS
+        // Al mismo tiempo aplicamos 'shift'. Como tu CSS tiene 'transition-delay: 0.5s',
+        // el movimiento de la "PA" esperará silenciosamente medio segundo.
+        main.classList.add('visible', 'shift');
         s1.classList.add('visible');
         s2.classList.add('visible');
 
+        // 2. Cronometramos: 0.5s (retraso del shift) + 0.6s (animación del shift) = 1.1s
+        // Justo a los 1.2 segundos, cuando "PA" ya se ha separado, lanzamos el FADE y el RECENTER (-8%)
         setTimeout(() => {
-          if(!entry.isIntersecting) return;
-          main.classList.add('shift');
-
-          setTimeout(() => {
-            if(!entry.isIntersecting) return;
-            // Calculamos el offset justo antes de mover
-            const paWidth = main.querySelector('.pa').offsetWidth;
-            const offsetValue = paWidth / 2;
-            
-            // Aplicamos el movimiento
-            main.style.setProperty('--offset', `${offsetValue}px`);
+          // Confirmamos que el usuario no ha hecho scroll rápido hacia arriba
+          if (main.classList.contains('visible')) {
             main.classList.add('fade-pa', 'recenter');
-            
-            s1.style.setProperty('--offset', `${offsetValue}px`);
             s1.classList.add('recenter');
-            
-            s2.style.setProperty('--offset', `${offsetValue}px`);
             s2.classList.add('recenter');
-          }, 400);
-        }, 400);
+          }
+        }, 1200);
 
       } else {
-        // RESET
-        [main, s1, s2].forEach(el => {
-          el.classList.remove('visible', 'shift', 'fade-pa', 'recenter');
-          el.style.removeProperty('--offset');
-        });
+        // Reset limpio de clases
+        main.classList.remove('visible', 'shift', 'fade-pa', 'recenter');
+        s1.classList.remove('visible', 'recenter');
+        s2.classList.remove('visible', 'recenter');
       }
     });
   }, { threshold: 0.3 });
 
-  observer.observe(document.getElementById(group.trigger));
+  // Solo necesitamos observar el elemento principal (GRAPA) para disparar el grupo entero
+  observer.observe(document.getElementById(group[0]));
 });
 </script>
 
