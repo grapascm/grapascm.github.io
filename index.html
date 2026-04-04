@@ -14,9 +14,7 @@
 
 * { margin:0; padding:0; box-sizing:border-box; }
 
-html, body {
-  overflow-x: hidden;
-}
+html, body { overflow-x: hidden; }
 
 body {
   font-family: 'GRAPA', sans-serif;
@@ -33,13 +31,12 @@ body {
   align-items: center;
   text-align: center;
   padding-top: 20vh;
-  padding-left: 4vw;
-  padding-right: 4vw;
-  overflow: hidden;
+  padding-left: 8vw;
+  padding-right: 8vw;
 }
 
 h1.hero-text {
-  font-size: clamp(40px, 15vw, 200px);
+  font-size: clamp(40px, 13vw, 200px);
   letter-spacing: 0.04em;
   color: #E4E8ED;
   line-height: 0.9;
@@ -47,23 +44,20 @@ h1.hero-text {
 
 .subtitle {
   margin-top: 8vh;
-  font-size: clamp(9px, 2vw, 20px);
+  font-size: clamp(9px, 1.6vw, 20px);
   letter-spacing: 0.2em;
-  white-space: nowrap;
 }
 
 .email-button {
   margin-top: 18vh;
-  font-size: clamp(8px, 1.2vw, 14px);
+  font-size: clamp(8px, 1vw, 14px);
   letter-spacing: 0.2em;
   text-decoration: none;
   color: #E4E8ED;
   border: 1px solid rgba(228,232,237,0.2);
   padding: 1vh 2vw;
-  white-space: nowrap;
 }
 
-/* Footer */
 footer {
   position: fixed;
   bottom: 60px;
@@ -74,10 +68,7 @@ footer {
   pointer-events: none;
 }
 
-/* CONTENEDOR DE IMAGEN
-   aspect-ratio garantiza la proporción exacta
-   en cualquier dispositivo — los top:% siempre
-   apuntan al mismo punto de la imagen. */
+/* CONTENEDOR IMAGEN */
 .background-image-container {
   position: relative;
   width: 100%;
@@ -93,22 +84,42 @@ footer {
   display: block;
 }
 
-/* BASE TEXTO — vw puro para que escalen
-   proporcionalmente con la imagen */
+/* ── WRAPPERS DE GRUPO ────────────────────
+   Cada grupo (superior / inferior) vive en
+   un wrapper absoluto que ocupa toda la anchura.
+   El wrapper se desplaza con translateX para
+   centrar el bloque suavemente.
+──────────────────────────────────────── */
+.group-wrapper {
+  position: absolute;
+  left: 0;
+  width: 100%;
+  transition: transform 1s cubic-bezier(0.4, 0, 0.2, 1);
+}
+
+#group-top    { top: 0; }
+#group-bottom { top: 0; }
+
+/* ── OVERLAY LINE ─────────────────────────
+   Dentro del wrapper, cada línea se posiciona
+   con top:% relativo al contenedor imagen
+   (que sigue siendo el padre con position:relative).
+   left y transform centran el texto horizontalmente.
+──────────────────────────────────────── */
 .overlay-line {
   position: absolute;
   left: 50%;
   transform: translateX(-50%) translateY(20px);
-  width: 90%;
   color: #E4E8ED;
   opacity: 0;
   transition: opacity 0.6s ease, transform 0.6s ease;
   white-space: nowrap;
 }
 
+/* GRAPA */
 .center {
   text-align: center;
-  font-size: 15vw;
+  font-size: clamp(80px, 15vw, 200px);
 }
 
 .center span {
@@ -125,23 +136,20 @@ footer {
   opacity: 0;
 }
 
-.recenter {
-  transform: translateX(-50%) translateY(0) translateX(-8%);
-}
-
+/* Alineación izquierda */
 .left-align {
   text-align: left;
-  padding-left: 0.09em;
 }
 
-#museo          { font-size: 9.5vw; }
-#esceno         { font-size: 9vw; }
+/* Tamaños — vw puro */
+#museo          { font-size: clamp(55px, 9.5vw, 110px); }
+#esceno         { font-size: clamp(50px, 9vw,   100px); }
 #fia-superior,
-#fia-inferior   { font-size: 12vw; }
+#fia-inferior   { font-size: clamp(70px, 12vw,  150px); }
 
-/* Posiciones ancladas a la imagen */
-#overlay-top    { top: 25%; }
-#overlay-bottom { top: 75%; }
+/* Posiciones absolutas relativas al contenedor imagen */
+#overlay-top    { top: 25%;   }
+#overlay-bottom { top: 75%;   }
 #museo          { top: 21.5%; }
 #fia-superior   { top: 31.5%; }
 #esceno         { top: 71.5%; }
@@ -166,7 +174,7 @@ footer {
   <a href="mailto:grapa@grapa.e5" class="email-button">grapa@grapa.e5</a>
 </div>
 
-<div class="background-image-container">
+<div class="background-image-container" id="img-container">
   <img src="images/grapas.jpg" alt="">
 
   <!-- SUPERIOR -->
@@ -188,65 +196,105 @@ footer {
 
 <script>
 const sections = [
-  ['overlay-top',    'museo',  'fia-superior'],
-  ['overlay-bottom', 'esceno', 'fia-inferior']
+  {
+    triggerId:  'overlay-top',
+    grapaId:    'overlay-top',
+    ids:        ['overlay-top', 'museo', 'fia-superior'],
+    shiftIds:   ['museo', 'fia-superior']
+  },
+  {
+    triggerId:  'overlay-bottom',
+    grapaId:    'overlay-bottom',
+    ids:        ['overlay-bottom', 'esceno', 'fia-inferior'],
+    shiftIds:   ['esceno', 'fia-inferior']
+  }
 ];
 
-sections.forEach(group => {
+// Devuelve cuánto hay que desplazar el grupo para centrarlo.
+// Mide el elemento más ancho del conjunto y calcula el offset
+// necesario para que ese bloque quede centrado en el contenedor.
+function calcCenterOffset(ids) {
+  const container = document.getElementById('img-container');
+  const cw = container.offsetWidth;
+
+  // Ancho real de cada texto (sin el translateX del left:50%)
+  const maxW = Math.max(...ids.map(id => {
+    const el = document.getElementById(id);
+    return el.getBoundingClientRect().width;
+  }));
+
+  // Con left:50% + translateX(-50%), el centro del elemento
+  // ya está en el centro del contenedor.
+  // Lo que queremos es que el borde izquierdo del bloque más ancho
+  // quede alineado con la G de GRAPA, es decir, en el mismo left.
+  // En la estado inicial left:50% translateX(-50%) ya centra cada línea.
+  // Tras el recenter queremos que el conjunto comparta el mismo left edge.
+  // El left edge de cada elemento centrado es: cw/2 - width/2
+  // Para alinearlos todos al left edge del más ancho:
+  // offset = 0 (ya están centrados individualmente, solo igualamos el left)
+  // En realidad solo necesitamos mover el bloque 0 — cada línea ya tiene left:50%.
+  // El truco: forzamos el left de museo y fia al mismo valor que GRA tiene
+  // después de que PA desaparece, que es left:50% - graWidth/2.
+
+  const graEl = document.getElementById(ids[0]);
+  const graW  = graEl.querySelector('.gra') 
+                ? graEl.querySelector('.gra').getBoundingClientRect().width 
+                : graEl.getBoundingClientRect().width;
+
+  // Queremos que el left edge de museo y fia sea: cw/2 - graW/2
+  // Su posición actual (centrados): left edge = cw/2 - propioAncho/2
+  // Offset necesario para museo: (cw/2 - graW/2) - (cw/2 - museoW/2) = (museoW - graW) / 2
+  return ids.slice(1).map(id => {
+    const el = document.getElementById(id);
+    const w  = el.getBoundingClientRect().width;
+    return (w - graW) / 2;
+  });
+}
+
+sections.forEach(section => {
   const observer = new IntersectionObserver((entries) => {
     entries.forEach(entry => {
-      group.forEach(id => {
-        const el = document.getElementById(id);
 
-        if (entry.isIntersecting) {
-          el.classList.add('visible');
+      if (entry.isIntersecting) {
+        // 1. Aparecen todos
+        section.ids.forEach(id =>
+          document.getElementById(id).classList.add('visible')
+        );
 
-          if (id === 'museo') {
-            setTimeout(() => {
-              const top = document.getElementById('overlay-top');
-              top.classList.add('shift');
-              setTimeout(() => {
-                top.classList.add('fade-pa', 'recenter');
-                document.getElementById('museo').classList.add('recenter');
-                document.getElementById('fia-superior').classList.add('recenter');
-              }, 400);
-            }, 400);
-          }
+        // 2. PA se desplaza
+        setTimeout(() => {
+          const grapa = document.getElementById(section.grapaId);
+          grapa.classList.add('shift');
 
-          if (id === 'esceno') {
-            setTimeout(() => {
-              const bottom = document.getElementById('overlay-bottom');
-              bottom.classList.add('shift');
-              setTimeout(() => {
-                bottom.classList.add('fade-pa', 'recenter');
-                document.getElementById('esceno').classList.add('recenter');
-                document.getElementById('fia-inferior').classList.add('recenter');
-              }, 400);
-            }, 400);
-          }
+          // 3. PA desaparece y el bloque se centra suavemente
+          setTimeout(() => {
+            grapa.classList.add('fade-pa');
 
-        } else {
-          el.classList.remove('visible');
+            // Calculamos el offset para alinear museo/fia con la G
+            const offsets = calcCenterOffset(section.ids);
 
-          if (id === 'museo') {
-            const top = document.getElementById('overlay-top');
-            top.classList.remove('shift', 'fade-pa', 'recenter');
-            document.getElementById('museo').classList.remove('recenter');
-            document.getElementById('fia-superior').classList.remove('recenter');
-          }
+            section.shiftIds.forEach((id, i) => {
+              const el = document.getElementById(id);
+              // Movemos hacia la izquierda para alinear al borde de GRA
+              el.style.transform = `translateX(calc(-50% + ${offsets[i]}px)) translateY(0)`;
+              el.style.transition = 'transform 0.9s cubic-bezier(0.4, 0, 0.2, 1)';
+            });
 
-          if (id === 'esceno') {
-            const bottom = document.getElementById('overlay-bottom');
-            bottom.classList.remove('shift', 'fade-pa', 'recenter');
-            document.getElementById('esceno').classList.remove('recenter');
-            document.getElementById('fia-inferior').classList.remove('recenter');
-          }
-        }
-      });
+          }, 400);
+        }, 400);
+
+      } else {
+        section.ids.forEach(id => {
+          const el = document.getElementById(id);
+          el.classList.remove('visible', 'shift', 'fade-pa');
+          el.style.transform = '';
+          el.style.transition = '';
+        });
+      }
     });
   }, { threshold: 0.3 });
 
-  observer.observe(document.getElementById(group[0]));
+  observer.observe(document.getElementById(section.triggerId));
 });
 </script>
 
