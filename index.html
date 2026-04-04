@@ -21,7 +21,8 @@ body{
   overflow-x:hidden;
 }
 
-/* HERO */
+/* ================= HERO ================= */
+
 .hero{
   min-height:100svh;
   display:flex;
@@ -34,11 +35,13 @@ body{
 .hero h1{
   font-size:clamp(80px,15vw,200px);
   line-height:0.9;
+  width:100%;
 }
 
 .subtitle{
   margin-top:8vh;
   letter-spacing:0.35em;
+  width:100%;
 }
 
 .email{
@@ -49,7 +52,8 @@ body{
   color:white;
 }
 
-/* IMAGEN */
+/* ================= IMAGEN ================= */
+
 .bg{
   position:relative;
 }
@@ -60,7 +64,8 @@ body{
   display:block;
 }
 
-/* TEXTO BASE */
+/* ================= TEXTO ================= */
+
 .overlay{
   position:absolute;
   left:50%;
@@ -82,7 +87,7 @@ body{
   transition:0.6s ease;
 }
 
-/* PA animación */
+/* animación PA */
 .shift .pa{
   transform:translateX(0.35em);
 }
@@ -101,7 +106,7 @@ body{
 .esceno{font-size:clamp(50px,9vw,100px);}
 .fia{font-size:clamp(65px,11vw,140px);}
 
-/* POSICIONES */
+/* POSICIONES DESKTOP */
 #grapa-top{top:25%;}
 #grapa-bottom{top:75%;}
 
@@ -111,19 +116,24 @@ body{
 #esceno{top:71.5%;}
 #fia-bottom{top:81.5%;}
 
-/* visible */
-.show{
-  opacity:1;
-}
-/* MOBILE FIX REAL */
+.show{opacity:1;}
+
+/* ================= MOBILE ================= */
+
 @media(max-width:768px){
 
   .hero{
     padding-top:15vh;
+    padding-left:6vw;
+    padding-right:6vw;
   }
 
   .hero h1{
     font-size:clamp(60px,18vw,120px);
+  }
+
+  .subtitle{
+    letter-spacing:0.25em;
   }
 
   .email{
@@ -131,36 +141,23 @@ body{
     padding:1vh 4vw;
   }
 
- /* ===== FIX PRO CENTRADO ===== */
+  /* imagen fluida */
+  .bg{
+    height:200vh;
+  }
 
-.bg{
-  height:200vh;
-  position:relative;
-}
+  .bg img{
+    position:sticky;
+    top:0;
+    height:100vh;
+    width:100%;
+    object-fit:cover;
+  }
 
-.bg img{
-  position:sticky;
-  top:0;
-  height:100vh;
-  width:100%;
-  object-fit:cover;
-}
-
-/* overlays centrados en viewport */
-.overlay{
-  position:fixed;
-  top:50%;
-  left:50%;
-  transform:translate(-50%,-50%);
-  width:85vw;
-}
-
-/* ajuste fino vertical */
-#museo{ transform:translate(-50%,-70%); }
-#fia-top{ transform:translate(-50%,-30%); }
-
-#esceno{ transform:translate(-50%,-70%); }
-#fia-bottom{ transform:translate(-50%,-30%); }
+  /* overlays FLUIDOS */
+  .overlay{
+    width:85vw;
+  }
 
   .grapa{
     font-size:clamp(70px,18vw,130px);
@@ -173,6 +170,15 @@ body{
   .fia{
     font-size:clamp(50px,14vw,100px);
   }
+
+  /* posiciones reales en viewport */
+  #grapa-top{top:50vh;}
+  #museo{top:45vh;}
+  #fia-top{top:60vh;}
+
+  #grapa-bottom{top:150vh;}
+  #esceno{top:145vh;}
+  #fia-bottom{top:160vh;}
 }
 
 </style>
@@ -180,12 +186,14 @@ body{
 
 <body>
 
+<!-- HERO -->
 <div class="hero">
   <h1>GRAPA</h1>
   <div class="subtitle">5ociedad Cooperativa Madrileña</div>
   <a href="mailto:grapa@grapa.e5" class="email">grapa@grapa.e5</a>
 </div>
 
+<!-- IMAGEN -->
 <div class="bg">
   <img src="images/grapas.jpg">
 
