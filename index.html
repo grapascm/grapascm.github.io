@@ -14,8 +14,11 @@
 
 * { margin:0; padding:0; box-sizing:border-box; }
 
+/* Evita cualquier fuga lateral */
 html, body {
   overflow-x: hidden;
+  width: 100%;
+  position: relative;
 }
 
 body {
@@ -26,55 +29,47 @@ body {
   min-height: 300vh;
 }
 
-/* HERO ORIGINAL */
+/* --- HERO CORREGIDO --- */
 .hero {
   min-height: 100svh;
   display:flex;
   flex-direction:column;
   align-items:center;
+  justify-content: center; /* Centrado vertical más estable */
   text-align:center;
-  padding-top:20vh;
+  padding: 0 20px; /* Margen de seguridad lateral */
 }
 
-/* FIX: Bajamos el mínimo de 80px a 40px y ajustamos el vw */
 h1.hero-text {
-  font-size: clamp(40px, 18vw, 200px);
+  /* Bajamos de 18vw a 14vw para que no desborde en iPhone SE/14 */
+  font-size: clamp(40px, 14vw, 200px); 
   letter-spacing:0.04em;
   color:#E4E8ED;
   line-height:0.9;
+  width: 100%;
 }
 
 .subtitle {
-  margin-top:8vh;
-  font-size:clamp(10px, 2vw, 20px);
-  letter-spacing:0.35em;
-  padding: 0 5vw; /* Añadido un pequeño padding para que no toque los bordes en móvil */
+  margin-top:5vh;
+  font-size:clamp(10px, 2.5vw, 18px);
+  letter-spacing:0.3em;
+  max-width: 80%; /* Evita que las líneas sean infinitas */
 }
 
 .email-button {
-  margin-top:18vh;
-  font-size:clamp(10px,1.2vw,14px);
+  margin-top:10vh;
+  font-size:clamp(10px, 1.5vw, 14px);
   letter-spacing:0.3em;
   text-decoration:none;
   color:#E4E8ED;
   border:1px solid rgba(228,232,237,0.2);
-  padding:1vh 2vw;
+  padding: 12px 24px;
 }
 
-/* FOOTER ORIGINAL */
-footer {
-  position:fixed;
-  bottom:60px;
-  width:100%;
-  text-align:center;
-  font-size:clamp(10px,1vw,12px);
-  opacity:0.5;
-  pointer-events: none;
-}
-
-/* CONTENEDOR IMAGEN */
+/* --- OVERLAYS CORREGIDOS --- */
 .background-image-container {
   position:relative;
+  width: 100%;
 }
 
 .background-image-container img {
@@ -83,21 +78,19 @@ footer {
   display:block;
 }
 
-/* BASE TEXTO */
-/* FIX: Bajamos el mínimo de 300px a 250px y ajustamos el vw base */
 .overlay-line {
   position:absolute;
   left:50%;
   transform:translateX(-50%) translateY(20px);
-  width:clamp(250px, 75vw, 1200px);
+  /* Ajustamos el ancho para que el clamp no empuje hacia fuera */
+  width: 90vw; 
+  max-width: 1200px;
   color:#E4E8ED;
   opacity:0;
   transition: opacity 0.6s ease, transform 0.6s ease;
   white-space:nowrap;
 }
 
-/* GRAPA */
-/* FIX: Bajamos el mínimo de 100px a 35px */
 .center {
   text-align:center;
   font-size:clamp(35px, 15vw, 200px);
@@ -108,34 +101,32 @@ footer {
   transition: transform 0.6s ease, opacity 0.4s ease;
 }
 
-/* PA Movimiento */
+/* El movimiento lateral de la PA */
 .shift .pa {
-  transform: translateX(0.35em);
+  transform: translateX(0.3em); /* Un pelín menos para no forzar el borde */
   transition-delay:0.5s;
 }
 
-/* PA Desaparece */
 .fade-pa .pa {
   opacity:0;
 }
 
-/* RECENTER GLOBAL ORIGINAL (-8%) */
+/* El recenter final (-8%) */
 .recenter {
   transform:translateX(-50%) translateY(0) translateX(-8%);
 }
 
-/* ALINEACIÓN IZQUIERDA */
 .left-align {
   text-align:left;
-  padding-left:0.09em;
+  padding-left: 0.1em;
 }
 
-/* TAMAÑOS: Reducimos los mínimos drásticamente para que el VW mande en móviles */
+/* Ajuste fino de tamaños para móvil */
 #museo { font-size:clamp(25px, 9.5vw, 110px); }
 #esceno { font-size:clamp(22px, 9vw, 100px); }
 #fia-superior, #fia-inferior { font-size:clamp(30px, 12vw, 150px); }
 
-/* POSICIONES ORIGINALES */
+/* Mantener tus posiciones top originales */
 #overlay-top { top:25%; }
 #overlay-bottom { top:75%; }
 #museo { top:21.5%; }
@@ -143,17 +134,24 @@ footer {
 #esceno { top:71.5%; }
 #fia-inferior { top:81.5%; }
 
-/* ESTADO VISIBLE */
 .visible {
   opacity:1;
   transform:translateX(-50%) translateY(0);
 }
 
-/* DELAYS DE APARICIÓN */
 .delay-1 { transition-delay:0.1s; }
 .delay-2 { transition-delay:0.4s; }
 .delay-3 { transition-delay:0.7s; }
 
+footer {
+  position:fixed;
+  bottom:30px;
+  width:100%;
+  text-align:center;
+  font-size: 10px;
+  opacity:0.5;
+  pointer-events: none;
+}
 </style>
 </head>
 
@@ -215,7 +213,7 @@ sections.forEach(group => {
         s2.classList.remove('visible', 'recenter');
       }
     });
-  }, { threshold: 0.3 });
+  }, { threshold: 0.2 }); // Umbral un poco más bajo para móviles
 
   observer.observe(document.getElementById(group[0]));
 });
