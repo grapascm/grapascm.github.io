@@ -65,11 +65,7 @@ footer {
   opacity: 0.5;
 }
 
-/* CONTENEDOR DE IMAGEN
-   aspect-ratio ancla la proporción exacta
-   de grapas.jpg en cualquier pantalla,
-   así los top:% siempre apuntan al mismo
-   punto de la imagen. */
+/* CONTENEDOR DE IMAGEN */
 .background-image-container {
   position: relative;
   width: 100%;
@@ -90,7 +86,7 @@ footer {
   position: absolute;
   left: 50%;
   transform: translateX(-50%) translateY(20px);
-  width: clamp(300px, 70vw, 1200px);
+  width: 90%;
   color: #E4E8ED;
   opacity: 0;
   transition: opacity 0.6s ease, transform 0.6s ease;
@@ -100,7 +96,7 @@ footer {
 /* GRAPA */
 .center {
   text-align: center;
-  font-size: clamp(100px, 15vw, 200px);
+  font-size: 15vw;
 }
 
 .center span {
@@ -130,12 +126,13 @@ footer {
   padding-left: 0.09em;
 }
 
-/* tamanos */
-#museo { font-size: clamp(55px, 9.5vw, 110px); }
-#esceno { font-size: clamp(50px, 9vw, 100px); }
-#fia-superior, #fia-inferior { font-size: clamp(70px, 12vw, 150px); }
+/* tamanos desktop */
+#museo          { font-size: 9.5vw; }
+#esceno         { font-size: 9vw; }
+#fia-superior,
+#fia-inferior   { font-size: 12vw; }
 
-/* posiciones */
+/* posiciones — iguales en todos los dispositivos */
 #overlay-top    { top: 25%; }
 #overlay-bottom { top: 75%; }
 #museo          { top: 21.5%; }
@@ -153,6 +150,51 @@ footer {
 .delay-1 { transition-delay: 0.1s; }
 .delay-2 { transition-delay: 0.4s; }
 .delay-3 { transition-delay: 0.7s; }
+
+
+/* ─── MÓVIL ─────────────────────────────
+   En pantallas estrechas reducimos fuentes
+   con vw puro — así escalan con el ancho
+   igual que la imagen.
+──────────────────────────────────────── */
+@media (max-width: 600px) {
+
+  .hero {
+    padding-top: 15vh;
+  }
+
+  h1.hero-text {
+    font-size: 22vw;
+  }
+
+  .subtitle {
+    font-size: 3.5vw;
+    letter-spacing: 0.2em;
+  }
+
+  .email-button {
+    font-size: 3vw;
+    padding: 2vw 4vw;
+    letter-spacing: 0.15em;
+  }
+
+  /* Overlay: permitir wrap y ancho completo */
+  .overlay-line {
+    width: 92%;
+    white-space: nowrap; /* mantenemos nowrap, controlamos tamaño con vw */
+  }
+
+  .center         { font-size: 18vw; }
+  #museo          { font-size: 11vw; }
+  #esceno         { font-size: 10.5vw; }
+  #fia-superior,
+  #fia-inferior   { font-size: 14vw; }
+
+  footer {
+    font-size: 2.5vw;
+    bottom: 20px;
+  }
+}
 </style>
 </head>
 
