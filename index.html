@@ -22,7 +22,7 @@ body {
   overflow-x: hidden;
 }
 
-/* --- HERO (Estructura 1.0) --- */
+/* --- HERO (IGUAL A TU 1.0) --- */
 .hero {
   min-height: 100svh;
   display:flex;
@@ -33,20 +33,19 @@ body {
 }
 
 h1.hero-text {
-  font-size: clamp(40px, 15vw, 200px);
+  /* Bajamos un pelín el vw de 15 a 14 para que en móvil no desborde */
+  font-size: clamp(45px, 14vw, 200px);
   letter-spacing:0.04em;
   color:#E4E8ED;
   line-height:0.9;
-  /* Evita desborde en móvil */
-  max-width: 95vw; 
-  word-wrap: break-word;
+  max-width: 90vw; /* Seguro para móvil */
 }
 
 .subtitle {
   margin-top:8vh;
-  font-size:clamp(10px, 2vw, 20px);
+  font-size:clamp(12px, 2vw, 20px);
   letter-spacing:0.35em;
-  padding: 0 10px; /* Aire para el móvil */
+  padding: 0 20px; /* Evita que el texto toque bordes en iPhone */
 }
 
 .email-button {
@@ -83,7 +82,7 @@ footer {
   display:block;
 }
 
-/* --- TEXTOS OVERLAY (TU LÓGICA 1.0) --- */
+/* --- TEXTOS OVERLAY (RESTURADOS A LA 1.0) --- */
 .overlay-line {
   position:absolute;
   left:50%;
@@ -97,7 +96,7 @@ footer {
 
 .center {
   text-align:center;
-  font-size: clamp(40px, 15vw, 200px);
+  font-size: clamp(50px, 15vw, 200px);
 }
 
 .center span {
@@ -105,38 +104,35 @@ footer {
   transition: transform 0.6s ease, opacity 0.4s ease;
 }
 
-/* --- LAS POSICIONES QUE FUNCIONAN --- */
+/* --- TUS POSICIONES ORIGINALES 1.0 --- */
 #overlay-top { top: 25%; }
-#museo { top: 21.5%; font-size: clamp(25px, 9.5vw, 110px); }
-#fia-superior { top: 31.5%; font-size: clamp(35px, 12vw, 150px); }
+#museo { top: 21.5%; font-size: clamp(30px, 9.5vw, 110px); }
+#fia-superior { top: 31.5%; font-size: clamp(40px, 12vw, 150px); }
 
 #overlay-bottom { top: 75%; }
-#esceno { top: 71.5%; font-size: clamp(25px, 9vw, 100px); }
-#fia-inferior { top: 81.5%; font-size: clamp(35px, 12vw, 150px); }
+#esceno { top: 71.5%; font-size: clamp(28px, 9vw, 100px); }
+#fia-inferior { top: 81.5%; font-size: clamp(40px, 12vw, 150px); }
 
-/* --- AJUSTE PARA QUE NO SE PISEN EN MÓVIL --- */
-@media (max-width: 600px) {
-  /* Al reducir el font-size un poco, el hueco entre los top% es suficiente */
+/* --- EL ARREGLO PARA MÓVIL SIN ROMPER DESKTOP --- */
+@media (max-width: 768px) {
+  /* En móvil, los textos se pisan porque el font-size mínimo (30px/40px) 
+     es más grande que el hueco del % del top. 
+     Bajamos los tamaños solo aquí para que quepan en tus coordenadas. */
   .center { font-size: 13vw; }
-  #museo { font-size: 8vw; }
-  #fia-superior, #fia-inferior { font-size: 10vw; }
-  #esceno { font-size: 7.5vw; }
-  
-  h1.hero-text { font-size: 13vw; } /* Header respira */
+  #museo { font-size: 6vw; }
+  #fia-superior, #fia-inferior { font-size: 9vw; }
+  #esceno { font-size: 5.5vw; }
 }
 
 /* --- ANIMACIONES RITMO 1.0 --- */
 .shift .pa {
   transform: translateX(0.35em);
-  transition-delay: 0.5s; /* El retraso de la PA */
+  transition-delay: 0.5s;
 }
 
-.fade-pa .pa {
-  opacity:0;
-}
+.fade-pa .pa { opacity:0; }
 
 .recenter {
-  /* El recenter que tanto nos costó clavando el -8% */
   transform:translateX(-50%) translateY(0) translateX(-8%);
 }
 
@@ -184,7 +180,6 @@ footer {
 <footer>&copy; 2025 GRAPA</footer>
 
 <script>
-// Volvemos a la lógica de IDs original para asegurar el ritmo
 const sections = [
   ['overlay-top', 'museo', 'fia-superior'],
   ['overlay-bottom', 'esceno', 'fia-inferior']
@@ -198,22 +193,19 @@ sections.forEach(group => {
       const s2 = document.getElementById(group[2]);   
 
       if (entry.isIntersecting) {
-        // PASO 1: Aparecen y la PA se mueve (ritmo 1.0)
         main.classList.add('visible', 'shift');
         s1.classList.add('visible');
         s2.classList.add('visible');
 
-        // PASO 2: Desvanecer PA y recentrar el bloque (-8%)
         setTimeout(() => {
           if (main.classList.contains('visible')) {
             main.classList.add('fade-pa', 'recenter');
             s1.classList.add('recenter');
             s2.classList.add('recenter');
           }
-        }, 1200); // El tiempo exacto que funcionaba
+        }, 1200); 
 
       } else {
-        // Reset al salir de scroll
         [main, s1, s2].forEach(el => {
           el.classList.remove('visible', 'shift', 'fade-pa', 'recenter');
         });
