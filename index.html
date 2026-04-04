@@ -14,12 +14,15 @@
 
 * { margin:0; padding:0; box-sizing:border-box; }
 
+html, body {
+  overflow-x: hidden;
+}
+
 body {
   font-family: 'GRAPA', sans-serif;
   text-transform: uppercase;
   background-color: #0A1A2A;
   color: #BFC6CF;
-  min-height: 300vh;
 }
 
 /* HERO */
@@ -30,10 +33,13 @@ body {
   align-items: center;
   text-align: center;
   padding-top: 20vh;
+  padding-left: 4vw;
+  padding-right: 4vw;
+  overflow: hidden;
 }
 
 h1.hero-text {
-  font-size: clamp(80px, 15vw, 200px);
+  font-size: clamp(40px, 15vw, 200px);
   letter-spacing: 0.04em;
   color: #E4E8ED;
   line-height: 0.9;
@@ -41,18 +47,20 @@ h1.hero-text {
 
 .subtitle {
   margin-top: 8vh;
-  font-size: clamp(14px, 2vw, 20px);
-  letter-spacing: 0.35em;
+  font-size: clamp(9px, 2vw, 20px);
+  letter-spacing: 0.2em;
+  white-space: nowrap;
 }
 
 .email-button {
   margin-top: 18vh;
-  font-size: clamp(10px, 1.2vw, 14px);
-  letter-spacing: 0.3em;
+  font-size: clamp(8px, 1.2vw, 14px);
+  letter-spacing: 0.2em;
   text-decoration: none;
   color: #E4E8ED;
   border: 1px solid rgba(228,232,237,0.2);
   padding: 1vh 2vw;
+  white-space: nowrap;
 }
 
 /* Footer */
@@ -61,11 +69,15 @@ footer {
   bottom: 60px;
   width: 100%;
   text-align: center;
-  font-size: clamp(10px, 1vw, 12px);
+  font-size: clamp(8px, 1vw, 12px);
   opacity: 0.5;
+  pointer-events: none;
 }
 
-/* CONTENEDOR DE IMAGEN */
+/* CONTENEDOR DE IMAGEN
+   aspect-ratio garantiza la proporción exacta
+   en cualquier dispositivo — los top:% siempre
+   apuntan al mismo punto de la imagen. */
 .background-image-container {
   position: relative;
   width: 100%;
@@ -81,7 +93,8 @@ footer {
   display: block;
 }
 
-/* BASE TEXTO */
+/* BASE TEXTO — vw puro para que escalen
+   proporcionalmente con la imagen */
 .overlay-line {
   position: absolute;
   left: 50%;
@@ -93,7 +106,6 @@ footer {
   white-space: nowrap;
 }
 
-/* GRAPA */
 .center {
   text-align: center;
   font-size: 15vw;
@@ -104,35 +116,30 @@ footer {
   transition: transform 0.6s ease, opacity 0.4s ease;
 }
 
-/* PA movimiento */
 .shift .pa {
   transform: translateX(0.35em);
   transition-delay: 0.5s;
 }
 
-/* PA desaparece */
 .fade-pa .pa {
   opacity: 0;
 }
 
-/* RECENTER GLOBAL */
 .recenter {
   transform: translateX(-50%) translateY(0) translateX(-8%);
 }
 
-/* alineacion izquierda */
 .left-align {
   text-align: left;
   padding-left: 0.09em;
 }
 
-/* tamanos desktop */
 #museo          { font-size: 9.5vw; }
 #esceno         { font-size: 9vw; }
 #fia-superior,
 #fia-inferior   { font-size: 12vw; }
 
-/* posiciones — iguales en todos los dispositivos */
+/* Posiciones ancladas a la imagen */
 #overlay-top    { top: 25%; }
 #overlay-bottom { top: 75%; }
 #museo          { top: 21.5%; }
@@ -140,61 +147,14 @@ footer {
 #esceno         { top: 71.5%; }
 #fia-inferior   { top: 81.5%; }
 
-/* visible */
 .visible {
   opacity: 1;
   transform: translateX(-50%) translateY(0);
 }
 
-/* delays */
 .delay-1 { transition-delay: 0.1s; }
 .delay-2 { transition-delay: 0.4s; }
 .delay-3 { transition-delay: 0.7s; }
-
-
-/* ─── MÓVIL ─────────────────────────────
-   En pantallas estrechas reducimos fuentes
-   con vw puro — así escalan con el ancho
-   igual que la imagen.
-──────────────────────────────────────── */
-@media (max-width: 600px) {
-
-  .hero {
-    padding-top: 15vh;
-  }
-
-  h1.hero-text {
-    font-size: 22vw;
-  }
-
-  .subtitle {
-    font-size: 3.5vw;
-    letter-spacing: 0.2em;
-  }
-
-  .email-button {
-    font-size: 3vw;
-    padding: 2vw 4vw;
-    letter-spacing: 0.15em;
-  }
-
-  /* Overlay: permitir wrap y ancho completo */
-  .overlay-line {
-    width: 92%;
-    white-space: nowrap; /* mantenemos nowrap, controlamos tamaño con vw */
-  }
-
-  .center         { font-size: 18vw; }
-  #museo          { font-size: 11vw; }
-  #esceno         { font-size: 10.5vw; }
-  #fia-superior,
-  #fia-inferior   { font-size: 14vw; }
-
-  footer {
-    font-size: 2.5vw;
-    bottom: 20px;
-  }
-}
 </style>
 </head>
 
@@ -202,7 +162,7 @@ footer {
 
 <div class="hero">
   <h1 class="hero-text">GRAPA</h1>
-  <div class="subtitle">5ociedad Cooperativa Madrilena</div>
+  <div class="subtitle">5ociedad Cooperativa Madrile&#241;a</div>
   <a href="mailto:grapa@grapa.e5" class="email-button">grapa@grapa.e5</a>
 </div>
 
