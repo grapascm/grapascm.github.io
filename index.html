@@ -3,7 +3,7 @@
 <head>
 <meta charset="UTF-8">
 <meta name="viewport" content="width=device-width, initial-scale=1.0">
-<title>GRAPA 2.1</title>
+<title>GRAPA 3.0</title>
 
 <style>
 @font-face {
@@ -34,7 +34,6 @@ body {
 
 h1.hero-text {
   font-size: clamp(45px, 14vw, 200px);
-  /* Compensamos el letter-spacing para centrado perfecto */
   letter-spacing: 0.04em;
   margin-right: -0.04em; 
   color: #E4E8ED;
@@ -45,7 +44,7 @@ h1.hero-text {
   margin-top: 8vh;
   font-size: clamp(10px, 2.2vw, 20px);
   letter-spacing: 0.35em;
-  margin-right: -0.35em; /* Compensación centrado */
+  margin-right: -0.35em;
   max-width: 85vw;
 }
 
@@ -53,7 +52,7 @@ h1.hero-text {
   margin-top: 15vh;
   font-size: clamp(10px, 1.2vw, 14px);
   letter-spacing: 0.3em;
-  margin-right: -0.3em; /* Compensación centrado */
+  margin-right: -0.3em;
   text-decoration: none;
   color: #E4E8ED;
   border: 1px solid rgba(228,232,237,0.2);
@@ -72,7 +71,7 @@ footer {
   z-index: 10;
 }
 
-/* --- CONTENEDOR IMAGEN --- */
+/* --- CONTENEDORES DE IMAGEN --- */
 .background-image-container {
   position: relative;
   width: 100%;
@@ -84,12 +83,11 @@ footer {
   display: block;
 }
 
-/* --- TEXTOS OVERLAY --- */
+/* --- SECCIONES 1 Y 2 (MUSEO / ESCENO) --- */
 .overlay-line {
   position: absolute;
   left: 50%;
   transform: translateX(-50%) translateY(20px);
-  /* Bajamos un poco el ancho en móvil para asegurar centrado óptico */
   width: clamp(260px, 75vw, 1000px); 
   text-align: left;
   color: #E4E8ED;
@@ -99,61 +97,79 @@ footer {
 }
 
 .center { font-size: clamp(40px, 15vw, 200px); }
-#museo { font-size: clamp(25px, 9.5vw, 110px); }
-#fia-superior, #fia-inferior { font-size: clamp(35px, 12vw, 150px); }
-#esceno { font-size: clamp(22px, 9vw, 100px); }
-
-/* POSICIONES 1.0 */
+#museo { font-size: clamp(25px, 9.5vw, 110px); top: 21.5%; }
 #overlay-top { top: 25%; }
-#museo { top: 21.5%; }
-#fia-superior { top: 31.5%; }
+#fia-superior { font-size: clamp(35px, 12vw, 150px); top: 31.5%; }
 
+#esceno { font-size: clamp(22px, 9vw, 100px); top: 71.5%; }
 #overlay-bottom { top: 75%; }
-#esceno { top: 71.5%; }
-#fia-inferior { top: 81.5%; }
+#fia-inferior { font-size: clamp(35px, 12vw, 150px); top: 81.5%; }
 
-/* --- AJUSTE MÓVIL (Separación vertical) --- */
-@media (max-width: 600px) {
-  #museo { top: 19%; }
-  #overlay-top { top: 25%; }
-  #fia-superior { top: 33%; }
-
-  #esceno { top: 69%; }
-  #overlay-bottom { top: 75%; }
-  #fia-inferior { top: 83%; }
-}
-
-/* --- ANIMACIONES --- */
-.overlay-line span {
-  display: inline-block;
-  transition: transform 0.6s ease, opacity 0.4s ease;
-}
-
-/* Movimiento PA */
-.shift .pa {
-  transform: translateX(0.35em);
-  transition-delay: 0.5s;
-}
-
-/* Desaparición PA (Forzada con !important para que no falle) */
-.fade-pa .pa {
-  opacity: 0 !important;
-  visibility: hidden;
-}
-
-/* Recenter final */
-.recenter {
-  transform: translateX(-50%) translateY(0) translateX(-8%);
-}
-
-.visible {
-  opacity: 1;
-  transform: translateX(-50%) translateY(0);
-}
-
+/* Animaciones v2.1 */
+.overlay-line span { display: inline-block; transition: transform 0.6s ease, opacity 0.4s ease; }
+.shift .pa { transform: translateX(0.35em); transition-delay: 0.5s; }
+.fade-pa .pa { opacity: 0 !important; visibility: hidden; }
+.recenter { transform: translateX(-50%) translateY(0) translateX(-8%); }
+.visible { opacity: 1; transform: translateX(-50%) translateY(0); }
 .delay-1 { transition-delay: 0.1s; }
 .delay-2 { transition-delay: 0.4s; }
 .delay-3 { transition-delay: 0.7s; }
+
+/* Ajuste móvil para secciones 1 y 2 */
+@media (max-width: 600px) {
+  #museo { top: 19%; }
+  #fia-superior { top: 33%; }
+  #esceno { top: 69%; }
+  #fia-inferior { top: 83%; }
+}
+
+/* --- SECCIÓN 3: PRODUCCIÓN DE ARTE --- */
+.production-overlay {
+  position: absolute;
+  top: 50%;
+  left: 50%;
+  transform: translateX(-50%) translateY(-50%) translateY(20px);
+  width: clamp(280px, 90vw, 1200px);
+  text-align: left; /* Alineado a la G igual que los otros */
+  font-size: clamp(35px, 12vw, 180px);
+  color: #E4E8ED;
+  opacity: 0;
+  transition: opacity 0.8s ease, transform 0.8s ease;
+  white-space: nowrap;
+}
+
+.production-overlay span {
+  display: inline-block;
+  transition: all 0.6s ease;
+}
+
+/* Estado inicial de la extensión */
+.extension {
+  opacity: 0;
+  width: 0;
+  overflow: hidden;
+  letter-spacing: -0.5em;
+  transform: scaleX(0);
+}
+
+/* PASO 2: GRA desaparece y la PA se desplaza */
+.shift-3 .gra-3 {
+  opacity: 0 !important;
+  width: 0;
+  visibility: hidden;
+}
+
+/* PASO 3: Desarrollo de PRODUCCION de ARTE */
+.develop .extension {
+  opacity: 1;
+  width: auto;
+  letter-spacing: 0.02em;
+  transform: scaleX(1);
+  margin-right: 0.2em; /* Espacio entre palabras */
+}
+
+.visible-3 { opacity: 1; transform: translateX(-50%) translateY(-50%) translateY(0); }
+.recenter-3 { transform: translateX(-50%) translateY(-50%) translateX(-8%); }
 
 </style>
 </head>
@@ -168,7 +184,7 @@ footer {
 
 <div class="background-image-container">
   <img src="images/grapas.jpg" alt="">
-
+  
   <div class="overlay-line center delay-1" id="overlay-top">
     <span class="gra">GRA</span><span class="pa">PA</span>
   </div>
@@ -182,44 +198,54 @@ footer {
   <div class="overlay-line delay-3" id="fia-inferior">FIA</div>
 </div>
 
+<div class="background-image-container" id="container-3">
+  <img src="images/grapa2.jpg" alt="Sección Producción">
+  <div class="production-overlay" id="prod-group">
+    <span class="gra-3">GRA</span>
+    <span class="extension">PRODUCCION&nbsp;</span>
+    <span class="pa-3">PA</span>
+    <span class="extension">&nbsp;de&nbsp;ARTE</span>
+  </div>
+</div>
+
 <footer>&copy; 2025 GRAPA</footer>
 
 <script>
-const sections = [
-  ['overlay-top', 'museo', 'fia-superior'],
-  ['overlay-bottom', 'esceno', 'fia-inferior']
-];
-
+/* LÓGICA SECCIONES 1 Y 2 */
+const sections = [['overlay-top', 'museo', 'fia-superior'], ['overlay-bottom', 'esceno', 'fia-inferior']];
 sections.forEach(group => {
-  const observer = new IntersectionObserver((entries) => {
+  const obs = new IntersectionObserver((entries) => {
     entries.forEach(entry => {
-      const main = document.getElementById(group[0]); 
-      const s1 = document.getElementById(group[1]);   
-      const s2 = document.getElementById(group[2]);   
-
+      const m = document.getElementById(group[0]), s1 = document.getElementById(group[1]), s2 = document.getElementById(group[2]);
       if (entry.isIntersecting) {
-        main.classList.add('visible', 'shift');
-        s1.classList.add('visible');
-        s2.classList.add('visible');
-
-        setTimeout(() => {
-          if (main.classList.contains('visible')) {
-            main.classList.add('fade-pa', 'recenter');
-            s1.classList.add('recenter');
-            s2.classList.add('recenter');
-          }
-        }, 1200); 
-
-      } else {
-        [main, s1, s2].forEach(el => {
-          el.classList.remove('visible', 'shift', 'fade-pa', 'recenter');
-        });
-      }
+        m.classList.add('visible', 'shift'); s1.classList.add('visible'); s2.classList.add('visible');
+        setTimeout(() => { if (m.classList.contains('visible')) { m.classList.add('fade-pa', 'recenter'); s1.classList.add('recenter'); s2.classList.add('recenter'); } }, 1200);
+      } else { [m, s1, s2].forEach(el => el.classList.remove('visible', 'shift', 'fade-pa', 'recenter')); }
     });
-  }, { threshold: 0.15 }); // Sensibilidad ajustada para iPhone
-
-  observer.observe(document.getElementById(group[0]));
+  }, { threshold: 0.2 });
+  obs.observe(document.getElementById(group[0]));
 });
+
+/* LÓGICA SECCIÓN 3 */
+const prodGroup = document.getElementById('prod-group');
+const obs3 = new IntersectionObserver((entries) => {
+  entries.forEach(entry => {
+    if (entry.isIntersecting) {
+      prodGroup.classList.add('visible-3');
+      // Esperamos a que aparezca y luego transformamos
+      setTimeout(() => {
+        if (!prodGroup.classList.contains('visible-3')) return;
+        prodGroup.classList.add('shift-3');
+        setTimeout(() => {
+          prodGroup.classList.add('develop', 'recenter-3');
+        }, 500);
+      }, 1200);
+    } else {
+      prodGroup.classList.remove('visible-3', 'shift-3', 'develop', 'recenter-3');
+    }
+  });
+}, { threshold: 0.4 });
+obs3.observe(document.getElementById('container-3'));
 </script>
 
 </body>
