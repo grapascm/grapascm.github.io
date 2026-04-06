@@ -3,7 +3,7 @@
 <head>
 <meta charset="UTF-8">
 <meta name="viewport" content="width=device-width, initial-scale=1.0">
-<title>GRAPA 2.0 - Final</title>
+<title>GRAPA 2.0 - Estable</title>
 
 <style>
 @font-face {
@@ -59,7 +59,15 @@ h1.hero-text {
   padding: 15px 30px;
 }
 
-/* --- CONTENEDORES --- */
+/* --- FOOTER (Restaurado) --- */
+footer {
+  width: 100%;
+  text-align: center;
+  padding: 60px 0;
+  font-size: clamp(10px, 1vw, 12px);
+  opacity: 0.5;
+}
+
 .background-image-container {
   position: relative;
   width: 100%;
@@ -71,7 +79,7 @@ h1.hero-text {
   display: block;
 }
 
-/* --- SECCIONES 1 Y 2 (MUSEO / ESCENO) --- */
+/* --- SECCIONES 1 Y 2 --- */
 .overlay-line {
   position: absolute;
   left: 50%;
@@ -99,56 +107,48 @@ h1.hero-text {
 .recenter { transform: translateX(-50%) translateY(0) translateX(-8%); }
 .visible { opacity: 1; transform: translateX(-50%) translateY(0); }
 
-/* --- SECCIÓN 3: GRACIA5 v2.0 --- */
+@media (max-width: 600px) {
+  #museo { top: 19%; }
+  #fia-superior { top: 33%; }
+  #esceno { top: 69%; }
+  #fia-inferior { top: 83%; }
+}
+
+/* --- SECCIÓN 3: GRACIA5 (Aislado para no romper nada) --- */
 .thanks-overlay {
   position: absolute;
   top: 50%;
   left: 50%;
   transform: translateX(-50%) translateY(-50%) translateY(20px);
-  width: clamp(260px, 75vw, 1000px); 
+  width: clamp(260px, 75vw, 1000px);
   text-align: left;
-  font-size: clamp(25px, 9.5vw, 120px); 
+  font-size: clamp(25px, 9.5vw, 120px);
   color: #E4E8ED;
   opacity: 0;
   transition: opacity 0.6s ease, transform 0.6s ease;
   white-space: nowrap;
-  display: flex;
 }
 
-.thanks-overlay span {
-  display: inline-block;
-  transition: all 0.6s cubic-bezier(0.4, 0, 0.2, 1);
-}
+.thanks-overlay span { display: inline-block; transition: transform 0.6s ease, opacity 0.4s ease; }
 
 .extension-cia5 {
   opacity: 0;
-  width: 0;
-  overflow: hidden;
-  letter-spacing: -1em;
+  position: absolute; /* Para que no ocupe espacio hasta que aparezca */
+  transform: translateX(-20px);
 }
 
-/* PASO 1: Shift (Igual que arriba) */
-.shift-3 .pa-3 {
-  transform: translateX(0.4em);
-  transition-delay: 0.5s;
-}
+/* 1. SEPARAR (Igual que arriba) */
+.shift-3 .pa-3 { transform: translateX(0.35em); transition-delay: 0.5s; }
 
-/* PASO 2: Fade Out PA (Igual que arriba) */
-.fade-pa-3 .pa-3 {
-  opacity: 0 !important;
-  width: 0;
-  visibility: hidden;
-  transition-delay: 0s;
-}
+/* 2. DESAPARECER PA Y RECENTRAR */
+.fade-pa-3 .pa-3 { opacity: 0 !important; visibility: hidden; }
+.recenter-3 { transform: translateX(-50%) translateY(-50%) translateX(-8%); }
 
-/* PASO 3: Aparece CIA5 y centra */
+/* 3. APARECER CIA5 */
 .become-thanks .extension-cia5 {
   opacity: 1;
-  width: auto;
-  letter-spacing: normal;
-}
-.recenter-3 {
-  transform: translateX(-50%) translateY(-50%) translateY(0) translateX(-8%);
+  position: relative; /* Vuelve al flujo para formar la palabra */
+  transform: translateX(0);
 }
 
 .visible-3 { opacity: 1; transform: translateX(-50%) translateY(-50%) translateY(0); }
@@ -166,6 +166,7 @@ h1.hero-text {
 
 <div class="background-image-container">
   <img src="images/grapas.jpg" alt="">
+  
   <div class="overlay-line center" id="overlay-top">
     <span class="gra">GRA</span><span class="pa">PA</span>
   </div>
@@ -182,9 +183,7 @@ h1.hero-text {
 <div class="background-image-container" id="container-3">
   <img src="images/grapa2.jpg" alt="">
   <div class="thanks-overlay" id="thanks-group">
-    <span class="gra-3">GRA</span>
-    <span class="extension-cia5">CIA5</span>
-    <span class="pa-3">PA</span>
+    <span class="gra-3">GRA</span><span class="extension-cia5">CIA5</span><span class="pa-3">PA</span>
   </div>
 </div>
 
@@ -200,38 +199,33 @@ sections.forEach(group => {
       if (entry.isIntersecting) {
         m.classList.add('visible', 'shift'); s1.classList.add('visible'); s2.classList.add('visible');
         setTimeout(() => { 
-          if (m.classList.contains('visible')) { 
-            m.classList.add('fade-pa', 'recenter'); s1.classList.add('recenter'); s2.classList.add('recenter'); 
-          } 
+          if (m.classList.contains('visible')) {
+            m.classList.add('fade-pa', 'recenter'); s1.classList.add('recenter'); s2.classList.add('recenter');
+          }
         }, 1200);
-      } else { 
-        [m, s1, s2].forEach(el => el.classList.remove('visible', 'shift', 'fade-pa', 'recenter')); 
+      } else {
+        [m, s1, s2].forEach(el => el.classList.remove('visible', 'shift', 'fade-pa', 'recenter'));
       }
     });
   }, { threshold: 0.15 });
   obs.observe(document.getElementById(group[0]));
 });
 
-/* SECCIÓN 3: GRACIA5 v2.0 */
+/* SECCIÓN 3: GRACIA5 */
 const tg = document.getElementById('thanks-group');
 const obs3 = new IntersectionObserver((entries) => {
   entries.forEach(entry => {
     if (entry.isIntersecting) {
-      // 1. Aparece GRAPA junto y luego se separa PA
       tg.classList.add('visible-3', 'shift-3');
-      
-      // 2. Desaparece PA y recentra (como arriba)
       setTimeout(() => {
         if (!tg.classList.contains('visible-3')) return;
         tg.classList.add('fade-pa-3', 'recenter-3');
-        
-        // 3. Justo después aparece CIA5
         setTimeout(() => {
           tg.classList.add('become-thanks');
         }, 400);
       }, 1200);
     } else {
-      tg.className = 'thanks-overlay';
+      tg.classList.remove('visible-3', 'shift-3', 'fade-pa-3', 'recenter-3', 'become-thanks');
     }
   });
 }, { threshold: 0.4 });
