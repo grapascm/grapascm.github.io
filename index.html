@@ -3,7 +3,7 @@
 <head>
 <meta charset="UTF-8">
 <meta name="viewport" content="width=device-width, initial-scale=1.0">
-<title>GRAPA 3.8 - Seda</title>
+<title>GRAPA 3.9 - Coherente</title>
 
 <style>
 @font-face {
@@ -40,7 +40,7 @@ h1.hero-text {
   line-height: 0.9;
 }
 
-/* --- SECCIONES 1 Y 2 --- */
+/* --- SECCIONES GENERALES --- */
 .background-image-container { position: relative; width: 100%; }
 .background-image-container img { width:100%; height:auto; display:block; }
 
@@ -52,10 +52,11 @@ h1.hero-text {
   text-align: left;
   color: #E4E8ED;
   opacity: 0;
-  transition: opacity 0.8s cubic-bezier(0.4, 0, 0.2, 1), transform 0.8s cubic-bezier(0.4, 0, 0.2, 1);
+  transition: opacity 0.6s ease, transform 0.6s ease;
   white-space: nowrap;
 }
 
+/* Tamaños coherentes */
 .center { font-size: clamp(40px, 15vw, 200px); }
 #museo { font-size: clamp(25px, 9.5vw, 110px); top: 21.5%; }
 #overlay-top { top: 25%; }
@@ -65,73 +66,81 @@ h1.hero-text {
 #overlay-bottom { top: 75%; }
 #fia-inferior { font-size: clamp(35px, 12vw, 150px); top: 81.5%; }
 
-.overlay-line span { display: inline-block; transition: transform 0.8s cubic-bezier(0.4, 0, 0.2, 1), opacity 0.6s ease; }
-.shift .pa { transform: translateX(0.35em); transition-delay: 0.4s; }
-.fade-pa .pa { opacity: 0 !important; }
+/* Animaciones v2.1 (Seda) */
+.overlay-line span { display: inline-block; transition: transform 0.6s ease, opacity 0.4s ease; }
+.shift .pa { transform: translateX(0.35em); transition-delay: 0.5s; }
+.fade-pa .pa { opacity: 0 !important; visibility: hidden; }
 .recenter { transform: translateX(-50%) translateY(0) translateX(-8%); }
 .visible { opacity: 1; transform: translateX(-50%) translateY(0); }
 
-/* --- SECCIÓN 3: GRACIA5 (COREOGRAFÍA SUAVE) --- */
+@media (max-width: 600px) {
+  #museo { top: 19%; }
+  #fia-superior { top: 33%; }
+  #esceno { top: 69%; }
+  #fia-inferior { top: 83%; }
+}
+
+/* --- SECCIÓN 3: GRACIA5 (NUEVA COREOGRAFÍA COHERENTE) --- */
+#img-container-3 {
+  position: relative;
+}
+
 .thanks-overlay {
   position: absolute;
   top: 50%;
   left: 50%;
-  transform: translateX(-50%) translateY(-50%);
-  display: flex;
-  align-items: center;
+  transform: translateX(-50%) translateY(-50%) translateY(20px);
+  /* Mismo ancho y alineación que los bloques superiores */
+  width: clamp(260px, 75vw, 1000px); 
+  text-align: left;
+  /* Tamaño elegante (estilo MUSEO) */
   font-size: clamp(25px, 9.5vw, 120px); 
   color: #E4E8ED;
   opacity: 0;
-  /* Transición de entrada del bloque entero */
-  transition: opacity 1s cubic-bezier(0.4, 0, 0.2, 1), transform 1s cubic-bezier(0.4, 0, 0.2, 1);
+  transition: opacity 0.6s ease, transform 0.6s ease;
   white-space: nowrap;
 }
 
-.thanks-overlay span { 
-  display: inline-block; 
+.thanks-overlay span {
+  display: inline-block;
+  transition: transform 0.6s ease, opacity 0.4s ease, letter-spacing 0.6s ease;
 }
 
-/* PA3: Movimiento fluido */
-.pa-3 {
-  transition: transform 0.8s cubic-bezier(0.4, 0, 0.2, 1), opacity 0.6s cubic-bezier(0.4, 0, 0.2, 1), width 0.8s cubic-bezier(0.4, 0, 0.2, 1);
-  width: auto;
-}
-
-/* CIA5: Aparece expandiéndose suavemente */
+/* Estado inicial: GRAPA ocultando CIA5 */
 .extension-cia5 {
-  width: 0;
   opacity: 0;
-  overflow: hidden;
-  transition: width 0.9s cubic-bezier(0.4, 0, 0.2, 1), opacity 0.7s cubic-bezier(0.4, 0, 0.2, 1);
-  letter-spacing: 0.05em;
+  visibility: hidden;
+  letter-spacing: -1em; /* Truco para que PA se pegue a GRA */
 }
 
-/* 1. SEPARACIÓN: Suave y con aire */
+/* Coreografía Paso 1: Shift de la PA3 (Igual que arriba) */
 .shift-3 .pa-3 {
-  transform: translateX(0.45em);
+  transform: translateX(0.35em);
+  transition-delay: 0.5s;
 }
 
-/* 2. TRANSICIÓN LIMPIA: La PA se desvanece y la CIA5 entra en el mismo flujo */
+/* Coreografía Paso 2: Fade de la PA3 (Igual que arriba) */
 .fade-pa-3 .pa-3 {
   opacity: 0 !important;
-  width: 0;
-  pointer-events: none;
+  visibility: hidden;
 }
 
-.become-thanks .extension-cia5 {
-  width: 1.8em; /* Un ancho estimado para que el flujo sea constante */
-  opacity: 1;
-  margin-right: 0.1em;
-}
-
-/* Recentrado final del bloque GRACIA5 sin saltos */
+/* Coreografía Paso 3: Recentrado (Igual que arriba, clavando el -8%) */
 .recenter-3 {
-  /* Al eliminar la PA y añadir CIA5, flexbox mantiene el centro, 
-     pero este ajuste fino lo clava visualmente */
-  transform: translateX(-50%) translateY(-50%) translateX(0);
+  transform: translateX(-50%) translateY(-50%) translateY(0) translateX(-8%);
 }
 
-.visible-3 { opacity: 1; }
+/* Coreografía Paso 4: Aparece CIA5 al final */
+.become-thanks .extension-cia5 {
+  opacity: 1;
+  visibility: visible;
+  letter-spacing: normal;
+}
+
+.visible-3 {
+  opacity: 1;
+  transform: translateX(-50%) translateY(-50%) translateY(0);
+}
 
 </style>
 </head>
@@ -144,6 +153,7 @@ h1.hero-text {
 
 <div class="background-image-container">
   <img src="images/grapas.jpg" alt="">
+  
   <div class="overlay-line center" id="overlay-top">
     <span class="gra">GRA</span><span class="pa">PA</span>
   </div>
@@ -157,7 +167,7 @@ h1.hero-text {
   <div class="overlay-line" id="fia-inferior">FIA</div>
 </div>
 
-<div class="background-image-container" id="container-3">
+<div class="background-image-container" id="img-container-3">
   <img src="images/grapa2.jpg" alt="Gracias">
   <div class="thanks-overlay" id="thanks-group">
     <span class="gra-3">GRA</span>
@@ -177,41 +187,38 @@ sections.forEach(group => {
       const m = document.getElementById(group[0]), s1 = document.getElementById(group[1]), s2 = document.getElementById(group[2]);
       if (entry.isIntersecting) {
         m.classList.add('visible', 'shift'); s1.classList.add('visible'); s2.classList.add('visible');
-        setTimeout(() => { if (m.classList.contains('visible')) { m.classList.add('fade-pa', 'recenter'); s1.classList.add('recenter'); s2.classList.add('recenter'); } }, 1300);
+        setTimeout(() => { if (m.classList.contains('visible')) { m.classList.add('fade-pa', 'recenter'); s1.classList.add('recenter'); s2.classList.add('recenter'); } }, 1200);
       } else { [m, s1, s2].forEach(el => el.classList.remove('visible', 'shift', 'fade-pa', 'recenter')); }
     });
   }, { threshold: 0.15 });
   obs.observe(document.getElementById(group[0]));
 });
 
-/* SECCIÓN 3: GRACIA5 (COREOGRAFÍA LIGERA) */
+/* SECCIÓN 3: GRACIA5 (PASOS COHERENTES) */
 const tGroup = document.getElementById('thanks-group');
 const obs3 = new IntersectionObserver((entries) => {
   entries.forEach(entry => {
     if (entry.isIntersecting) {
-      // 1. Entrada suave
-      tGroup.classList.add('visible-3');
+      // 1. Aparece y PA se separa (Mismo ritmo que arriba)
+      tGroup.classList.add('visible-3', 'shift-3');
       
-      // 2. Separación "aireada"
-      setTimeout(() => tGroup.classList.add('shift-3'), 800);
-      
-      // 3. Fundido cruzado (PA se va, CIA5 entra)
+      // 2. A los 1.2s: PA desaparece y recentramos (Mismo ritmo que arriba)
       setTimeout(() => {
         if (!tGroup.classList.contains('visible-3')) return;
-        tGroup.classList.add('fade-pa-3');
+        tGroup.classList.add('fade-pa-3', 'recenter-3');
         
-        // Empieza a entrar CIA5 justo un poco después de que PA empiece a irse
+        // 3. Pequeño delay extra para que aparezca CIA5 suavemente al final
         setTimeout(() => {
-          tGroup.classList.add('become-thanks', 'recenter-3');
-        }, 200); 
+          tGroup.classList.add('become-thanks');
+        }, 300); 
         
-      }, 2000); 
+      }, 1200); 
     } else {
       tGroup.classList.remove('visible-3', 'shift-3', 'fade-pa-3', 'become-thanks', 'recenter-3');
     }
   });
-}, { threshold: 0.4 });
-obs3.observe(document.getElementById('container-3'));
+}, { threshold: 0.3 }); // Threshold para asegurar que el usuario vea la animación entera
+obs3.observe(document.getElementById('img-container-3'));
 </script>
 
 </body>
