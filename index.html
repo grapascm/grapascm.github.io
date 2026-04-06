@@ -3,7 +3,7 @@
 <head>
 <meta charset="UTF-8">
 <meta name="viewport" content="width=device-width, initial-scale=1.0">
-<title>GRAPA 3.9 - Coherente</title>
+<title>GRAPA 4.0 - Secuencia Completa</title>
 
 <style>
 @font-face {
@@ -40,7 +40,7 @@ h1.hero-text {
   line-height: 0.9;
 }
 
-/* --- SECCIONES GENERALES --- */
+/* --- CONTENEDORES --- */
 .background-image-container { position: relative; width: 100%; }
 .background-image-container img { width:100%; height:auto; display:block; }
 
@@ -56,7 +56,7 @@ h1.hero-text {
   white-space: nowrap;
 }
 
-/* Tamaños coherentes */
+/* --- SECCIONES 1 Y 2 (ESTÁNDAR) --- */
 .center { font-size: clamp(40px, 15vw, 200px); }
 #museo { font-size: clamp(25px, 9.5vw, 110px); top: 21.5%; }
 #overlay-top { top: 25%; }
@@ -66,34 +66,20 @@ h1.hero-text {
 #overlay-bottom { top: 75%; }
 #fia-inferior { font-size: clamp(35px, 12vw, 150px); top: 81.5%; }
 
-/* Animaciones v2.1 (Seda) */
 .overlay-line span { display: inline-block; transition: transform 0.6s ease, opacity 0.4s ease; }
 .shift .pa { transform: translateX(0.35em); transition-delay: 0.5s; }
 .fade-pa .pa { opacity: 0 !important; visibility: hidden; }
 .recenter { transform: translateX(-50%) translateY(0) translateX(-8%); }
 .visible { opacity: 1; transform: translateX(-50%) translateY(0); }
 
-@media (max-width: 600px) {
-  #museo { top: 19%; }
-  #fia-superior { top: 33%; }
-  #esceno { top: 69%; }
-  #fia-inferior { top: 83%; }
-}
-
-/* --- SECCIÓN 3: GRACIA5 (NUEVA COREOGRAFÍA COHERENTE) --- */
-#img-container-3 {
-  position: relative;
-}
-
+/* --- SECCIÓN 3: GRACIA5 (LA SECUENCIA) --- */
 .thanks-overlay {
   position: absolute;
   top: 50%;
   left: 50%;
   transform: translateX(-50%) translateY(-50%) translateY(20px);
-  /* Mismo ancho y alineación que los bloques superiores */
   width: clamp(260px, 75vw, 1000px); 
   text-align: left;
-  /* Tamaño elegante (estilo MUSEO) */
   font-size: clamp(25px, 9.5vw, 120px); 
   color: #E4E8ED;
   opacity: 0;
@@ -103,38 +89,55 @@ h1.hero-text {
 
 .thanks-overlay span {
   display: inline-block;
-  transition: transform 0.6s ease, opacity 0.4s ease, letter-spacing 0.6s ease;
+  transition: all 0.6s cubic-bezier(0.4, 0, 0.2, 1);
 }
 
-/* Estado inicial: GRAPA ocultando CIA5 */
+/* Estado inicial: CIA5 invisible y sin espacio */
 .extension-cia5 {
   opacity: 0;
-  visibility: hidden;
-  letter-spacing: -1em; /* Truco para que PA se pegue a GRA */
+  width: 0;
+  overflow: hidden;
 }
 
-/* Coreografía Paso 1: Shift de la PA3 (Igual que arriba) */
-.shift-3 .pa-3 {
-  transform: translateX(0.35em);
-  transition-delay: 0.5s;
+/* PASO 1: GRA y PA aparecen SEPARADOS */
+.step-1-separated .pa-3 {
+  transform: translateX(0.8em); /* Gran separación inicial */
 }
 
-/* Coreografía Paso 2: Fade de la PA3 (Igual que arriba) */
-.fade-pa-3 .pa-3 {
-  opacity: 0 !important;
-  visibility: hidden;
-}
-
-/* Coreografía Paso 3: Recentrado (Igual que arriba, clavando el -8%) */
-.recenter-3 {
-  transform: translateX(-50%) translateY(-50%) translateY(0) translateX(-8%);
-}
-
-/* Coreografía Paso 4: Aparece CIA5 al final */
-.become-thanks .extension-cia5 {
+/* PASO 2: Aparece CIA5 separado */
+.step-2-cia5-in .extension-cia5 {
   opacity: 1;
-  visibility: visible;
-  letter-spacing: normal;
+  width: auto;
+  margin: 0 0.4em; /* Espacio entre las partes */
+}
+.step-2-cia5-in .pa-3 {
+  transform: translateX(1.2em); /* Empujamos PA más allá */
+}
+
+/* PASO 3: GRAPA junto (CIA5 se contrae, PA vuelve) */
+.step-3-together .extension-cia5 {
+  opacity: 0;
+  width: 0;
+  margin: 0;
+}
+.step-3-together .pa-3 {
+  transform: translateX(0); /* Se pegan */
+}
+
+/* PASO 4: PA se va y Recentramos */
+.step-4-fade-pa .pa-3 {
+  opacity: 0;
+  transform: translateX(0.5em);
+  visibility: hidden;
+}
+
+/* PASO 5: Aparece CIA5 final y centra */
+.step-5-final .extension-cia5 {
+  opacity: 1;
+  width: auto;
+}
+.step-5-final {
+  transform: translateX(-50%) translateY(-50%) translateX(-8%);
 }
 
 .visible-3 {
@@ -167,7 +170,7 @@ h1.hero-text {
   <div class="overlay-line" id="fia-inferior">FIA</div>
 </div>
 
-<div class="background-image-container" id="img-container-3">
+<div class="background-image-container" id="container-3">
   <img src="images/grapa2.jpg" alt="Gracias">
   <div class="thanks-overlay" id="thanks-group">
     <span class="gra-3">GRA</span>
@@ -194,31 +197,41 @@ sections.forEach(group => {
   obs.observe(document.getElementById(group[0]));
 });
 
-/* SECCIÓN 3: GRACIA5 (PASOS COHERENTES) */
-const tGroup = document.getElementById('thanks-group');
+/* SECCIÓN 3: LA CADENA DE ANIMACIÓN */
+const tg = document.getElementById('thanks-group');
 const obs3 = new IntersectionObserver((entries) => {
   entries.forEach(entry => {
     if (entry.isIntersecting) {
-      // 1. Aparece y PA se separa (Mismo ritmo que arriba)
-      tGroup.classList.add('visible-3', 'shift-3');
+      // T=0: Aparece GRAPA separado
+      tg.classList.add('visible-3', 'step-1-separated');
       
-      // 2. A los 1.2s: PA desaparece y recentramos (Mismo ritmo que arriba)
+      // T=1s: Aparece CIA5 separado
+      setTimeout(() => tg.classList.add('step-2-cia5-in'), 1000);
+      
+      // T=2s: Se juntan como GRAPA
       setTimeout(() => {
-        if (!tGroup.classList.contains('visible-3')) return;
-        tGroup.classList.add('fade-pa-3', 'recenter-3');
+        tg.classList.remove('step-1-separated', 'step-2-cia5-in');
+        tg.classList.add('step-3-together');
+      }, 2000);
+      
+      // T=3s: PA se va y empezamos el recentrado
+      setTimeout(() => {
+        tg.classList.add('step-4-fade-pa');
         
-        // 3. Pequeño delay extra para que aparezca CIA5 suavemente al final
+        // T=3.6s: Aparece CIA5 final (formando GRACIA5)
         setTimeout(() => {
-          tGroup.classList.add('become-thanks');
-        }, 300); 
+          tg.classList.add('step-5-final');
+        }, 600);
         
-      }, 1200); 
+      }, 3000);
+
     } else {
-      tGroup.classList.remove('visible-3', 'shift-3', 'fade-pa-3', 'become-thanks', 'recenter-3');
+      // Reset total
+      tg.className = 'thanks-overlay';
     }
   });
-}, { threshold: 0.3 }); // Threshold para asegurar que el usuario vea la animación entera
-obs3.observe(document.getElementById('img-container-3'));
+}, { threshold: 0.4 });
+obs3.observe(document.getElementById('container-3'));
 </script>
 
 </body>
