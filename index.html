@@ -3,7 +3,7 @@
 <head>
 <meta charset="UTF-8">
 <meta name="viewport" content="width=device-width, initial-scale=1.0">
-<title>GRAPA 3.6 - GRACIA5 Final</title>
+<title>GRAPA 3.7 - Limpia</title>
 
 <style>
 @font-face {
@@ -40,38 +40,10 @@ h1.hero-text {
   line-height: 0.9;
 }
 
-.subtitle {
-  margin-top: 8vh;
-  font-size: clamp(10px, 2.2vw, 20px);
-  letter-spacing: 0.35em;
-  margin-right: -0.35em;
-  max-width: 85vw;
-}
-
-.email-button {
-  margin-top: 15vh;
-  font-size: clamp(10px, 1.2vw, 14px);
-  letter-spacing: 0.3em;
-  margin-right: -0.3em;
-  text-decoration: none;
-  color: #E4E8ED;
-  border: 1px solid rgba(228,232,237,0.2);
-  padding: 15px 30px;
-}
-
-/* --- ESTRUCTURA GENERAL --- */
-.background-image-container {
-  position: relative;
-  width: 100%;
-}
-
-.background-image-container img {
-  width:100%;
-  height:auto;
-  display:block;
-}
-
 /* --- SECCIONES 1 Y 2 --- */
+.background-image-container { position: relative; width: 100%; }
+.background-image-container img { width:100%; height:auto; display:block; }
+
 .overlay-line {
   position: absolute;
   left: 50%;
@@ -99,67 +71,61 @@ h1.hero-text {
 .recenter { transform: translateX(-50%) translateY(0) translateX(-8%); }
 .visible { opacity: 1; transform: translateX(-50%) translateY(0); }
 
-/* --- SECCIÓN 3: GRACIA5 (COREOGRAFÍA) --- */
+/* --- SECCIÓN 3: GRACIA5 (LIMPIEZA TOTAL) --- */
 .thanks-overlay {
   position: absolute;
   top: 50%;
   left: 50%;
-  /* Estado inicial: centrado */
-  transform: translateX(-50%) translateY(-50%) translateY(20px);
-  width: auto;
+  transform: translateX(-50%) translateY(-50%);
+  display: flex;
+  align-items: center;
   font-size: clamp(25px, 9.5vw, 120px); 
   color: #E4E8ED;
   opacity: 0;
   transition: opacity 0.8s ease, transform 0.8s ease;
   white-space: nowrap;
-  display: flex;
-  align-items: center;
 }
 
-.thanks-overlay span {
-  display: inline-block;
-}
+.thanks-overlay span { display: inline-block; }
 
+/* PA3: Transición limpia de separación y desvanecimiento */
 .pa-3 {
-  transition: transform 0.6s ease, opacity 0.4s ease;
+  transition: transform 0.5s ease, opacity 0.3s ease;
 }
 
+/* CIA5: Oculto inicialmente sin ocupar espacio */
 .extension-cia5 {
   width: 0;
   opacity: 0;
   overflow: hidden;
-  transition: width 0.6s ease, opacity 0.4s ease;
+  transition: width 0.5s ease, opacity 0.4s ease;
   letter-spacing: 0.05em;
 }
 
-/* PASO 1: Shift inicial (Igual que los otros) */
+/* 1. SEPARACIÓN: PA se mueve y se queda ahí */
 .shift-3 .pa-3 {
-  transform: translateX(0.35em);
-  transition-delay: 0.5s;
+  transform: translateX(0.4em);
 }
 
-/* PASO 2: PA desaparece (Igual que los otros) */
+/* 2. DESAPARECER: PA se esfuma */
 .fade-pa-3 .pa-3 {
   opacity: 0 !important;
-  width: 0; /* Para que deje de ocupar espacio y permita centrar GRA */
+  transform: translateX(0.6em); /* Un pelín más de movimiento al irse */
 }
 
-/* PASO 3: Aparece CIA5 y recentramos */
+/* 3. TRANSFORMAR: Entra CIA5 y centramos el bloque */
 .become-thanks .extension-cia5 {
   width: auto;
   opacity: 1;
+  margin-right: 0.1em; /* Espacio estético */
 }
 
-.visible-3 { 
-  opacity: 1; 
-  transform: translateX(-50%) translateY(-50%) translateY(0); 
+/* Reset de la PA3 para que no moleste al centrado final */
+.become-thanks .pa-3 {
+  display: none; 
 }
 
-/* Centrado final del bloque GRACIA5 */
-.recenter-3 { 
-  /* Ajustamos el eje X para que el bloque resultante esté en el centro muerto */
-  transform: translateX(-50%) translateY(-50%) translateX(0); 
-}
+.visible-3 { opacity: 1; }
 
 </style>
 </head>
@@ -168,8 +134,6 @@ h1.hero-text {
 
 <div class="hero">
   <h1 class="hero-text">GRAPA</h1>
-  <div class="subtitle">5ociedad Cooperativa Madrile&#241;a</div>
-  <a href="mailto:grapa@grapa.e5" class="email-button">grapa@grapa.e5</a>
 </div>
 
 <div class="background-image-container">
@@ -200,7 +164,7 @@ h1.hero-text {
 <footer>&copy; 2025 GRAPA</footer>
 
 <script>
-/* SECCIONES 1 Y 2 */
+/* LÓGICA SECCIONES 1 Y 2 */
 const sections = [['overlay-top', 'museo', 'fia-superior'], ['overlay-bottom', 'esceno', 'fia-inferior']];
 sections.forEach(group => {
   const obs = new IntersectionObserver((entries) => {
@@ -215,30 +179,31 @@ sections.forEach(group => {
   obs.observe(document.getElementById(group[0]));
 });
 
-/* SECCIÓN 3: GRACIA5 (NUEVA LÓGICA) */
+/* LÓGICA SECCIÓN 3: GRACIA5 (PASOS LIMPIOS) */
 const tGroup = document.getElementById('thanks-group');
 const obs3 = new IntersectionObserver((entries) => {
   entries.forEach(entry => {
     if (entry.isIntersecting) {
-      // 1. Aparece GRAPA y PA se separa
-      tGroup.classList.add('visible-3', 'shift-3');
+      // Paso 1: Aparece y se separa (se queda separado)
+      tGroup.classList.add('visible-3');
+      setTimeout(() => tGroup.classList.add('shift-3'), 600);
       
-      // 2. A los 1.2s: DESAPARECE PA primero
+      // Paso 2: Desaparece PA (Limpio)
       setTimeout(() => {
         if (!tGroup.classList.contains('visible-3')) return;
         tGroup.classList.add('fade-pa-3');
         
-        // 3. Pequeño delay de 400ms tras desaparecer PA para que aparezca CIA5
+        // Paso 3: Aparece CIA5 (La formación final de la palabra)
         setTimeout(() => {
-          tGroup.classList.add('become-thanks', 'recenter-3');
-        }, 400);
+          tGroup.classList.add('become-thanks');
+        }, 500);
         
-      }, 1200);
+      }, 1800); 
     } else {
-      tGroup.classList.remove('visible-3', 'shift-3', 'fade-pa-3', 'become-thanks', 'recenter-3');
+      tGroup.classList.remove('visible-3', 'shift-3', 'fade-pa-3', 'become-thanks');
     }
   });
-}, { threshold: 0.3 });
+}, { threshold: 0.4 });
 obs3.observe(document.getElementById('container-3'));
 </script>
 
