@@ -3,6 +3,194 @@
 <head>
 <meta charset="UTF-8">
 <meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>GRAPA 4.1 - Alineación Perfecta</title>
+
+<style>
+@font-face {
+  font-family: 'GRAPA';
+  src: url('./fonts/GRAPA.woff2') format('woff2');
+  font-display: swap;
+}
+
+* { margin:0; padding:0; box-sizing:border-box; }
+
+body {
+  font-family: 'GRAPA', sans-serif;
+  text-transform: uppercase;
+  background-color: #0A1A2A;
+  color: #BFC6CF;
+  overflow-x: hidden;
+}
+
+/* --- HERO --- */
+.hero {
+  min-height: 100svh;
+  display:flex;
+  flex-direction:column;
+  align-items:center;
+  text-align:center;
+  padding: 20vh 20px 0 20px;
+}
+
+h1.hero-text {
+  font-size: clamp(45px, 14vw, 200px);
+  letter-spacing: 0.04em;
+  margin-right: -0.04em; 
+  color: #E4E8ED;
+  line-height: 0.9;
+}
+
+/* --- CONTENEDORES --- */
+.background-image-container { position: relative; width: 100%; }
+.background-image-container img { width:100%; height:auto; display:block; }
+
+/* --- SECCIÓN 3: GRACIA5 (SIN HUECOS) --- */
+.thanks-overlay {
+  position: absolute;
+  top: 50%;
+  left: 50%;
+  transform: translateX(-50%) translateY(-50%) translateY(20px);
+  width: clamp(260px, 75vw, 1000px); 
+  text-align: left;
+  font-size: clamp(25px, 9.5vw, 120px); 
+  color: #E4E8ED;
+  opacity: 0;
+  transition: opacity 0.6s ease, transform 0.6s ease;
+  white-space: nowrap;
+  /* Forzamos que todo esté en una sola línea pase lo que pase */
+  display: flex;
+  flex-wrap: nowrap;
+  align-items: baseline;
+}
+
+.thanks-overlay span {
+  display: inline-block;
+  transition: all 0.7s cubic-bezier(0.4, 0, 0.2, 1);
+}
+
+/* Estado CIA5: Totalmente colapsado */
+.extension-cia5 {
+  opacity: 0;
+  letter-spacing: -1em; /* Se encoge hasta desaparecer visualmente */
+  width: 0;
+  pointer-events: none;
+}
+
+/* PASO 1: Aparecen GRA y PA con hueco */
+.step-1-sep .pa-3 {
+  transform: translateX(0.5em); /* Hueco estético inicial */
+}
+
+/* PASO 2: CIA5 aparece pero mantiene el hueco */
+.step-2-cia-in .extension-cia5 {
+  opacity: 1;
+  width: auto;
+  letter-spacing: 0.1em; /* Aparece con aire */
+}
+.step-2-cia-in .pa-3 {
+  transform: translateX(1.1em); /* Empujamos PA para hacer sitio */
+}
+
+/* PASO 3: GRAPA junto (PA vuelve a su sitio y CIA5 se encoge a 0) */
+.step-3-together .pa-3 {
+  transform: translateX(0);
+}
+.step-3-together .extension-cia5 {
+  opacity: 0;
+  letter-spacing: -1em;
+  width: 0;
+}
+
+/* PASO 4: PA se va */
+.step-4-fade-pa .pa-3 {
+  opacity: 0;
+  transform: translateY(10px); /* Caída ligera al irse */
+  width: 0;
+}
+
+/* PASO 5: GRACIA5 final (Sin huecos, palabra única) */
+.step-5-final .extension-cia5 {
+  opacity: 1;
+  width: auto;
+  letter-spacing: normal; /* Kerning perfecto */
+}
+.step-5-final {
+  opacity: 1;
+  transform: translateX(-50%) translateY(-50%) translateY(0) translateX(-8%);
+}
+
+.visible-3 {
+  opacity: 1;
+  transform: translateX(-50%) translateY(-50%) translateY(0);
+}
+
+</style>
+</head>
+
+<body>
+
+<div class="hero">
+  <h1 class="hero-text">GRAPA</h1>
+</div>
+
+<div class="background-image-container" id="container-3">
+  <img src="images/grapa2.jpg" alt="Gracias">
+  <div class="thanks-overlay" id="thanks-group">
+    <span class="gra-3">GRA</span>
+    <span class="extension-cia5">CIA5</span>
+    <span class="pa-3">PA</span>
+  </div>
+</div>
+
+<footer>&copy; 2025 GRAPA</footer>
+
+<script>
+const tg = document.getElementById('thanks-group');
+
+const obs3 = new IntersectionObserver((entries) => {
+  entries.forEach(entry => {
+    if (entry.isIntersecting) {
+      // 1. Aparece GRA   PA
+      tg.classList.add('visible-3', 'step-1-sep');
+      
+      // 2. Aparece CIA5 en medio
+      setTimeout(() => {
+        tg.classList.add('step-2-cia-in');
+      }, 1000);
+      
+      // 3. Se cierran como GRAPA
+      setTimeout(() => {
+        tg.classList.remove('step-1-sep', 'step-2-cia-in');
+        tg.classList.add('step-3-together');
+      }, 2200);
+      
+      // 4. Se va PA
+      setTimeout(() => {
+        tg.classList.add('step-4-fade-pa');
+        
+        // 5. Se forma GRACIA5 y se centra
+        setTimeout(() => {
+          tg.classList.add('step-5-final');
+        }, 600);
+        
+      }, 3400);
+
+    } else {
+      // Reset
+      tg.className = 'thanks-overlay';
+    }
+  });
+}, { threshold: 0.4 });
+
+obs3.observe(document.getElementById('container-3'));
+</script>
+
+</body>
+</html><!DOCTYPE html>
+<html lang="es">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
 <title>GRAPA 4.0 - Secuencia Completa</title>
 
 <style>
