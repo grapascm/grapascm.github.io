@@ -55,7 +55,7 @@ h1.hero-text {
   margin-right: -0.3em;
   text-decoration: none;
   color: #E4E8ED;
-  border: 1px solid rgba(228,232,237,0.2);
+  border:1px solid rgba(228,232,237,0.2);
   padding: 15px 30px;
 }
 
@@ -129,9 +129,10 @@ footer {
   top: 50%;
   left: 50%;
   transform: translateX(-50%) translateY(-50%) translateY(20px);
-  width: clamp(280px, 90vw, 1200px);
+  width: clamp(280px, 85vw, 1200px);
   text-align: left; /* Alineado a la G igual que los otros */
-  font-size: clamp(35px, 12vw, 180px);
+  /* TAMAÑO CORREGIDO: Igual que los bloques de arriba */
+  font-size: clamp(40px, 15vw, 200px); 
   color: #E4E8ED;
   opacity: 0;
   transition: opacity 0.8s ease, transform 0.8s ease;
@@ -152,8 +153,14 @@ footer {
   transform: scaleX(0);
 }
 
-/* PASO 2: GRA desaparece y la PA se desplaza */
-.shift-3 .gra-3 {
+/* PASO 1 (Mismo Shift que los otros GRAPA) */
+.shift-3 .pa-3 {
+  transform: translateX(0.35em);
+  transition-delay: 0.5s; /* El retraso original */
+}
+
+/* PASO 2: GRA desaparece y la PA se compacta a la izq */
+.fade-pa-compact .gra-3 {
   opacity: 0 !important;
   width: 0;
   visibility: hidden;
@@ -211,7 +218,7 @@ footer {
 <footer>&copy; 2025 GRAPA</footer>
 
 <script>
-/* LÓGICA SECCIONES 1 Y 2 */
+/* LÓGICA SECCIONES 1 Y 2 (Restaurada) */
 const sections = [['overlay-top', 'museo', 'fia-superior'], ['overlay-bottom', 'esceno', 'fia-inferior']];
 sections.forEach(group => {
   const obs = new IntersectionObserver((entries) => {
@@ -226,25 +233,25 @@ sections.forEach(group => {
   obs.observe(document.getElementById(group[0]));
 });
 
-/* LÓGICA SECCIÓN 3 */
+/* LÓGICA SECCIÓN 3 (Coreografía Corregida) */
 const prodGroup = document.getElementById('prod-group');
 const obs3 = new IntersectionObserver((entries) => {
   entries.forEach(entry => {
     if (entry.isIntersecting) {
-      prodGroup.classList.add('visible-3');
-      // Esperamos a que aparezca y luego transformamos
+      // 1. Aparece centrado e INICIA el Shift (Misma lógica 1.0)
+      prodGroup.classList.add('visible-3', 'shift-3');
+
+      // 2. Cronometramos: 1.2s (Mismo tiempo que los otros)
+      // Disparamos la extinción de GRA y el desarrollo de la frase.
       setTimeout(() => {
         if (!prodGroup.classList.contains('visible-3')) return;
-        prodGroup.classList.add('shift-3');
-        setTimeout(() => {
-          prodGroup.classList.add('develop', 'recenter-3');
-        }, 500);
+        prodGroup.classList.add('fade-pa-compact', 'develop', 'recenter-3');
       }, 1200);
     } else {
-      prodGroup.classList.remove('visible-3', 'shift-3', 'develop', 'recenter-3');
+      prodGroup.classList.remove('visible-3', 'shift-3', 'fade-pa-compact', 'develop', 'recenter-3');
     }
   });
-}, { threshold: 0.4 });
+}, { threshold: 0.3 });
 obs3.observe(document.getElementById('container-3'));
 </script>
 
