@@ -3,7 +3,7 @@
 <head>
 <meta charset="UTF-8">
 <meta name="viewport" content="width=device-width, initial-scale=1.0">
-<title>GRAPA 3.3 - Gracias</title>
+<title>GRAPA 3.4 - Gracias</title>
 
 <style>
 @font-face {
@@ -120,7 +120,7 @@ footer {
   #fia-inferior { top: 83%; }
 }
 
-/* --- SECCIÓN 3: GRACIAS (CORREGIDA) --- */
+/* --- SECCIÓN 3: GRACIAS (CORREGIDA Y REDUCIDA) --- */
 .thanks-overlay {
   position: absolute;
   top: 50%;
@@ -128,11 +128,17 @@ footer {
   transform: translateX(-50%) translateY(-50%) translateY(20px);
   width: clamp(280px, 85vw, 1200px);
   text-align: left;
-  font-size: clamp(40px, 15vw, 200px); 
+  /* TAMAÑO REDUCIDO: Similar a MUSEO/ESCENO */
+  font-size: clamp(25px, 9.5vw, 120px); 
   color: #E4E8ED;
   opacity: 0;
   transition: opacity 0.8s ease, transform 0.8s ease;
   white-space: nowrap;
+  
+  /* EL TRUCO: Usamos flex para alineación horizontal perfecta */
+  display: flex;
+  justify-content: flex-start;
+  align-items: center;
 }
 
 .thanks-overlay span {
@@ -140,13 +146,12 @@ footer {
   transition: all 0.6s ease;
 }
 
-/* Letras CIAS ocultas dentro de GRA */
+/* Letras CIAS ocultas, pero alineadas */
 .extension-cias {
   opacity: 0;
-  width: 0;
   overflow: hidden;
-  transform: scaleX(0);
-  transform-origin: left;
+  /* Compactamos el texto con letter-spacing negativo para que no ocupe espacio visual */
+  letter-spacing: -1em; 
 }
 
 /* 1. PA se separa (Igual que los otros) */
@@ -161,17 +166,17 @@ footer {
   visibility: hidden;
 }
 
-/* 3. GRA se convierte en GRACIAS */
+/* 3. GRA se expande formando GRACIAS */
 .become-thanks .extension-cias {
   opacity: 1;
-  width: auto;
-  transform: scaleX(1);
-  margin-left: -0.02em; /* Ajuste kerning */
+  /* Restauramos el letter-spacing para que se lea */
+  letter-spacing: normal;
+  margin-left: 0.05em; /* Ajuste kerning */
 }
 
 .visible-3 { opacity: 1; transform: translateX(-50%) translateY(-50%) translateY(0); }
-/* Recentramos un poco menos porque GRACIAS crece hacia la derecha */
-.recenter-3 { transform: translateX(-50%) translateY(-50%) translateX(-5%); }
+/* Recentramos para que GRACIAS se vea centrado */
+.recenter-3 { transform: translateX(-50%) translateY(-50%) translateX(-8%); }
 
 </style>
 </head>
@@ -203,14 +208,16 @@ footer {
 <div class="background-image-container" id="container-3">
   <img src="images/grapa2.jpg" alt="Gracias">
   <div class="thanks-overlay" id="thanks-group">
-    <span class="gra-3">GRA</span><span class="extension-cias">CIAS</span><span class="pa-3">PA</span>
+    <span class="gra-3">GRA</span>
+    <span class="extension-cias">CIAS</span>
+    <span class="pa-3">PA</span>
   </div>
 </div>
 
 <footer>&copy; 2025 GRAPA</footer>
 
 <script>
-/* SECCIONES 1 Y 2 */
+/* SECCIONES 1 Y 2 (v1.0 / v2.1) */
 const sections = [['overlay-top', 'museo', 'fia-superior'], ['overlay-bottom', 'esceno', 'fia-inferior']];
 sections.forEach(group => {
   const obs = new IntersectionObserver((entries) => {
@@ -221,7 +228,7 @@ sections.forEach(group => {
         setTimeout(() => { if (m.classList.contains('visible')) { m.classList.add('fade-pa', 'recenter'); s1.classList.add('recenter'); s2.classList.add('recenter'); } }, 1200);
       } else { [m, s1, s2].forEach(el => el.classList.remove('visible', 'shift', 'fade-pa', 'recenter')); }
     });
-  }, { threshold: 0.2 });
+  }, { threshold: 0.15 });
   obs.observe(document.getElementById(group[0]));
 });
 
@@ -230,7 +237,7 @@ const tGroup = document.getElementById('thanks-group');
 const obs3 = new IntersectionObserver((entries) => {
   entries.forEach(entry => {
     if (entry.isIntersecting) {
-      // 1. Aparece y PA se separa
+      // 1. Aparece y PA se separa (Mismo ritmo 1.0)
       tGroup.classList.add('visible-3', 'shift-3');
       
       // 2. A los 1.2s: PA desaparece y GRA se expande
@@ -242,7 +249,7 @@ const obs3 = new IntersectionObserver((entries) => {
       tGroup.classList.remove('visible-3', 'shift-3', 'fade-pa-3', 'become-thanks', 'recenter-3');
     }
   });
-}, { threshold: 0.4 });
+}, { threshold: 0.3 }); // Threshold para asegurar que el usuario vea la animación entera
 obs3.observe(document.getElementById('container-3'));
 </script>
 
