@@ -3,7 +3,7 @@
 <head>
 <meta charset="UTF-8">
 <meta name="viewport" content="width=device-width, initial-scale=1.0">
-<title>GRAPA 2.0 - Estable</title>
+<title>GRAPA 2.0 - Orden Corregido</title>
 
 <style>
 @font-face {
@@ -59,15 +59,7 @@ h1.hero-text {
   padding: 15px 30px;
 }
 
-/* --- FOOTER (Restaurado) --- */
-footer {
-  width: 100%;
-  text-align: center;
-  padding: 60px 0;
-  font-size: clamp(10px, 1vw, 12px);
-  opacity: 0.5;
-}
-
+/* --- ESTRUCTURA --- */
 .background-image-container {
   position: relative;
   width: 100%;
@@ -79,7 +71,7 @@ footer {
   display: block;
 }
 
-/* --- SECCIONES 1 Y 2 --- */
+/* --- LÍNEAS DE TEXTO (GENERAL) --- */
 .overlay-line {
   position: absolute;
   left: 50%;
@@ -92,19 +84,23 @@ footer {
   white-space: nowrap;
 }
 
+/* Tamaños y Posiciones */
 .center { font-size: clamp(40px, 15vw, 200px); }
 #museo { font-size: clamp(25px, 9.5vw, 110px); top: 21.5%; }
-#overlay-top { top: 25%; }
+#overlay-top { top: 25%; z-index: 2; }
 #fia-superior { font-size: clamp(35px, 12vw, 150px); top: 31.5%; }
 
 #esceno { font-size: clamp(22px, 9vw, 100px); top: 71.5%; }
-#overlay-bottom { top: 75%; }
+#overlay-bottom { top: 75%; z-index: 2; }
 #fia-inferior { font-size: clamp(35px, 12vw, 150px); top: 81.5%; }
 
+/* Animaciones */
 .overlay-line span { display: inline-block; transition: transform 0.6s ease, opacity 0.4s ease; }
 .shift .pa { transform: translateX(0.35em); transition-delay: 0.5s; }
 .fade-pa .pa { opacity: 0 !important; visibility: hidden; }
 .recenter { transform: translateX(-50%) translateY(0) translateX(-8%); }
+
+/* Esta clase es la que dispara la aparición */
 .visible { opacity: 1; transform: translateX(-50%) translateY(0); }
 
 @media (max-width: 600px) {
@@ -114,7 +110,7 @@ footer {
   #fia-inferior { top: 83%; }
 }
 
-/* --- SECCIÓN 3: GRACIA5 (Aislado para no romper nada) --- */
+/* --- SECCIÓN 3: GRACIA5 --- */
 .thanks-overlay {
   position: absolute;
   top: 50%;
@@ -128,31 +124,22 @@ footer {
   transition: opacity 0.6s ease, transform 0.6s ease;
   white-space: nowrap;
 }
+.thanks-overlay span { display: inline-block; transition: all 0.6s ease; }
+.extension-cia5 { opacity: 0; width: 0; overflow: hidden; position: absolute; }
 
-.thanks-overlay span { display: inline-block; transition: transform 0.6s ease, opacity 0.4s ease; }
-
-.extension-cia5 {
-  opacity: 0;
-  position: absolute; /* Para que no ocupe espacio hasta que aparezca */
-  transform: translateX(-20px);
-}
-
-/* 1. SEPARAR (Igual que arriba) */
 .shift-3 .pa-3 { transform: translateX(0.35em); transition-delay: 0.5s; }
-
-/* 2. DESAPARECER PA Y RECENTRAR */
 .fade-pa-3 .pa-3 { opacity: 0 !important; visibility: hidden; }
 .recenter-3 { transform: translateX(-50%) translateY(-50%) translateX(-8%); }
+.become-thanks .extension-cia5 { opacity: 1; width: auto; position: relative; }
 
-/* 3. APARECER CIA5 */
-.become-thanks .extension-cia5 {
-  opacity: 1;
-  position: relative; /* Vuelve al flujo para formar la palabra */
-  transform: translateX(0);
+/* --- FOOTER --- */
+footer {
+  width: 100%;
+  text-align: center;
+  padding: 80px 0;
+  font-size: clamp(10px, 1vw, 12px);
+  opacity: 0.5;
 }
-
-.visible-3 { opacity: 1; transform: translateX(-50%) translateY(-50%) translateY(0); }
-
 </style>
 </head>
 
@@ -190,42 +177,65 @@ footer {
 <footer>&copy; 2025 GRAPA</footer>
 
 <script>
-/* SECCIONES 1 Y 2 */
+/* LÓGICA SECCIONES 1 Y 2 */
 const sections = [['overlay-top', 'museo', 'fia-superior'], ['overlay-bottom', 'esceno', 'fia-inferior']];
+
 sections.forEach(group => {
-  const obs = new IntersectionObserver((entries) => {
+  const mainLine = document.getElementById(group[0]);
+  const subLine1 = document.getElementById(group[1]);
+  const subLine2 = document.getElementById(group[2]);
+
+  const observer = new IntersectionObserver((entries) => {
     entries.forEach(entry => {
-      const m = document.getElementById(group[0]), s1 = document.getElementById(group[1]), s2 = document.getElementById(group[2]);
       if (entry.isIntersecting) {
-        m.classList.add('visible', 'shift'); s1.classList.add('visible'); s2.classList.add('visible');
-        setTimeout(() => { 
-          if (m.classList.contains('visible')) {
-            m.classList.add('fade-pa', 'recenter'); s1.classList.add('recenter'); s2.classList.add('recenter');
+        // 1. Aparece GRAPA
+        mainLine.classList.add('visible');
+        
+        // 2. Se desplaza PA (después de 100ms de aparecer)
+        setTimeout(() => mainLine.classList.add('shift'), 100);
+
+        // 3. Aparecen MUSEO/ESCENO y FIA solo cuando PA se ha movido
+        setTimeout(() => {
+          if (mainLine.classList.contains('visible')) {
+            subLine1.classList.add('visible');
+            subLine2.classList.add('visible');
           }
-        }, 1200);
+        }, 700);
+
+        // 4. Desaparece PA y recentra todo
+        setTimeout(() => {
+          if (mainLine.classList.contains('visible')) {
+            mainLine.classList.add('fade-pa', 'recenter');
+            subLine1.classList.add('recenter');
+            subLine2.classList.add('recenter');
+          }
+        }, 1400);
       } else {
-        [m, s1, s2].forEach(el => el.classList.remove('visible', 'shift', 'fade-pa', 'recenter'));
+        // Reset
+        [mainLine, subLine1, subLine2].forEach(el => {
+          el.classList.remove('visible', 'shift', 'fade-pa', 'recenter');
+        });
       }
     });
-  }, { threshold: 0.15 });
-  obs.observe(document.getElementById(group[0]));
+  }, { threshold: 0.2 });
+  observer.observe(mainLine);
 });
 
-/* SECCIÓN 3: GRACIA5 */
+/* LÓGICA SECCIÓN 3: GRACIA5 */
 const tg = document.getElementById('thanks-group');
 const obs3 = new IntersectionObserver((entries) => {
   entries.forEach(entry => {
     if (entry.isIntersecting) {
-      tg.classList.add('visible-3', 'shift-3');
+      tg.classList.add('visible');
+      setTimeout(() => tg.classList.add('shift-3'), 100);
+      
       setTimeout(() => {
-        if (!tg.classList.contains('visible-3')) return;
+        if (!tg.classList.contains('visible')) return;
         tg.classList.add('fade-pa-3', 'recenter-3');
-        setTimeout(() => {
-          tg.classList.add('become-thanks');
-        }, 400);
-      }, 1200);
+        setTimeout(() => tg.classList.add('become-thanks'), 400);
+      }, 1400);
     } else {
-      tg.classList.remove('visible-3', 'shift-3', 'fade-pa-3', 'recenter-3', 'become-thanks');
+      tg.className = 'thanks-overlay';
     }
   });
 }, { threshold: 0.4 });
