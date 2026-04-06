@@ -3,7 +3,7 @@
 <head>
 <meta charset="UTF-8">
 <meta name="viewport" content="width=device-width, initial-scale=1.0">
-<title>GRAPA 3.2 - Gracias</title>
+<title>GRAPA 3.3 - Gracias</title>
 
 <style>
 @font-face {
@@ -55,11 +55,11 @@ h1.hero-text {
   margin-right: -0.3em;
   text-decoration: none;
   color: #E4E8ED;
-  border:1px solid rgba(228,232,237,0.2);
+  border: 1px solid rgba(228,232,237,0.2);
   padding: 15px 30px;
 }
 
-/* --- FOOTER FIXED (Secciones 1 y 2) --- */
+/* --- FOOTER FIXED --- */
 footer {
   position: fixed;
   bottom: 60px;
@@ -71,7 +71,6 @@ footer {
   z-index: 10;
 }
 
-/* --- CONTENEDORES DE IMAGEN --- */
 .background-image-container {
   position: relative;
   width: 100%;
@@ -105,7 +104,6 @@ footer {
 #overlay-bottom { top: 75%; }
 #fia-inferior { font-size: clamp(35px, 12vw, 150px); top: 81.5%; }
 
-/* Animaciones v2.1 */
 .overlay-line span { display: inline-block; transition: transform 0.6s ease, opacity 0.4s ease; }
 .shift .pa { transform: translateX(0.35em); transition-delay: 0.5s; }
 .fade-pa .pa { opacity: 0 !important; visibility: hidden; }
@@ -115,7 +113,6 @@ footer {
 .delay-2 { transition-delay: 0.4s; }
 .delay-3 { transition-delay: 0.7s; }
 
-/* Ajuste móvil para secciones 1 y 2 */
 @media (max-width: 600px) {
   #museo { top: 19%; }
   #fia-superior { top: 33%; }
@@ -123,78 +120,58 @@ footer {
   #fia-inferior { top: 83%; }
 }
 
-/* --- SECCIÓN 3: GRACIAS --- */
-#img-container-3 {
-  /* Imagen de fondo específica para esta sección */
-  position: relative;
-}
-
+/* --- SECCIÓN 3: GRACIAS (CORREGIDA) --- */
 .thanks-overlay {
   position: absolute;
   top: 50%;
   left: 50%;
   transform: translateX(-50%) translateY(-50%) translateY(20px);
   width: clamp(280px, 85vw, 1200px);
-  text-align: left; /* Alineado a la G igual que los otros */
+  text-align: left;
   font-size: clamp(40px, 15vw, 200px); 
   color: #E4E8ED;
   opacity: 0;
   transition: opacity 0.8s ease, transform 0.8s ease;
   white-space: nowrap;
-  pointer-events: none;
 }
 
-/* Base de los spans */
 .thanks-overlay span {
   display: inline-block;
-  opacity: 1;
-  transition: opacity 0.4s ease, transform 0.6s ease, width 0.6s ease;
+  transition: all 0.6s ease;
 }
 
-/* Estado inicial de la extensión (CIAS) */
+/* Letras CIAS ocultas dentro de GRA */
 .extension-cias {
-  opacity: 0 !important;
+  opacity: 0;
   width: 0;
   overflow: hidden;
-  letter-spacing: -1em;
   transform: scaleX(0);
+  transform-origin: left;
 }
 
-/* PASO 1 (Mismo Shift que los otros GRAPA) */
+/* 1. PA se separa (Igual que los otros) */
 .shift-3 .pa-3 {
   transform: translateX(0.35em);
-  transition-delay: 0.5s; /* El retraso original */
+  transition-delay: 0.5s;
 }
 
-/* PASO 2: GRA desaparece y la PA compacta a la izq */
-.fade-compact-gra .gra-3 {
+/* 2. PA desaparece (Igual que los otros) */
+.fade-pa-3 .pa-3 {
   opacity: 0 !important;
-  width: 0;
   visibility: hidden;
 }
 
-/* PASO 3: Desarrollo de CIAS desde la PA */
-.develop-acias .pa-3 {
-  /* No tocamos la PA, solo la expansión */
-}
-
-.develop-acias .extension-cias {
-  opacity: 1 !important;
-  width: auto;
-  letter-spacing: normal;
-  transform: scaleX(1);
-}
-
-/* Movimiento final para que el bloque resultante (GRACIAS) esté centrado */
-.recenter-3-acias {
-  /* Se recentra un poco más (-12%) porque GRACIAS es más ancho que GRAPA */
-  transform: translateX(-50%) translateY(-50%) translateY(0) translateX(-12%);
-}
-
-.visible-3-cias {
+/* 3. GRA se convierte en GRACIAS */
+.become-thanks .extension-cias {
   opacity: 1;
-  transform: translateX(-50%) translateY(-50%) translateY(0);
+  width: auto;
+  transform: scaleX(1);
+  margin-left: -0.02em; /* Ajuste kerning */
 }
+
+.visible-3 { opacity: 1; transform: translateX(-50%) translateY(-50%) translateY(0); }
+/* Recentramos un poco menos porque GRACIAS crece hacia la derecha */
+.recenter-3 { transform: translateX(-50%) translateY(-50%) translateX(-5%); }
 
 </style>
 </head>
@@ -209,7 +186,7 @@ footer {
 
 <div class="background-image-container">
   <img src="images/grapas.jpg" alt="">
-
+  
   <div class="overlay-line center delay-1" id="overlay-top">
     <span class="gra">GRA</span><span class="pa">PA</span>
   </div>
@@ -223,24 +200,18 @@ footer {
   <div class="overlay-line delay-3" id="fia-inferior">FIA</div>
 </div>
 
-<div class="background-image-container" id="img-container-3">
-  <img src="images/grapa2.jpg" alt="Otra sección">
-
+<div class="background-image-container" id="container-3">
+  <img src="images/grapa2.jpg" alt="Gracias">
   <div class="thanks-overlay" id="thanks-group">
-    <span class="gra-3">GRA</span><span class="pa-3">PA</span>
-    <span class="acias-text extension-cias">CIAS</span>
+    <span class="gra-3">GRA</span><span class="extension-cias">CIAS</span><span class="pa-3">PA</span>
   </div>
 </div>
 
 <footer>&copy; 2025 GRAPA</footer>
 
 <script>
-/* SECCIONES 1 Y 2 (v1.0 / v2.1) */
-const sections = [
-  ['overlay-top', 'museo', 'fia-superior'],
-  ['overlay-bottom', 'esceno', 'fia-inferior']
-];
-
+/* SECCIONES 1 Y 2 */
+const sections = [['overlay-top', 'museo', 'fia-superior'], ['overlay-bottom', 'esceno', 'fia-inferior']];
 sections.forEach(group => {
   const obs = new IntersectionObserver((entries) => {
     entries.forEach(entry => {
@@ -250,34 +221,29 @@ sections.forEach(group => {
         setTimeout(() => { if (m.classList.contains('visible')) { m.classList.add('fade-pa', 'recenter'); s1.classList.add('recenter'); s2.classList.add('recenter'); } }, 1200);
       } else { [m, s1, s2].forEach(el => el.classList.remove('visible', 'shift', 'fade-pa', 'recenter')); }
     });
-  }, { threshold: 0.15 });
+  }, { threshold: 0.2 });
   obs.observe(document.getElementById(group[0]));
 });
 
-
-/* SECCIÓN 3: GRACIAS (Coreografía Específica) */
-const thanksGroup = document.getElementById('thanks-group');
-
+/* SECCIÓN 3 (GRACIAS) */
+const tGroup = document.getElementById('thanks-group');
 const obs3 = new IntersectionObserver((entries) => {
   entries.forEach(entry => {
     if (entry.isIntersecting) {
-      // 1. Aparece centrado e INICIA el Shift (Misma lógica 1.0)
-      thanksGroup.classList.add('visible-3-cias', 'shift-3');
-
-      // 2. Cronometramos: 1.2s (Mismo tiempo que los otros)
-      // Disparamos la extinción de GRA y el desarrollo de ACIAS.
+      // 1. Aparece y PA se separa
+      tGroup.classList.add('visible-3', 'shift-3');
+      
+      // 2. A los 1.2s: PA desaparece y GRA se expande
       setTimeout(() => {
-        if (!thanksGroup.classList.contains('visible-3-cias')) return;
-        thanksGroup.classList.add('fade-compact-gra', 'develop-acias', 'recenter-3-acias');
+        if (!tGroup.classList.contains('visible-3')) return;
+        tGroup.classList.add('fade-pa-3', 'become-thanks', 'recenter-3');
       }, 1200);
     } else {
-      // Reset total
-      thanksGroup.classList.remove('visible-3-cias', 'shift-3', 'fade-compact-gra', 'develop-acias', 'recenter-3-acias');
+      tGroup.classList.remove('visible-3', 'shift-3', 'fade-pa-3', 'become-thanks', 'recenter-3');
     }
   });
-}, { threshold: 0.3 }); // Mayor threshold para que el usuario vea la animación entera
-
-obs3.observe(document.getElementById('img-container-3'));
+}, { threshold: 0.4 });
+obs3.observe(document.getElementById('container-3'));
 </script>
 
 </body>
