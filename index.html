@@ -3,7 +3,7 @@
 <head>
 <meta charset="UTF-8">
 <meta name="viewport" content="width=device-width, initial-scale=1.0">
-<title>GRAPA 4.1 - Alineación Perfecta</title>
+<title>GRAPA 2.0 - Full Website</title>
 
 <style>
 @font-face {
@@ -40,11 +40,85 @@ h1.hero-text {
   line-height: 0.9;
 }
 
-/* --- CONTENEDORES --- */
-.background-image-container { position: relative; width: 100%; }
-.background-image-container img { width:100%; height:auto; display:block; }
+.subtitle {
+  margin-top: 8vh;
+  font-size: clamp(10px, 2.2vw, 20px);
+  letter-spacing: 0.35em;
+  margin-right: -0.35em;
+  max-width: 85vw;
+}
 
-/* --- SECCIÓN 3: GRACIA5 (SIN HUECOS) --- */
+.email-button {
+  margin-top: 15vh;
+  font-size: clamp(10px, 1.2vw, 14px);
+  letter-spacing: 0.3em;
+  margin-right: -0.3em;
+  text-decoration: none;
+  color: #E4E8ED;
+  border: 1px solid rgba(228,232,237,0.2);
+  padding: 15px 30px;
+}
+
+/* --- FOOTER FIXED --- */
+footer {
+  position: fixed;
+  bottom: 60px;
+  width: 100%;
+  text-align: center;
+  font-size: clamp(10px, 1vw, 12px);
+  opacity: 0.5;
+  pointer-events: none;
+  z-index: 10;
+}
+
+/* --- CONTENEDORES DE IMAGEN --- */
+.background-image-container {
+  position: relative;
+  width: 100%;
+}
+
+.background-image-container img {
+  width: 100%;
+  height: auto;
+  display: block;
+}
+
+/* --- SECCIONES 1 Y 2 (MUSEO / ESCENO) --- */
+.overlay-line {
+  position: absolute;
+  left: 50%;
+  transform: translateX(-50%) translateY(20px);
+  width: clamp(260px, 75vw, 1000px); 
+  text-align: left;
+  color: #E4E8ED;
+  opacity: 0;
+  transition: opacity 0.6s ease, transform 0.6s ease;
+  white-space: nowrap;
+}
+
+.center { font-size: clamp(40px, 15vw, 200px); }
+#museo { font-size: clamp(25px, 9.5vw, 110px); top: 21.5%; }
+#overlay-top { top: 25%; }
+#fia-superior { font-size: clamp(35px, 12vw, 150px); top: 31.5%; }
+
+#esceno { font-size: clamp(22px, 9vw, 100px); top: 71.5%; }
+#overlay-bottom { top: 75%; }
+#fia-inferior { font-size: clamp(35px, 12vw, 150px); top: 81.5%; }
+
+.overlay-line span { display: inline-block; transition: transform 0.6s ease, opacity 0.4s ease; }
+.shift .pa { transform: translateX(0.35em); transition-delay: 0.5s; }
+.fade-pa .pa { opacity: 0 !important; visibility: hidden; }
+.recenter { transform: translateX(-50%) translateY(0) translateX(-8%); }
+.visible { opacity: 1; transform: translateX(-50%) translateY(0); }
+
+@media (max-width: 600px) {
+  #museo { top: 19%; }
+  #fia-superior { top: 33%; }
+  #esceno { top: 69%; }
+  #fia-inferior { top: 83%; }
+}
+
+/* --- SECCIÓN 3: GRACIA5 v2.0 --- */
 .thanks-overlay {
   position: absolute;
   top: 50%;
@@ -57,7 +131,6 @@ h1.hero-text {
   opacity: 0;
   transition: opacity 0.6s ease, transform 0.6s ease;
   white-space: nowrap;
-  /* Forzamos que todo esté en una sola línea pase lo que pase */
   display: flex;
   flex-wrap: nowrap;
   align-items: baseline;
@@ -68,61 +141,32 @@ h1.hero-text {
   transition: all 0.7s cubic-bezier(0.4, 0, 0.2, 1);
 }
 
-/* Estado CIA5: Totalmente colapsado */
 .extension-cia5 {
   opacity: 0;
-  letter-spacing: -1em; /* Se encoge hasta desaparecer visualmente */
+  letter-spacing: -1em; 
   width: 0;
   pointer-events: none;
 }
 
-/* PASO 1: Aparecen GRA y PA con hueco */
-.step-1-sep .pa-3 {
-  transform: translateX(0.5em); /* Hueco estético inicial */
-}
+/* PASO 1: Aparece GRA  PA */
+.step-1-sep .pa-3 { transform: translateX(0.5em); }
 
-/* PASO 2: CIA5 aparece pero mantiene el hueco */
-.step-2-cia-in .extension-cia5 {
-  opacity: 1;
-  width: auto;
-  letter-spacing: 0.1em; /* Aparece con aire */
-}
-.step-2-cia-in .pa-3 {
-  transform: translateX(1.1em); /* Empujamos PA para hacer sitio */
-}
+/* PASO 2: CIA5 en el medio */
+.step-2-cia-in .extension-cia5 { opacity: 1; width: auto; letter-spacing: 0.1em; }
+.step-2-cia-in .pa-3 { transform: translateX(1.1em); }
 
-/* PASO 3: GRAPA junto (PA vuelve a su sitio y CIA5 se encoge a 0) */
-.step-3-together .pa-3 {
-  transform: translateX(0);
-}
-.step-3-together .extension-cia5 {
-  opacity: 0;
-  letter-spacing: -1em;
-  width: 0;
-}
+/* PASO 3: GRAPA junto */
+.step-3-together .pa-3 { transform: translateX(0); }
+.step-3-together .extension-cia5 { opacity: 0; letter-spacing: -1em; width: 0; }
 
 /* PASO 4: PA se va */
-.step-4-fade-pa .pa-3 {
-  opacity: 0;
-  transform: translateY(10px); /* Caída ligera al irse */
-  width: 0;
-}
+.step-4-fade-pa .pa-3 { opacity: 0; transform: translateY(10px); width: 0; visibility: hidden; }
 
-/* PASO 5: GRACIA5 final (Sin huecos, palabra única) */
-.step-5-final .extension-cia5 {
-  opacity: 1;
-  width: auto;
-  letter-spacing: normal; /* Kerning perfecto */
-}
-.step-5-final {
-  opacity: 1;
-  transform: translateX(-50%) translateY(-50%) translateY(0) translateX(-8%);
-}
+/* PASO 5: GRACIA5 final centrado */
+.step-5-final .extension-cia5 { opacity: 1; width: auto; letter-spacing: normal; }
+.step-5-final { transform: translateX(-50%) translateY(-50%) translateY(0) translateX(-8%); }
 
-.visible-3 {
-  opacity: 1;
-  transform: translateX(-50%) translateY(-50%) translateY(0);
-}
+.visible-3 { opacity: 1; transform: translateX(-50%) translateY(-50%) translateY(0); }
 
 </style>
 </head>
@@ -131,6 +175,24 @@ h1.hero-text {
 
 <div class="hero">
   <h1 class="hero-text">GRAPA</h1>
+  <div class="subtitle">5ociedad Cooperativa Madrile&#241;a</div>
+  <a href="mailto:grapa@grapa.e5" class="email-button">grapa@grapa.e5</a>
+</div>
+
+<div class="background-image-container">
+  <img src="images/grapas.jpg" alt="">
+  
+  <div class="overlay-line center" id="overlay-top">
+    <span class="gra">GRA</span><span class="pa">PA</span>
+  </div>
+  <div class="overlay-line" id="museo">MU5EO</div>
+  <div class="overlay-line" id="fia-superior">FIA</div>
+
+  <div class="overlay-line center" id="overlay-bottom">
+    <span class="gra">GRA</span><span class="pa">PA</span>
+  </div>
+  <div class="overlay-line" id="esceno">E5CENO</div>
+  <div class="overlay-line" id="fia-inferior">FIA</div>
 </div>
 
 <div class="background-image-container" id="container-3">
@@ -145,43 +207,45 @@ h1.hero-text {
 <footer>&copy; 2025 GRAPA</footer>
 
 <script>
-const tg = document.getElementById('thanks-group');
+/* SECCIONES 1 Y 2 (MANTENIDAS) */
+const sections = [['overlay-top', 'museo', 'fia-superior'], ['overlay-bottom', 'esceno', 'fia-inferior']];
+sections.forEach(group => {
+  const obs = new IntersectionObserver((entries) => {
+    entries.forEach(entry => {
+      const m = document.getElementById(group[0]), s1 = document.getElementById(group[1]), s2 = document.getElementById(group[2]);
+      if (entry.isIntersecting) {
+        m.classList.add('visible', 'shift'); s1.classList.add('visible'); s2.classList.add('visible');
+        setTimeout(() => { if (m.classList.contains('visible')) { m.classList.add('fade-pa', 'recenter'); s1.classList.add('recenter'); s2.classList.add('recenter'); } }, 1200);
+      } else { [m, s1, s2].forEach(el => el.classList.remove('visible', 'shift', 'fade-pa', 'recenter')); }
+    });
+  }, { threshold: 0.15 });
+  obs.observe(document.getElementById(group[0]));
+});
 
+/* SECCIÓN 3: SECUENCIA GRACIA5 v2.0 */
+const tg = document.getElementById('thanks-group');
 const obs3 = new IntersectionObserver((entries) => {
   entries.forEach(entry => {
     if (entry.isIntersecting) {
       // 1. Aparece GRA   PA
       tg.classList.add('visible-3', 'step-1-sep');
-      
-      // 2. Aparece CIA5 en medio
-      setTimeout(() => {
-        tg.classList.add('step-2-cia-in');
-      }, 1000);
-      
-      // 3. Se cierran como GRAPA
+      // 2. CIA5 entra
+      setTimeout(() => tg.classList.add('step-2-cia-in'), 1000);
+      // 3. Se juntan
       setTimeout(() => {
         tg.classList.remove('step-1-sep', 'step-2-cia-in');
         tg.classList.add('step-3-together');
       }, 2200);
-      
-      // 4. Se va PA
+      // 4. PA se va y se forma GRACIA5
       setTimeout(() => {
         tg.classList.add('step-4-fade-pa');
-        
-        // 5. Se forma GRACIA5 y se centra
-        setTimeout(() => {
-          tg.classList.add('step-5-final');
-        }, 600);
-        
+        setTimeout(() => tg.classList.add('step-5-final'), 600);
       }, 3400);
-
     } else {
-      // Reset
       tg.className = 'thanks-overlay';
     }
   });
 }, { threshold: 0.4 });
-
 obs3.observe(document.getElementById('container-3'));
 </script>
 
