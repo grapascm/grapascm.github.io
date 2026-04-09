@@ -3,7 +3,7 @@
 <head>
 <meta charset="UTF-8">
 <meta name="viewport" content="width=device-width, initial-scale=1.0">
-<title>GRAPA - Movimiento Corregido</title>
+<title>GRAPA - Versión Final Corregida</title>
 
 <style>
 @font-face {
@@ -22,7 +22,7 @@ body {
   overflow-x: hidden;
 }
 
-/* --- HERO --- */
+/* --- HERO (ORIGINAL) --- */
 .hero {
   min-height: 100svh;
   display:flex;
@@ -59,7 +59,7 @@ body {
   padding: 15px 30px;
 }
 
-/* --- FOOTER ORIGINAL --- */
+/* --- FOOTER ORIGINAL (FIXED) --- */
 footer {
   position: fixed;
   bottom: 60px;
@@ -71,7 +71,7 @@ footer {
   z-index: 10;
 }
 
-/* --- SECCIONES --- */
+/* --- SECCIONES DE IMAGEN --- */
 .background-image-container {
   position: relative;
   width: 100%;
@@ -105,29 +105,28 @@ footer {
 #overlay-bottom { top: 75%; }
 #fia-inferior { font-size: clamp(35px, 12vw, 150px); top: 81.5%; }
 
-/* --- SECCIÓN 3: GRACIA5 --- */
+/* --- SECCIÓN 3: GRACIA5 (TU MEJORA) --- */
 #thanks-text { 
   font-size: clamp(25px, 9.5vw, 110px); 
   top: 50%; 
-  transform: translateX(-50%) translateY(-50%) translateY(20px);
-  display: flex;
-  justify-content: flex-start; /* Mantiene la palabra anclada a la izquierda del bloque */
-  min-width: 1.5em; /* Evita que el contenedor colapse */
+  transform: translateX(-50%) translateY(-50%) translateY(20px); 
+  display: flex; 
+  align-items: baseline;
+  justify-content: center; /* Tu corrección */
 }
 
 /* --- ANIMACIONES --- */
 .overlay-line span { display: inline-block; transition: transform 0.6s ease, opacity 0.4s ease, width 0.6s ease; }
-
 .shift .pa { transform: translateX(0.35em); transition-delay: 0.5s; }
 
-/* Eliminamos el ancho de la PA para que no deje hueco al irse */
+/* Desaparición limpia de PA */
 .fade-pa .pa { opacity: 0 !important; visibility: hidden; width: 0; } 
 
-/* Recentrado para Secciones 1 y 2 */
+/* Recentrado secciones 1 y 2 */
 .recenter { transform: translateX(-50%) translateY(0) translateX(-8%); }
 
-/* Recentrado para Sección 3: Ajustado para que GRACIA5 se vea centrado */
-.recenter-final { transform: translateX(-50%) translateY(-50%) translateX(-14%) !important; }
+/* Recentrado final corregido */
+.recenter-final { transform: translateX(-50%) translateY(-50%) translateX(-8%) !important; }
 
 .visible { opacity: 1; transform: translateX(-50%) translateY(0); }
 .visible-final { opacity: 1; transform: translateX(-50%) translateY(-50%); }
@@ -142,6 +141,7 @@ footer {
 .show-cia5 .extension-cia5 {
   opacity: 1;
   width: auto;
+  margin-right: 0.05em;
 }
 
 @media (max-width: 600px) {
@@ -187,6 +187,7 @@ footer {
 <footer>&copy; 2025 GRAPA</footer>
 
 <script>
+/* SECCIONES 1, 2 Y 3 UNIFICADAS */
 const config = [
   { main: 'overlay-top', extras: ['museo', 'fia-superior'], type: 'normal' },
   { main: 'overlay-bottom', extras: ['esceno', 'fia-inferior'], type: 'normal' },
@@ -216,7 +217,7 @@ config.forEach(group => {
             extraEls.forEach(el => el.classList.add('recenter'));
 
             if(group.type === 'final') {
-                setTimeout(() => mainEl.classList.add('show-cia5'), 300);
+                setTimeout(() => mainEl.classList.add('show-cia5'), 400);
             }
           }
         }, 1200);
