@@ -3,7 +3,7 @@
 <head>
 <meta charset="UTF-8">
 <meta name="viewport" content="width=device-width, initial-scale=1.0">
-<title>GRAPA - Versión Final Corregida</title>
+<title>GRAPA - Restaurado y Corregido</title>
 
 <style>
 @font-face {
@@ -22,7 +22,7 @@ body {
   overflow-x: hidden;
 }
 
-/* --- HERO SECTION --- */
+/* --- HERO (Restaurado tal cual) --- */
 .hero {
   min-height: 100svh;
   display:flex;
@@ -59,7 +59,7 @@ body {
   padding: 15px 30px;
 }
 
-/* --- ESTRUCTURA DE IMÁGENES --- */
+/* --- SECCIONES DE IMAGEN --- */
 .background-image-container {
   position: relative;
   width: 100%;
@@ -71,7 +71,7 @@ body {
   display: block;
 }
 
-/* --- CAPAS DE TEXTO --- */
+/* --- TEXTOS SOBREPUESTOS --- */
 .overlay-line {
   position: absolute;
   left: 50%;
@@ -84,25 +84,24 @@ body {
   white-space: nowrap;
 }
 
-/* Posiciones Secciones 1 y 2 */
 .center { font-size: clamp(40px, 15vw, 200px); }
 #museo { font-size: clamp(25px, 9.5vw, 110px); top: 21.5%; }
-#overlay-top { top: 25%; z-index: 5; }
+#overlay-top { top: 25%; }
 #fia-superior { font-size: clamp(35px, 12vw, 150px); top: 31.5%; }
 
 #esceno { font-size: clamp(22px, 9vw, 100px); top: 71.5%; }
-#overlay-bottom { top: 75%; z-index: 5; }
+#overlay-bottom { top: 75%; }
 #fia-inferior { font-size: clamp(35px, 12vw, 150px); top: 81.5%; }
 
-/* Animación Base */
+/* --- ANIMACIONES --- */
 .overlay-line span { display: inline-block; transition: transform 0.6s ease, opacity 0.4s ease; }
+.shift .pa { transform: translateX(0.35em); transition-delay: 0.5s; }
+.fade-pa .pa { opacity: 0 !important; visibility: hidden; }
+.recenter { transform: translateX(-50%) translateY(0) translateX(-8%); }
+.visible { opacity: 1; transform: translateX(-50%) translateY(0); }
 
-.is-visible { opacity: 1; transform: translateX(-50%) translateY(0); }
-.do-shift .pa { transform: translateX(0.35em); }
-.do-fade-pa .pa { opacity: 0 !important; visibility: hidden; }
-.do-recenter { transform: translateX(-50%) translateY(0) translateX(-8%); }
-
-/* --- SECCIÓN 3: GRACIA5 (Misma línea, misma altura) --- */
+/* --- SECCIÓN FINAL: GRACIA5 --- */
+/* Mismo estilo que los anteriores para que no se mueva de altura */
 .thanks-overlay {
   position: absolute;
   top: 50%;
@@ -117,16 +116,13 @@ body {
   white-space: nowrap;
 }
 
-.thanks-overlay span {
-  display: inline-block;
-  vertical-align: baseline; /* Clave para mantener la altura */
-  transition: all 0.6s ease;
-}
+.thanks-overlay span { display: inline-block; transition: all 0.6s ease; }
 
 .extension-cia5 {
   opacity: 0;
   width: 0;
   overflow: hidden;
+  display: inline-block;
 }
 
 .show-cia5 .extension-cia5 {
@@ -140,8 +136,8 @@ footer {
   width: 100%;
   text-align: center;
   padding: 80px 0;
-  font-size: 10px;
-  opacity: 0.4;
+  font-size: 12px;
+  opacity: 0.5;
 }
 
 @media (max-width: 600px) {
@@ -177,7 +173,7 @@ footer {
   <div class="overlay-line" id="fia-inferior">FIA</div>
 </div>
 
-<div class="background-image-container" id="container-3">
+<div class="background-image-container">
   <img src="images/grapa2.jpg" alt="">
   <div class="thanks-overlay" id="thanks-group">
     <span class="gra-3">GRA</span><span class="extension-cia5">CIA5</span><span class="pa-3 pa">PA</span>
@@ -187,74 +183,64 @@ footer {
 <footer>&copy; 2025 GRAPA</footer>
 
 <script>
-/* LÓGICA SECCIONES 1 Y 2 */
-const groups = [
-  { main: 'overlay-top', s1: 'museo', s2: 'fia-superior' },
-  { main: 'overlay-bottom', s1: 'esceno', s2: 'fia-inferior' }
-];
+/* SECCIONES 1 Y 2 */
+const sections = [['overlay-top', 'museo', 'fia-superior'], ['overlay-bottom', 'esceno', 'fia-inferior']];
+sections.forEach(group => {
+  const main = document.getElementById(group[0]);
+  const s1 = document.getElementById(group[1]);
+  const s2 = document.getElementById(group[2]);
 
-groups.forEach(group => {
-  const m = document.getElementById(group.main);
-  const sub1 = document.getElementById(group.s1);
-  const sub2 = document.getElementById(group.s2);
-
-  const observer = new IntersectionObserver((entries) => {
+  const obs = new IntersectionObserver((entries) => {
     entries.forEach(entry => {
       if (entry.isIntersecting) {
         // 1. Aparece GRAPA
-        m.classList.add('is-visible');
-        
-        // 2. Se desplaza PA y aparecen los otros
+        main.classList.add('visible');
+        // 2. PA se desplaza y aparecen MUSEO/ESCENO + FIA
         setTimeout(() => {
-          if (!m.classList.contains('is-visible')) return;
-          m.classList.add('do-shift');
-          sub1.classList.add('is-visible');
-          sub2.classList.add('is-visible');
-        }, 800);
-
-        // 3. Desaparece PA y recentra
+          if (main.classList.contains('visible')) {
+            main.classList.add('shift');
+            s1.classList.add('visible');
+            s2.classList.add('visible');
+          }
+        }, 100); 
+        // 3. PA desaparece y recentra
         setTimeout(() => {
-          if (!m.classList.contains('is-visible')) return;
-          m.classList.add('do-fade-pa', 'do-recenter');
-          sub1.classList.add('do-recenter');
-          sub2.classList.add('do-recenter');
-        }, 1800);
+          if (main.classList.contains('visible')) {
+            main.classList.add('fade-pa', 'recenter');
+            s1.classList.add('recenter');
+            s2.classList.add('recenter');
+          }
+        }, 1200);
       } else {
-        [m, sub1, sub2].forEach(el => el.classList.remove('is-visible', 'do-shift', 'do-fade-pa', 'do-recenter'));
+        [main, s1, s2].forEach(el => el.classList.remove('visible', 'shift', 'fade-pa', 'recenter'));
       }
     });
-  }, { threshold: 0.2 });
-  observer.observe(m);
+  }, { threshold: 0.15 });
+  obs.observe(main);
 });
 
-/* LÓGICA SECCIÓN 3: GRACIA5 */
+/* SECCIÓN FINAL (GRACIA5) */
 const tg = document.getElementById('thanks-group');
-const obs3 = new IntersectionObserver((entries) => {
+const obsFinal = new IntersectionObserver((entries) => {
   entries.forEach(entry => {
     if (entry.isIntersecting) {
       // 1. Aparece GRAPA
-      tg.classList.add('is-visible');
-      
-      // 2. Se desplaza PA
+      tg.classList.add('visible');
+      // 2. PA se desplaza
+      setTimeout(() => tg.classList.add('shift'), 100);
+      // 3. PA se va, recentra y aparece CIA5
       setTimeout(() => {
-        if (!tg.classList.contains('is-visible')) return;
-        tg.classList.add('do-shift');
-      }, 800);
-
-      // 3. PA se va, Recentra y entra CIA5
-      setTimeout(() => {
-        if (!tg.classList.contains('is-visible')) return;
-        tg.classList.add('do-fade-pa', 'do-recenter');
-        setTimeout(() => {
-          tg.classList.add('show-cia5');
-        }, 400);
-      }, 1800);
+        if (tg.classList.contains('visible')) {
+          tg.classList.add('fade-pa', 'recenter');
+          setTimeout(() => tg.classList.add('show-cia5'), 400);
+        }
+      }, 1200);
     } else {
-      tg.classList.remove('is-visible', 'do-shift', 'do-fade-pa', 'do-recenter', 'show-cia5');
+      tg.classList.remove('visible', 'shift', 'fade-pa', 'recenter', 'show-cia5');
     }
   });
-}, { threshold: 0.4 });
-obs3.observe(document.getElementById('container-3'));
+}, { threshold: 0.3 });
+obsFinal.observe(tg);
 </script>
 
 </body>
