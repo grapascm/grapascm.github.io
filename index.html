@@ -3,7 +3,7 @@
 <head>
 <meta charset="UTF-8">
 <meta name="viewport" content="width=device-width, initial-scale=1.0">
-<title>GRAPA - Restaurado y Corregido</title>
+<title>GRAPA - Restaurado</title>
 
 <style>
 @font-face {
@@ -22,7 +22,7 @@ body {
   overflow-x: hidden;
 }
 
-/* --- HERO (Restaurado tal cual) --- */
+/* --- HERO --- */
 .hero {
   min-height: 100svh;
   display:flex;
@@ -59,7 +59,19 @@ body {
   padding: 15px 30px;
 }
 
-/* --- SECCIONES DE IMAGEN --- */
+/* --- FOOTER ORIGINAL --- */
+footer {
+  position: fixed;
+  bottom: 60px;
+  width: 100%;
+  text-align: center;
+  font-size: clamp(10px, 1vw, 12px);
+  opacity: 0.5;
+  pointer-events: none;
+  z-index: 10;
+}
+
+/* --- SECCIONES --- */
 .background-image-container {
   position: relative;
   width: 100%;
@@ -71,7 +83,7 @@ body {
   display: block;
 }
 
-/* --- TEXTOS SOBREPUESTOS --- */
+/* --- TEXTOS SOBRE IMAGEN --- */
 .overlay-line {
   position: absolute;
   left: 50%;
@@ -100,8 +112,7 @@ body {
 .recenter { transform: translateX(-50%) translateY(0) translateX(-8%); }
 .visible { opacity: 1; transform: translateX(-50%) translateY(0); }
 
-/* --- SECCIÓN FINAL: GRACIA5 --- */
-/* Mismo estilo que los anteriores para que no se mueva de altura */
+/* --- SECCIÓN ESPECIAL GRACIA5 --- */
 .thanks-overlay {
   position: absolute;
   top: 50%;
@@ -128,16 +139,6 @@ body {
 .show-cia5 .extension-cia5 {
   opacity: 1;
   width: auto;
-  margin-right: 0.1em;
-}
-
-/* --- FOOTER --- */
-footer {
-  width: 100%;
-  text-align: center;
-  padding: 80px 0;
-  font-size: 12px;
-  opacity: 0.5;
 }
 
 @media (max-width: 600px) {
@@ -173,7 +174,7 @@ footer {
   <div class="overlay-line" id="fia-inferior">FIA</div>
 </div>
 
-<div class="background-image-container">
+<div class="background-image-container" id="container-3">
   <img src="images/grapa2.jpg" alt="">
   <div class="thanks-overlay" id="thanks-group">
     <span class="gra-3">GRA</span><span class="extension-cia5">CIA5</span><span class="pa-3 pa">PA</span>
@@ -193,9 +194,7 @@ sections.forEach(group => {
   const obs = new IntersectionObserver((entries) => {
     entries.forEach(entry => {
       if (entry.isIntersecting) {
-        // 1. Aparece GRAPA
         main.classList.add('visible');
-        // 2. PA se desplaza y aparecen MUSEO/ESCENO + FIA
         setTimeout(() => {
           if (main.classList.contains('visible')) {
             main.classList.add('shift');
@@ -203,7 +202,6 @@ sections.forEach(group => {
             s2.classList.add('visible');
           }
         }, 100); 
-        // 3. PA desaparece y recentra
         setTimeout(() => {
           if (main.classList.contains('visible')) {
             main.classList.add('fade-pa', 'recenter');
@@ -219,16 +217,13 @@ sections.forEach(group => {
   obs.observe(main);
 });
 
-/* SECCIÓN FINAL (GRACIA5) */
+/* SECCIÓN 3: GRACIA5 */
 const tg = document.getElementById('thanks-group');
 const obsFinal = new IntersectionObserver((entries) => {
   entries.forEach(entry => {
     if (entry.isIntersecting) {
-      // 1. Aparece GRAPA
       tg.classList.add('visible');
-      // 2. PA se desplaza
       setTimeout(() => tg.classList.add('shift'), 100);
-      // 3. PA se va, recentra y aparece CIA5
       setTimeout(() => {
         if (tg.classList.contains('visible')) {
           tg.classList.add('fade-pa', 'recenter');
@@ -240,7 +235,7 @@ const obsFinal = new IntersectionObserver((entries) => {
     }
   });
 }, { threshold: 0.3 });
-obsFinal.observe(tg);
+obsFinal.observe(document.getElementById('container-3'));
 </script>
 
 </body>
