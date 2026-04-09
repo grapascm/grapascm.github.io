@@ -3,7 +3,7 @@
 <head>
 <meta charset="UTF-8">
 <meta name="viewport" content="width=device-width, initial-scale=1.0">
-<title>GRAPA - Restaurado</title>
+<title>GRAPA - Restaurado y Funcional</title>
 
 <style>
 @font-face {
@@ -59,7 +59,7 @@ body {
   padding: 15px 30px;
 }
 
-/* --- FOOTER ORIGINAL --- */
+/* --- FOOTER ORIGINAL FIXED --- */
 footer {
   position: fixed;
   bottom: 60px;
@@ -71,7 +71,7 @@ footer {
   z-index: 10;
 }
 
-/* --- SECCIONES --- */
+/* --- SECCIONES DE IMAGEN --- */
 .background-image-container {
   position: relative;
   width: 100%;
@@ -113,6 +113,7 @@ footer {
 .visible { opacity: 1; transform: translateX(-50%) translateY(0); }
 
 /* --- SECCIÓN ESPECIAL GRACIA5 --- */
+/* Forzamos que comparta la misma lógica que .overlay-line */
 .thanks-overlay {
   position: absolute;
   top: 50%;
@@ -136,9 +137,11 @@ footer {
   display: inline-block;
 }
 
-.show-cia5 .extension-cia5 {
+/* Cuando se activa la clase final */
+.show-thanks .extension-cia5 {
   opacity: 1;
   width: auto;
+  margin-right: 0.1em;
 }
 
 @media (max-width: 600px) {
@@ -174,10 +177,10 @@ footer {
   <div class="overlay-line" id="fia-inferior">FIA</div>
 </div>
 
-<div class="background-image-container" id="container-3">
+<div class="background-image-container" id="section-gracia5">
   <img src="images/grapa2.jpg" alt="">
-  <div class="thanks-overlay" id="thanks-group">
-    <span class="gra-3">GRA</span><span class="extension-cia5">CIA5</span><span class="pa-3 pa">PA</span>
+  <div class="thanks-overlay" id="thanks-text">
+    <span class="gra">GRA</span><span class="extension-cia5">CIA5</span><span class="pa">PA</span>
   </div>
 </div>
 
@@ -218,24 +221,34 @@ sections.forEach(group => {
 });
 
 /* SECCIÓN 3: GRACIA5 */
-const tg = document.getElementById('thanks-group');
+const thanksText = document.getElementById('thanks-text');
 const obsFinal = new IntersectionObserver((entries) => {
   entries.forEach(entry => {
     if (entry.isIntersecting) {
-      tg.classList.add('visible');
-      setTimeout(() => tg.classList.add('shift'), 100);
+      // 1. Aparece
+      thanksText.classList.add('visible');
+      // 2. Se desplaza PA
       setTimeout(() => {
-        if (tg.classList.contains('visible')) {
-          tg.classList.add('fade-pa', 'recenter');
-          setTimeout(() => tg.classList.add('show-cia5'), 400);
+        if (thanksText.classList.contains('visible')) {
+          thanksText.classList.add('shift');
+        }
+      }, 100);
+      // 3. Desaparece PA, recentra y aparece CIA5
+      setTimeout(() => {
+        if (thanksText.classList.contains('visible')) {
+          thanksText.classList.add('fade-pa', 'recenter');
+          // Pequeño delay extra para el fundido de CIA5
+          setTimeout(() => {
+             thanksText.classList.add('show-thanks');
+          }, 400);
         }
       }, 1200);
     } else {
-      tg.classList.remove('visible', 'shift', 'fade-pa', 'recenter', 'show-cia5');
+      thanksText.classList.remove('visible', 'shift', 'fade-pa', 'recenter', 'show-thanks');
     }
   });
-}, { threshold: 0.3 });
-obsFinal.observe(document.getElementById('container-3'));
+}, { threshold: 0.15 });
+obsFinal.observe(thanksText);
 </script>
 
 </body>
