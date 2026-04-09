@@ -3,7 +3,7 @@
 <head>
 <meta charset="UTF-8">
 <meta name="viewport" content="width=device-width, initial-scale=1.0">
-<title>GRAPA - Versión Estable</title>
+<title>GRAPA - Versión Estable Final</title>
 
 <style>
 @font-face {
@@ -59,7 +59,7 @@ body {
   padding: 15px 30px;
 }
 
-/* --- FOOTER ORIGINAL --- */
+/* --- FOOTER ORIGINAL FIXED --- */
 footer {
   position: fixed;
   bottom: 60px;
@@ -96,6 +96,7 @@ footer {
   white-space: nowrap;
 }
 
+/* Tamaños Secciones 1 y 2 */
 .center { font-size: clamp(40px, 15vw, 200px); }
 #museo { font-size: clamp(25px, 9.5vw, 110px); top: 21.5%; }
 #overlay-top { top: 25%; }
@@ -105,15 +106,18 @@ footer {
 #overlay-bottom { top: 75%; }
 #fia-inferior { font-size: clamp(35px, 12vw, 150px); top: 81.5%; }
 
-/* --- SECCIÓN GRACIA5 --- */
-#thanks-text { font-size: clamp(40px, 15vw, 200px); top: 50%; transform: translateX(-50%) translateY(-50%) translateY(20px); }
+/* --- TAMAÑO SECCIÓN 3 (Igual a Museo/Esceno) --- */
+#thanks-text { 
+  font-size: clamp(25px, 9.5vw, 110px); 
+  top: 50%; 
+  transform: translateX(-50%) translateY(-50%) translateY(20px); 
+}
 
 /* --- ANIMACIONES --- */
 .overlay-line span { display: inline-block; transition: transform 0.6s ease, opacity 0.4s ease; }
 .shift .pa { transform: translateX(0.35em); transition-delay: 0.5s; }
 .fade-pa .pa { opacity: 0 !important; visibility: hidden; }
 .recenter { transform: translateX(-50%) translateY(0) translateX(-8%); }
-/* Recentrado especial para la última sección (centrada verticalmente) */
 .recenter-final { transform: translateX(-50%) translateY(-50%) translateX(-8%) !important; }
 
 .visible { opacity: 1; transform: translateX(-50%) translateY(0); }
@@ -130,6 +134,7 @@ footer {
 .show-cia5 .extension-cia5 {
   opacity: 1;
   width: auto;
+  margin-right: 0.05em;
 }
 
 @media (max-width: 600px) {
@@ -167,7 +172,7 @@ footer {
 
 <div class="background-image-container">
   <img src="images/grapa2.jpg" alt="">
-  <div class="overlay-line center" id="thanks-text">
+  <div class="overlay-line" id="thanks-text">
     <span class="gra">GRA</span><span class="extension-cia5">CIA5</span><span class="pa">PA</span>
   </div>
 </div>
@@ -175,7 +180,6 @@ footer {
 <footer>&copy; 2025 GRAPA</footer>
 
 <script>
-/* SECCIONES 1, 2 Y 3 (UNIFICADAS PARA QUE NO FALLEN) */
 const config = [
   { main: 'overlay-top', extras: ['museo', 'fia-superior'], type: 'normal' },
   { main: 'overlay-bottom', extras: ['esceno', 'fia-inferior'], type: 'normal' },
@@ -189,10 +193,8 @@ config.forEach(group => {
   const obs = new IntersectionObserver((entries) => {
     entries.forEach(entry => {
       if (entry.isIntersecting) {
-        // 1. Aparece (Clase diferente si es la final por el centrado vertical)
         mainEl.classList.add(group.type === 'final' ? 'visible-final' : 'visible');
 
-        // 2. Se desplaza PA y aparecen extras
         setTimeout(() => {
           if (mainEl.classList.contains('visible') || mainEl.classList.contains('visible-final')) {
             mainEl.classList.add('shift');
@@ -200,21 +202,18 @@ config.forEach(group => {
           }
         }, 100); 
 
-        // 3. PA se va y Recentra
         setTimeout(() => {
           if (mainEl.classList.contains('visible') || mainEl.classList.contains('visible-final')) {
             mainEl.classList.add('fade-pa');
             mainEl.classList.add(group.type === 'final' ? 'recenter-final' : 'recenter');
             extraEls.forEach(el => el.classList.add('recenter'));
 
-            // 4. Si es la final, aparece CIA5
             if(group.type === 'final') {
                 setTimeout(() => mainEl.classList.add('show-cia5'), 400);
             }
           }
         }, 1200);
       } else {
-        // Reset
         mainEl.classList.remove('visible', 'visible-final', 'shift', 'fade-pa', 'recenter', 'recenter-final', 'show-cia5');
         extraEls.forEach(el => el.classList.remove('visible', 'recenter'));
       }
