@@ -3,7 +3,7 @@
 <head>
 <meta charset="UTF-8">
 <meta name="viewport" content="width=device-width, initial-scale=1.0">
-<title>GRAPA - Versión Estable Final</title>
+<title>GRAPA - Alineación Corregida</title>
 
 <style>
 @font-face {
@@ -96,7 +96,6 @@ footer {
   white-space: nowrap;
 }
 
-/* Tamaños Secciones 1 y 2 */
 .center { font-size: clamp(40px, 15vw, 200px); }
 #museo { font-size: clamp(25px, 9.5vw, 110px); top: 21.5%; }
 #overlay-top { top: 25%; }
@@ -106,17 +105,19 @@ footer {
 #overlay-bottom { top: 75%; }
 #fia-inferior { font-size: clamp(35px, 12vw, 150px); top: 81.5%; }
 
-/* --- TAMAÑO SECCIÓN 3 (Igual a Museo/Esceno) --- */
+/* --- SECCIÓN 3: GRACIA5 (Ajuste de alineación) --- */
 #thanks-text { 
   font-size: clamp(25px, 9.5vw, 110px); 
   top: 50%; 
   transform: translateX(-50%) translateY(-50%) translateY(20px); 
+  display: flex; /* Para alinear letras perfectamente */
+  align-items: baseline;
 }
 
 /* --- ANIMACIONES --- */
 .overlay-line span { display: inline-block; transition: transform 0.6s ease, opacity 0.4s ease; }
 .shift .pa { transform: translateX(0.35em); transition-delay: 0.5s; }
-.fade-pa .pa { opacity: 0 !important; visibility: hidden; }
+.fade-pa .pa { opacity: 0 !important; visibility: hidden; width: 0; } /* width 0 evita saltos */
 .recenter { transform: translateX(-50%) translateY(0) translateX(-8%); }
 .recenter-final { transform: translateX(-50%) translateY(-50%) translateX(-8%) !important; }
 
@@ -127,14 +128,13 @@ footer {
   opacity: 0;
   width: 0;
   overflow: hidden;
-  display: inline-block;
   transition: all 0.6s ease;
 }
 
 .show-cia5 .extension-cia5 {
   opacity: 1;
   width: auto;
-  margin-right: 0.05em;
+  margin-right: 0.02em;
 }
 
 @media (max-width: 600px) {
@@ -173,7 +173,7 @@ footer {
 <div class="background-image-container">
   <img src="images/grapa2.jpg" alt="">
   <div class="overlay-line" id="thanks-text">
-    <span class="gra">GRA</span><span class="extension-cia5">CIA5</span><span class="pa">PA</span>
+    <span>GRA</span><span class="extension-cia5">CIA5</span><span class="pa">PA</span>
   </div>
 </div>
 
