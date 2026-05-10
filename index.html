@@ -9,16 +9,10 @@
 @font-face {
   font-family: 'GRAPA';
   src: url('./fonts/GRAPA.woff2') format('woff2');
-  font-weight: normal;
-  font-style: normal;
   font-display: swap;
 }
 
-* { 
-  margin: 0; 
-  padding: 0; 
-  box-sizing: border-box; 
-}
+* { margin:0; padding:0; box-sizing:border-box; }
 
 body {
   font-family: 'GRAPA', sans-serif;
@@ -28,86 +22,92 @@ body {
   overflow-x: hidden;
 }
 
-/* --- PANTALLA PRINCIPAL --- */
+/* --- HERO (PANTALLA PRINCIPAL) --- */
 .hero {
-  height: 100vh;
+  min-height: 100svh;
   display: flex;
   flex-direction: column;
   align-items: center;
-  justify-content: center;
   text-align: center;
-  padding: 20px;
+  padding: 25vh 20px 0 20px; /* Ajustado para dar peso visual arriba */
 }
 
-h1 {
-  font-size: clamp(80px, 15vw, 200px);
+.hero-text {
+  font-size: clamp(45px, 14vw, 200px);
   letter-spacing: 0.04em;
+  margin-right: -0.04em; 
   color: #E4E8ED;
   line-height: 0.9;
 }
 
 .subtitle {
-  margin-top: 160px; /* Espacio extra solicitado */
-  font-size: clamp(14px, 2vw, 20px);
+  margin-top: 18vh; /* ESPACIO DOBLE entre GRAPA y SOCIEDAD */
+  font-size: clamp(10px, 2.2vw, 20px);
   letter-spacing: 0.35em;
+  margin-right: -0.35em;
+  max-width: 85vw;
   opacity: 0.8;
 }
 
 .email-button {
-  display: inline-block;
-  margin-top: 60px;
-  font-size: clamp(10px, 1.2vw, 14px);
+  margin-top: 12vh;
+  font-size: clamp(9px, 1.1vw, 13px); /* MÁS PEQUEÑO como pediste */
   letter-spacing: 0.3em;
+  margin-right: -0.3em;
   text-decoration: none;
   color: #E4E8ED;
-  border: 1px solid rgba(228, 232, 237, 0.2);
-  padding: 12px 24px;
+  border: 1px solid rgba(228,232,237,0.2);
+  padding: 12px 25px;
   transition: all 0.3s ease;
-  opacity: 0.7;
 }
 
 .email-button:hover {
   background-color: #E4E8ED;
   color: #0A1A2A;
-  opacity: 1;
 }
 
-/* --- SECCIÓN IMAGEN FINAL --- */
-.final-image {
+/* --- IMAGEN DE CIERRE --- */
+.final-container {
+  width: 100%;
+  margin-top: 10vh;
+}
+
+.final-container img {
   width: 100%;
   height: auto;
   display: block;
-  margin-top: 50px;
 }
 
-/* --- PIE DE PÁGINA --- */
+/* --- FOOTER ORIGINAL (FIXED) --- */
 footer {
-  padding: 80px 20px 40px 20px;
+  position: fixed;
+  bottom: 40px;
+  width: 100%;
   text-align: center;
-  font-size: clamp(10px, 1.1vw, 12px);
-  letter-spacing: 0.25em;
-  opacity: 0.5;
-  color: #BFC6CF;
+  font-size: clamp(9px, 1vw, 11px);
+  letter-spacing: 0.2em;
+  opacity: 0.4;
+  pointer-events: none;
+  z-index: 10;
 }
 </style>
 </head>
 
 <body>
 
-  <!-- Pantalla Principal -->
-  <section class="hero">
-    <h1>GRAPA</h1>
-    <div class="subtitle">5ociedad Cooperativa Madrileña</div>
-    <a href="mailto:grapa@grapa.es" class="email-button">grapa@grapa.es</a>
-  </section>
+<div class="hero">
+  <h1 class="hero-text">GRAPA</h1>
+  <div class="subtitle">5ociedad Cooperativa Madrileña</div>
+  <!-- Email corregido a .e5 y estilo más pequeño -->
+  <a href="mailto:grapa@grapa.es" class="email-button">grapa@grapa.e5</a>
+</div>
 
-  <!-- Imagen de cierre (sin animaciones) -->
-  <img src="images/grapa2.jpg" alt="GRAPA" class="final-image">
+<div class="final-container">
+  <!-- Solo la última imagen, sin animaciones ni textos encima -->
+  <img src="images/grapa2.jpg" alt="GRAPA">
+</div>
 
-  <!-- Créditos al final -->
-  <footer>
-    GRAPA Julio 2025 ®
-  </footer>
+<footer>GRAPA Julio 2025 ®</footer>
 
 </body>
 </html>
