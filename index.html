@@ -3,16 +3,22 @@
 <head>
 <meta charset="UTF-8">
 <meta name="viewport" content="width=device-width, initial-scale=1.0">
-<title>GRAPA - Versión Final Corregida</title>
+<title>GRAPA</title>
 
 <style>
 @font-face {
   font-family: 'GRAPA';
   src: url('./fonts/GRAPA.woff2') format('woff2');
+  font-weight: normal;
+  font-style: normal;
   font-display: swap;
 }
 
-* { margin:0; padding:0; box-sizing:border-box; }
+* { 
+  margin: 0; 
+  padding: 0; 
+  box-sizing: border-box; 
+}
 
 body {
   font-family: 'GRAPA', sans-serif;
@@ -22,214 +28,86 @@ body {
   overflow-x: hidden;
 }
 
-/* --- HERO (ORIGINAL) --- */
+/* --- PANTALLA PRINCIPAL --- */
 .hero {
-  min-height: 100svh;
-  display:flex;
-  flex-direction:column;
-  align-items:center;
-  text-align:center;
-  padding: 20vh 20px 0 20px;
+  height: 100vh;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  justify-content: center;
+  text-align: center;
+  padding: 20px;
 }
 
-.hero-text {
-  font-size: clamp(45px, 14vw, 200px);
+h1 {
+  font-size: clamp(80px, 15vw, 200px);
   letter-spacing: 0.04em;
-  margin-right: -0.04em; 
   color: #E4E8ED;
   line-height: 0.9;
 }
 
 .subtitle {
-  margin-top: 8vh;
-  font-size: clamp(10px, 2.2vw, 20px);
+  margin-top: 160px; /* Espacio extra solicitado */
+  font-size: clamp(14px, 2vw, 20px);
   letter-spacing: 0.35em;
-  margin-right: -0.35em;
-  max-width: 85vw;
+  opacity: 0.8;
 }
 
 .email-button {
-  margin-top: 15vh;
+  display: inline-block;
+  margin-top: 60px;
   font-size: clamp(10px, 1.2vw, 14px);
   letter-spacing: 0.3em;
-  margin-right: -0.3em;
   text-decoration: none;
   color: #E4E8ED;
-  border: 1px solid rgba(228,232,237,0.2);
-  padding: 15px 30px;
+  border: 1px solid rgba(228, 232, 237, 0.2);
+  padding: 12px 24px;
+  transition: all 0.3s ease;
+  opacity: 0.7;
 }
 
-/* --- FOOTER ORIGINAL (FIXED) --- */
-footer {
-  position: fixed;
-  bottom: 60px;
-  width: 100%;
-  text-align: center;
-  font-size: clamp(10px, 1vw, 12px);
-  opacity: 0.5;
-  pointer-events: none;
-  z-index: 10;
+.email-button:hover {
+  background-color: #E4E8ED;
+  color: #0A1A2A;
+  opacity: 1;
 }
 
-/* --- SECCIONES DE IMAGEN --- */
-.background-image-container {
-  position: relative;
-  width: 100%;
-}
-
-.background-image-container img {
+/* --- SECCIÓN IMAGEN FINAL --- */
+.final-image {
   width: 100%;
   height: auto;
   display: block;
+  margin-top: 50px;
 }
 
-/* --- TEXTOS SOBRE IMAGEN --- */
-.overlay-line {
-  position: absolute;
-  left: 50%;
-  transform: translateX(-50%) translateY(20px);
-  width: clamp(260px, 75vw, 1000px); 
-  text-align: left;
-  color: #E4E8ED;
-  opacity: 0;
-  transition: opacity 0.6s ease, transform 0.6s ease;
-  white-space: nowrap;
-}
-
-.center { font-size: clamp(40px, 15vw, 200px); }
-#museo { font-size: clamp(25px, 9.5vw, 110px); top: 21.5%; }
-#overlay-top { top: 25%; }
-#fia-superior { font-size: clamp(35px, 12vw, 150px); top: 31.5%; }
-
-#esceno { font-size: clamp(22px, 9vw, 100px); top: 71.5%; }
-#overlay-bottom { top: 75%; }
-#fia-inferior { font-size: clamp(35px, 12vw, 150px); top: 81.5%; }
-
-/* --- SECCIÓN 3: GRACIA5 (TU MEJORA) --- */
-#thanks-text { 
-  font-size: clamp(25px, 9.5vw, 110px); 
-  top: 50%; 
-  transform: translateX(-50%) translateY(-50%) translateY(20px); 
-  display: flex; 
-  align-items: baseline;
-  justify-content: center; /* Tu corrección */
-}
-
-/* --- ANIMACIONES --- */
-.overlay-line span { display: inline-block; transition: transform 0.6s ease, opacity 0.4s ease, width 0.6s ease; }
-.shift .pa { transform: translateX(0.35em); transition-delay: 0.5s; }
-
-/* Desaparición limpia de PA */
-.fade-pa .pa { opacity: 0 !important; visibility: hidden; width: 0; } 
-
-/* Recentrado secciones 1 y 2 */
-.recenter { transform: translateX(-50%) translateY(0) translateX(-8%); }
-
-/* Recentrado final corregido */
-.recenter-final { transform: translateX(-50%) translateY(-50%) translateX(-8%) !important; }
-
-.visible { opacity: 1; transform: translateX(-50%) translateY(0); }
-.visible-final { opacity: 1; transform: translateX(-50%) translateY(-50%); }
-
-.extension-cia5 {
-  opacity: 0;
-  width: 0;
-  overflow: hidden;
-  transition: all 0.6s ease;
-}
-
-.show-cia5 .extension-cia5 {
-  opacity: 1;
-  width: auto;
-  margin-right: 0.05em;
-}
-
-@media (max-width: 600px) {
-  #museo { top: 19%; }
-  #fia-superior { top: 33%; }
-  #esceno { top: 69%; }
-  #fia-inferior { top: 83%; }
+/* --- PIE DE PÁGINA --- */
+footer {
+  padding: 80px 20px 40px 20px;
+  text-align: center;
+  font-size: clamp(10px, 1.1vw, 12px);
+  letter-spacing: 0.25em;
+  opacity: 0.5;
+  color: #BFC6CF;
 }
 </style>
 </head>
 
 <body>
 
-<div class="hero">
-  <h1 class="hero-text">GRAPA</h1>
-  <div class="subtitle">5ociedad Cooperativa Madrile&#241;a</div>
-  <a href="mailto:grapa@grapa.e5" class="email-button">grapa@grapa.e5</a>
-</div>
+  <!-- Pantalla Principal -->
+  <section class="hero">
+    <h1>GRAPA</h1>
+    <div class="subtitle">5ociedad Cooperativa Madrileña</div>
+    <a href="mailto:grapa@grapa.es" class="email-button">grapa@grapa.es</a>
+  </section>
 
-<div class="background-image-container">
-  <img src="images/grapas.jpg" alt="">
-  
-  <div class="overlay-line center" id="overlay-top">
-    <span class="gra">GRA</span><span class="pa">PA</span>
-  </div>
-  <div class="overlay-line" id="museo">MU5EO</div>
-  <div class="overlay-line" id="fia-superior">FIA</div>
+  <!-- Imagen de cierre (sin animaciones) -->
+  <img src="images/grapa2.jpg" alt="GRAPA" class="final-image">
 
-  <div class="overlay-line center" id="overlay-bottom">
-    <span class="gra">GRA</span><span class="pa">PA</span>
-  </div>
-  <div class="overlay-line" id="esceno">E5CENO</div>
-  <div class="overlay-line" id="fia-inferior">FIA</div>
-</div>
-
-<div class="background-image-container">
-  <img src="images/grapa2.jpg" alt="">
-  <div class="overlay-line" id="thanks-text">
-    <span class="gra">GRA</span><span class="extension-cia5">CIA5</span><span class="pa">PA</span>
-  </div>
-</div>
-
-<footer>&copy; 2025 GRAPA</footer>
-
-<script>
-/* SECCIONES 1, 2 Y 3 UNIFICADAS */
-const config = [
-  { main: 'overlay-top', extras: ['museo', 'fia-superior'], type: 'normal' },
-  { main: 'overlay-bottom', extras: ['esceno', 'fia-inferior'], type: 'normal' },
-  { main: 'thanks-text', extras: [], type: 'final' }
-];
-
-config.forEach(group => {
-  const mainEl = document.getElementById(group.main);
-  const extraEls = group.extras.map(id => document.getElementById(id));
-
-  const obs = new IntersectionObserver((entries) => {
-    entries.forEach(entry => {
-      if (entry.isIntersecting) {
-        mainEl.classList.add(group.type === 'final' ? 'visible-final' : 'visible');
-
-        setTimeout(() => {
-          if (mainEl.classList.contains('visible') || mainEl.classList.contains('visible-final')) {
-            mainEl.classList.add('shift');
-            extraEls.forEach(el => el.classList.add('visible'));
-          }
-        }, 100); 
-
-        setTimeout(() => {
-          if (mainEl.classList.contains('visible') || mainEl.classList.contains('visible-final')) {
-            mainEl.classList.add('fade-pa');
-            mainEl.classList.add(group.type === 'final' ? 'recenter-final' : 'recenter');
-            extraEls.forEach(el => el.classList.add('recenter'));
-
-            if(group.type === 'final') {
-                setTimeout(() => mainEl.classList.add('show-cia5'), 400);
-            }
-          }
-        }, 1200);
-      } else {
-        mainEl.classList.remove('visible', 'visible-final', 'shift', 'fade-pa', 'recenter', 'recenter-final', 'show-cia5');
-        extraEls.forEach(el => el.classList.remove('visible', 'recenter'));
-      }
-    });
-  }, { threshold: 0.1 });
-  obs.observe(mainEl);
-});
-</script>
+  <!-- Créditos al final -->
+  <footer>
+    GRAPA Julio 2025 ®
+  </footer>
 
 </body>
 </html>
